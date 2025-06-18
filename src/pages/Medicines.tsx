@@ -1,10 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Pill, Plus, Clock, Bell, Volume2, Trash2, Info, IndianRupee } from 'lucide-react';
+import { ArrowLeft, Pill, Plus, Clock, Bell, Volume2, Trash2, Info, IndianRupee, Mic, MicOff, Heart, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { telanganaMedicines } from '@/data/telanganaData';
 
 const Medicines = () => {
@@ -20,7 +22,12 @@ const Medicines = () => {
       smsReminder: false,
       pushReminder: true,
       price: '₹45 per 30 tablets',
-      sideEffects: ['Nausea', 'Stomach upset']
+      sideEffects: ['Nausea', 'Stomach upset'],
+      nextDue: '2 hours',
+      taken: 15,
+      total: 30,
+      teluguInstructions: 'రోజుకు రెండుసార్లు, ఆహారం తర్వాత తీసుకోండి. మీ రక్తంలో చక్కెర తగ్గిస్తుంది.',
+      teluguName: 'మెట్‌ఫార్మిన్'
     },
     {
       id: 2,
@@ -33,7 +40,12 @@ const Medicines = () => {
       smsReminder: true,
       pushReminder: true,
       price: '₹32 per 30 tablets',
-      sideEffects: ['Swelling of feet', 'Dizziness']
+      sideEffects: ['Swelling of feet', 'Dizziness'],
+      nextDue: '6 hours',
+      taken: 22,
+      total: 30,
+      teluguInstructions: 'రోజుకు ఒకసారి ఉదయం ఖాళీ కడుపుతో తీసుకోండి. మీ రక్తపోటు నియంత్రిస్తుంది.',
+      teluguName: 'అమ్లోడిపైన్'
     },
     {
       id: 3,
@@ -46,27 +58,77 @@ const Medicines = () => {
       smsReminder: false,
       pushReminder: true,
       price: '₹52 per 120 tablets',
-      sideEffects: ['Heart palpitations if overdosed']
+      sideEffects: ['Heart palpitations if overdosed'],
+      nextDue: '14 hours',
+      taken: 45,
+      total: 120,
+      teluguInstructions: 'ఉదయం లేచిన వెంటనే ఖాళీ కడుపుతో నీటితో తీసుకోండి. థైరాయిడ్ గ్రంధి పనితనం మెరుగుపరుస్తుంది.',
+      teluguName: 'థైరోనార్మ్'
     }
   ]);
 
   const [testingSound, setTestingSound] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('Telugu');
+  const [isListening, setIsListening] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
-  const handleTestSound = () => {
-    setTestingSound(true);
-    const message = selectedLanguage === 'Telugu' 
-      ? 'మందు తీసుకోవాల్సిన సమయం వచ్చింది (Medicine time reminder)'
-      : 'It\'s time to take your medicine';
-    
-    // Simulate voice reminder
+  // Update current time every minute
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Enhanced Telugu voice synthesis with better pronunciation
+  const speakTelugu = (text: string, medicine?: any) => {
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(message);
-      utterance.lang = selectedLanguage === 'Telugu' ? 'te-IN' : 'en-US';
+      // Cancel any ongoing speech
+      speechSynthesis.cancel();
+      
+      // Create Telugu message
+      let teluguMessage = '';
+      if (medicine) {
+        teluguMessage = `మందు తీసుకోవాల్సిన సమయం వచ్చింది. ${medicine.teluguName} మందు తీసుకోండి. ${medicine.teluguInstructions}`;
+      } else {
+        teluguMessage = text;
+      }
+      
+      const utterance = new SpeechSynthesisUtterance(teluguMessage);
+      
+      // Enhanced Telugu voice settings
+      utterance.lang = 'te-IN';
+      utterance.rate = 0.8; // Slower for better comprehension
+      utterance.pitch = 1.1; // Slightly higher pitch
+      utterance.volume = 1.0;
+      
+      // Fallback to Hindi if Telugu not available
+      utterance.onerror = () => {
+        const hindiUtterance = new SpeechSynthesisUtterance(teluguMessage);
+        hindiUtterance.lang = 'hi-IN';
+        hindiUtterance.rate = 0.8;
+        speechSynthesis.speak(hindiUtterance);
+      };
+      
       speechSynthesis.speak(utterance);
+      
+      // Visual feedback
+      setTestingSound(true);
+      setTimeout(() => setTestingSound(false), 4000);
     }
-    
-    setTimeout(() => setTestingSound(false), 3000);
+  };
+
+  const handleTestSound = (medicine?: any) => {
+    if (selectedLanguage === 'Telugu') {
+      speakTelugu('మందు తీసుకోవాల్సిన సమయం వచ్చింది. ఆరోగ్యంగా ఉండండి.', medicine);
+    } else {
+      const message = 'It\'s time to take your medicine. Stay healthy.';
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.lang = 'en-US';
+      speechSynthesis.speak(utterance);
+      setTestingSound(true);
+      setTimeout(() => setTestingSound(false), 3000);
+    }
   };
 
   const toggleReminder = (id: number, type: 'voice' | 'sms' | 'push') => {
@@ -85,106 +147,225 @@ const Medicines = () => {
     setMedicines(medicines.filter(med => med.id !== id));
   };
 
+  const markAsTaken = (id: number) => {
+    setMedicines(medicines.map(med => {
+      if (med.id === id) {
+        return {
+          ...med,
+          taken: Math.min(med.taken + 1, med.total)
+        };
+      }
+      return med;
+    }));
+  };
+
+  const getTimeIcon = () => {
+    const hour = currentTime.getHours();
+    if (hour >= 6 && hour < 18) {
+      return <Sun className="w-5 h-5 text-yellow-500" />;
+    }
+    return <Moon className="w-5 h-5 text-blue-400" />;
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
-      <header className="bg-white shadow-sm border-b border-blue-100">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-yellow-50">
+      {/* Rural-friendly header with nature colors */}
+      <header className="bg-gradient-to-r from-green-600 to-blue-600 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link to="/">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Medicine Reminders (మందుల రిమైండర్లు)</h1>
+              <div>
+                <h1 className="text-2xl font-bold text-white">మందుల రిమైండర్లు</h1>
+                <p className="text-green-100 text-sm">Medicine Reminders</p>
+              </div>
             </div>
-            <Button className="button-primary">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Medicine
-            </Button>
+            <div className="flex items-center space-x-4">
+              {getTimeIcon()}
+              <span className="text-white font-medium">
+                {currentTime.toLocaleTimeString('en-IN', { 
+                  hour: '2-digit', 
+                  minute: '2-digit',
+                  hour12: true 
+                })}
+              </span>
+              <Button className="bg-white text-green-600 hover:bg-gray-100 font-semibold">
+                <Plus className="w-4 h-4 mr-2" />
+                కొత్త మందు (Add Medicine)
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* My Medications */}
-        <Card className="healthcare-card mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Pill className="w-6 h-6 text-green-500" />
-              <span>My Medications (నా మందులు)</span>
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Today's Schedule - Rural friendly design */}
+        <Card className="mb-8 bg-gradient-to-r from-orange-100 to-yellow-100 border-2 border-orange-200 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-t-lg">
+            <CardTitle className="flex items-center space-x-3">
+              <Clock className="w-8 h-8" />
+              <div>
+                <span className="text-2xl">నేటి మందుల షెడ్యూల్</span>
+                <p className="text-orange-100 text-sm font-normal">Today's Medicine Schedule</p>
+              </div>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {medicines.map((medicine) => (
-                <div key={medicine.id} className="border border-gray-200 rounded-lg p-6 bg-white">
-                  <div className="flex items-start justify-between mb-4">
+                <div key={medicine.id} className="bg-white rounded-xl p-4 border-2 border-orange-200 shadow-lg hover:shadow-xl transition-all">
+                  <div className="flex items-center justify-between mb-3">
+                    <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 text-sm px-3 py-1">
+                      Next: {medicine.nextDue}
+                    </Badge>
+                    <Button
+                      size="sm"
+                      onClick={() => handleTestSound(medicine)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white p-2"
+                      disabled={testingSound}
+                    >
+                      {testingSound ? <Volume2 className="w-4 h-4 animate-pulse" /> : <Volume2 className="w-4 h-4" />}
+                    </Button>
+                  </div>
+                  <h3 className="font-bold text-lg text-gray-800 mb-2">{medicine.teluguName}</h3>
+                  <p className="text-gray-600 text-sm mb-3">{medicine.dosage} - {medicine.condition}</p>
+                  
+                  {/* Progress indicator */}
+                  <div className="mb-3">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-600">తీసుకున్నవి (Taken)</span>
+                      <span className="font-semibold text-blue-600">{medicine.taken}/{medicine.total}</span>
+                    </div>
+                    <Progress 
+                      value={(medicine.taken / medicine.total) * 100} 
+                      className="h-3 bg-gray-200"
+                    />
+                  </div>
+                  
+                  <Button
+                    onClick={() => markAsTaken(medicine.id)}
+                    className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2"
+                  >
+                    <Heart className="w-4 h-4 mr-2" />
+                    తీసుకున్నాను (Mark as Taken)
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* My Medications with enhanced rural design */}
+        <Card className="healthcare-card mb-8 border-2 border-blue-200 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-t-lg">
+            <CardTitle className="flex items-center space-x-3">
+              <Pill className="w-8 h-8" />
+              <div>
+                <span className="text-2xl">నా మందులు</span>
+                <p className="text-blue-100 text-sm font-normal">My Medications</p>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-8">
+              {medicines.map((medicine) => (
+                <div key={medicine.id} className="bg-gradient-to-r from-white to-blue-50 border-2 border-blue-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all">
+                  <div className="flex items-start justify-between mb-6">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-lg text-gray-900 mb-1">{medicine.name}</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                        <div>
-                          <p className="text-blue-600 font-medium">{medicine.dosage}</p>
-                          <p className="text-sm text-gray-600">For: {medicine.condition}</p>
+                      <div className="flex items-center space-x-3 mb-4">
+                        <div className="bg-blue-500 text-white p-3 rounded-full">
+                          <Pill className="w-6 h-6" />
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <IndianRupee className="w-4 h-4 text-green-600" />
-                          <span className="text-sm text-green-600 font-medium">{medicine.price}</span>
+                        <div>
+                          <h3 className="font-bold text-xl text-gray-900">{medicine.name}</h3>
+                          <p className="text-blue-600 font-semibold text-lg">{medicine.dosage}</p>
                         </div>
                       </div>
                       
-                      <div className="mb-3">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Clock className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm font-medium text-gray-700">Timing:</span>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div className="bg-white p-4 rounded-lg border-2 border-gray-200">
+                          <p className="text-sm text-gray-600 mb-1">లక్షణం (Condition):</p>
+                          <p className="font-semibold text-gray-800">{medicine.condition}</p>
+                          <div className="flex items-center space-x-2 mt-2">
+                            <IndianRupee className="w-4 h-4 text-green-600" />
+                            <span className="text-green-600 font-semibold">{medicine.price}</span>
+                          </div>
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                          {medicine.timing.map((time, index) => (
-                            <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">
-                              {time}
-                            </span>
-                          ))}
+                        
+                        <div className="bg-white p-4 rounded-lg border-2 border-gray-200">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Clock className="w-5 h-5 text-orange-500" />
+                            <span className="font-semibold text-gray-700">సమయం (Timing):</span>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {medicine.timing.map((time, index) => (
+                              <Badge key={index} className="bg-orange-100 text-orange-700 border-orange-300 px-3 py-1">
+                                {time}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </div>
 
-                      <div className="mb-3 p-3 bg-yellow-50 rounded-lg">
-                        <div className="flex items-start space-x-2">
-                          <Info className="w-4 h-4 text-yellow-600 mt-0.5" />
+                      {/* Telugu Instructions - Enhanced */}
+                      <div className="mb-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg">
+                        <div className="flex items-start space-x-3">
+                          <Info className="w-6 h-6 text-yellow-600 mt-1" />
                           <div>
-                            <p className="text-sm font-medium text-yellow-800">Instructions:</p>
-                            <p className="text-sm text-yellow-700">{medicine.instructions}</p>
+                            <p className="font-semibold text-yellow-800 mb-2">సూచనలు (Instructions):</p>
+                            <p className="text-gray-700 text-lg leading-relaxed">{medicine.teluguInstructions}</p>
+                            <p className="text-gray-600 text-sm mt-2 italic">{medicine.instructions}</p>
                           </div>
                         </div>
                       </div>
 
                       {medicine.sideEffects && medicine.sideEffects.length > 0 && (
-                        <div className="mb-4">
-                          <p className="text-sm font-medium text-gray-700 mb-1">Side Effects:</p>
-                          <div className="flex flex-wrap gap-1">
+                        <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                          <p className="font-semibold text-red-800 mb-2">దుష్ప్రభావాలు (Side Effects):</p>
+                          <div className="flex flex-wrap gap-2">
                             {medicine.sideEffects.map((effect, index) => (
-                              <span key={index} className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded">
+                              <Badge key={index} variant="destructive" className="px-3 py-1">
                                 {effect}
-                              </span>
+                              </Badge>
                             ))}
                           </div>
                         </div>
                       )}
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => deleteMedicine(medicine.id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    
+                    <div className="flex flex-col space-y-3">
+                      <Button
+                        onClick={() => handleTestSound(medicine)}
+                        disabled={testingSound}
+                        className="bg-purple-500 hover:bg-purple-600 text-white p-3"
+                        size="sm"
+                      >
+                        {testingSound ? <Volume2 className="w-5 h-5 animate-pulse" /> : <Volume2 className="w-5 h-5" />}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteMedicine(medicine.id)}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-3"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </Button>
+                    </div>
                   </div>
 
+                  {/* Reminder Settings - Enhanced */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                      <div className="flex items-center space-x-2">
-                        <Volume2 className="w-4 h-4 text-blue-500" />
-                        <span className="text-sm font-medium">Voice Reminder (వాయిస్ రిమైండర్)</span>
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg border-2 border-blue-300">
+                      <div className="flex items-center space-x-3">
+                        <Volume2 className="w-6 h-6 text-blue-600" />
+                        <div>
+                          <span className="font-semibold text-blue-800">వాయిస్ రిమైండర్</span>
+                          <p className="text-blue-600 text-xs">Voice Reminder</p>
+                        </div>
                       </div>
                       <Switch
                         checked={medicine.voiceReminder}
@@ -192,10 +373,13 @@ const Medicines = () => {
                       />
                     </div>
 
-                    <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                      <div className="flex items-center space-x-2">
-                        <Bell className="w-4 h-4 text-green-500" />
-                        <span className="text-sm font-medium">SMS Reminder</span>
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-100 to-green-200 rounded-lg border-2 border-green-300">
+                      <div className="flex items-center space-x-3">
+                        <Bell className="w-6 h-6 text-green-600" />
+                        <div>
+                          <span className="font-semibold text-green-800">SMS రిమైండర్</span>
+                          <p className="text-green-600 text-xs">SMS Reminder</p>
+                        </div>
                       </div>
                       <Switch
                         checked={medicine.smsReminder}
@@ -203,10 +387,13 @@ const Medicines = () => {
                       />
                     </div>
 
-                    <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                      <div className="flex items-center space-x-2">
-                        <Bell className="w-4 h-4 text-purple-500" />
-                        <span className="text-sm font-medium">Push Notification</span>
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-100 to-purple-200 rounded-lg border-2 border-purple-300">
+                      <div className="flex items-center space-x-3">
+                        <Bell className="w-6 h-6 text-purple-600" />
+                        <div>
+                          <span className="font-semibold text-purple-800">పుష్ నోటిఫికేషన్</span>
+                          <p className="text-purple-600 text-xs">Push Notification</p>
+                        </div>
                       </div>
                       <Switch
                         checked={medicine.pushReminder}
@@ -220,23 +407,31 @@ const Medicines = () => {
           </CardContent>
         </Card>
 
-        {/* Available Medicines in Telangana */}
-        <Card className="healthcare-card mb-6">
-          <CardHeader>
-            <CardTitle>Common Medicines Available in Telangana (తెలంగాణలో లభించే సాధారణ మందులు)</CardTitle>
+        {/* Available Medicines */}
+        <Card className="healthcare-card mb-8 border-2 border-green-200 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-t-lg">
+            <CardTitle className="flex items-center space-x-3">
+              <Pill className="w-8 h-8" />
+              <div>
+                <span className="text-2xl">తెలంగాణలో లభించే మందులు</span>
+                <p className="text-green-100 text-sm font-normal">Available Medicines in Telangana</p>
+              </div>
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <CardContent className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {telanganaMedicines.map((medicine) => (
-                <div key={medicine.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <h4 className="font-semibold text-gray-900 mb-1">{medicine.name}</h4>
-                  <p className="text-sm text-gray-600 mb-2">{medicine.genericName}</p>
-                  <p className="text-blue-600 font-medium mb-2">{medicine.dosage}</p>
-                  <p className="text-sm text-gray-600 mb-2">For: {medicine.condition}</p>
-                  <p className="text-green-600 font-medium text-sm">{medicine.price}</p>
-                  <Button size="sm" className="button-secondary w-full mt-3">
-                    <Plus className="w-3 h-3 mr-1" />
-                    Add to My List
+                <div key={medicine.id} className="bg-gradient-to-br from-white to-green-50 border-2 border-green-200 rounded-xl p-6 hover:shadow-xl transition-all hover:scale-105">
+                  <div className="mb-4">
+                    <h4 className="font-bold text-lg text-gray-900 mb-2">{medicine.name}</h4>
+                    <p className="text-gray-600 text-sm mb-2">{medicine.genericName}</p>
+                    <Badge className="bg-blue-100 text-blue-700 border-blue-300">{medicine.dosage}</Badge>
+                  </div>
+                  <p className="text-gray-700 mb-3">లక్షణం: {medicine.condition}</p>
+                  <p className="text-green-600 font-bold text-lg mb-4">{medicine.price}</p>
+                  <Button className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-3">
+                    <Plus className="w-4 h-4 mr-2" />
+                    నా జాబితాకు జోడించు
                   </Button>
                 </div>
               ))}
@@ -244,58 +439,117 @@ const Medicines = () => {
           </CardContent>
         </Card>
 
-        {/* Reminder Settings */}
-        <Card className="healthcare-card">
-          <CardHeader>
-            <CardTitle>Reminder Settings (రిమైండర్ సెట్టింగ్‌లు)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
+        {/* Enhanced Voice Settings */}
+        <Card className="healthcare-card border-2 border-orange-200 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+            <CardTitle className="flex items-center space-x-3">
+              <Mic className="w-8 h-8" />
               <div>
-                <h3 className="font-medium text-gray-900 mb-4">Voice Language (వాయిస్ భాష)</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <span className="text-2xl">వాయిస్ సెట్టింగ్‌లు</span>
+                <p className="text-orange-100 text-sm font-normal">Voice Settings</p>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-8">
+              <div>
+                <h3 className="font-bold text-xl text-gray-900 mb-6">భాష ఎంపిక (Language Selection)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Button 
                     variant={selectedLanguage === 'Telugu' ? 'default' : 'outline'}
-                    className="h-12"
+                    className={`h-16 text-lg font-semibold border-2 ${
+                      selectedLanguage === 'Telugu' 
+                        ? 'bg-gradient-to-r from-blue-500 to-green-500 text-white border-blue-500' 
+                        : 'border-blue-300 hover:bg-blue-50'
+                    }`}
                     onClick={() => setSelectedLanguage('Telugu')}
                   >
+                    <span className="text-2xl mr-3">🎭</span>
                     తెలుగు (Telugu)
                   </Button>
                   <Button 
                     variant={selectedLanguage === 'English' ? 'default' : 'outline'}
-                    className="h-12"
+                    className={`h-16 text-lg font-semibold border-2 ${
+                      selectedLanguage === 'English' 
+                        ? 'bg-gradient-to-r from-blue-500 to-green-500 text-white border-blue-500' 
+                        : 'border-blue-300 hover:bg-blue-50'
+                    }`}
                     onClick={() => setSelectedLanguage('English')}
                   >
+                    <span className="text-2xl mr-3">🗣️</span>
                     English
                   </Button>
                 </div>
               </div>
 
-              <div>
-                <h3 className="font-medium text-gray-900 mb-2">Test Reminder Sound</h3>
-                <Button
-                  onClick={handleTestSound}
-                  disabled={testingSound}
-                  className="button-secondary"
-                >
-                  <Volume2 className="w-4 h-4 mr-2" />
-                  {testingSound ? 'Playing...' : `Test ${selectedLanguage} Reminder`}
-                </Button>
-                <p className="text-sm text-gray-600 mt-2">
-                  Test message: {selectedLanguage === 'Telugu' 
-                    ? 'మందు తీసుకోవాల్సిన సమయం వచ్చింది' 
-                    : 'It\'s time to take your medicine'}
-                </p>
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-xl p-6">
+                <h3 className="font-bold text-lg text-gray-900 mb-4">వాయిస్ టెస్ట్ (Voice Test)</h3>
+                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                  <Button
+                    onClick={() => handleTestSound()}
+                    disabled={testingSound}
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 px-6 text-lg"
+                  >
+                    {testingSound ? (
+                      <>
+                        <Volume2 className="w-6 h-6 mr-3 animate-pulse" />
+                        వినుతున్నాం... (Playing...)
+                      </>
+                    ) : (
+                      <>
+                        <Volume2 className="w-6 h-6 mr-3" />
+                        {selectedLanguage} రిమైండర్ టెస్ట్ చేయండి
+                      </>
+                    )}
+                  </Button>
+                  <div className="text-center">
+                    <p className="text-lg font-semibold text-gray-700">
+                      టెస్ట్ మెసేజ్ (Test Message):
+                    </p>
+                    <p className="text-blue-600 font-bold text-lg">
+                      {selectedLanguage === 'Telugu' 
+                        ? 'మందు తీసుకోవాల్సిన సమయం వచ్చింది. ఆరోగ్యంగా ఉండండి.' 
+                        : 'It\'s time to take your medicine. Stay healthy.'}
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                <h4 className="font-medium text-orange-800 mb-2">Important Health Information (ముఖ్యమైన ఆరోగ్య సమాచారం)</h4>
-                <ul className="text-sm text-orange-700 space-y-1">
-                  <li>• Always consult your doctor before starting any medication</li>
-                  <li>• డాక్టర్ సలహా లేకుండా ఏ మందు అయినా వాడకండి</li>
-                  <li>• Keep medicines away from children and direct sunlight</li>
-                  <li>• మందులను పిల్లలకు దూరంగా, నేరుగా సూర్యకాంతి రాని చోట ఉంచండి</li>
-                </ul>
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-200 rounded-xl p-6">
+                <h4 className="font-bold text-red-800 mb-4 text-xl flex items-center">
+                  <Heart className="w-6 h-6 mr-3 text-red-500" />
+                  ముఖ్యమైన ఆరోగ్య సమాచారం (Important Health Information)
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <ul className="text-red-700 space-y-3 text-lg">
+                    <li className="flex items-start space-x-3">
+                      <span className="text-red-500 font-bold">•</span>
+                      <span>ఎల్లప్పుడూ వైద్యుడి సలహా తీసుకోండి</span>
+                    </li>
+                    <li className="flex items-start space-x-3">
+                      <span className="text-red-500 font-bold">•</span>
+                      <span>మందులను పిల్లలకు దూరంగా ఉంచండి</span>
+                    </li>
+                    <li className="flex items-start space-x-3">
+                      <span className="text-red-500 font-bold">•</span>
+                      <span>సూర్యకాంతి రాని చోట భద్రపరచండి</span>
+                    </li>
+                  </ul>
+                  <ul className="text-red-700 space-y-3">
+                    <li className="flex items-start space-x-3">
+                      <span className="text-red-500 font-bold">•</span>
+                      <span>Always consult your doctor</span>
+                    </li>
+                    <li className="flex items-start space-x-3">
+                      <span className="text-red-500 font-bold">•</span>
+                      <span>Keep medicines away from children</span>
+                    </li>
+                    <li className="flex items-start space-x-3">
+                      <span className="text-red-500 font-bold">•</span>
+                      <span>Store away from direct sunlight</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </CardContent>
