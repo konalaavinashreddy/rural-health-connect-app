@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,7 @@ import { commonDiseases, telanganaSpecialties } from '@/data/telanganaData';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const quickSearchSuggestions = [
     'Fever', 'Diabetes', 'Heart Disease', 'Blood Pressure', 'Kidney Stones'
@@ -21,8 +22,16 @@ const Index = () => {
   ];
 
   const handleSearch = () => {
-    // Navigate to doctors page with search query
-    window.location.href = `/doctors?search=${encodeURIComponent(searchQuery)}`;
+    if (searchQuery.trim()) {
+      navigate(`/doctors?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate('/doctors');
+    }
+  };
+
+  const handleQuickSearch = (suggestion) => {
+    setSearchQuery(suggestion);
+    navigate(`/doctors?search=${encodeURIComponent(suggestion)}`);
   };
 
   return (
@@ -58,12 +67,10 @@ const Index = () => {
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                 />
               </div>
-              <Link to="/doctors" state={{ searchQuery }}>
-                <Button className="button-primary h-14 px-8 text-lg">
-                  <Search className="w-5 h-5 mr-2" />
-                  Search
-                </Button>
-              </Link>
+              <Button onClick={handleSearch} className="button-primary h-14 px-8 text-lg">
+                <Search className="w-5 h-5 mr-2" />
+                Search
+              </Button>
             </div>
             
             {/* Quick Search Suggestions */}
@@ -72,7 +79,7 @@ const Index = () => {
               {quickSearchSuggestions.map((suggestion, index) => (
                 <button
                   key={index}
-                  onClick={() => setSearchQuery(suggestion)}
+                  onClick={() => handleQuickSearch(suggestion)}
                   className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full hover:bg-blue-200 transition-colors"
                 >
                   {suggestion}
@@ -219,11 +226,13 @@ const Index = () => {
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
               {telanganaSpecialties.map((specialty, index) => (
-                <Link key={index} to="/doctors" state={{ specialty }}>
-                  <div className="p-3 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg hover:shadow-md transition-shadow cursor-pointer text-center">
-                    <p className="text-sm font-medium text-gray-900">{specialty}</p>
-                  </div>
-                </Link>
+                <button
+                  key={index}
+                  onClick={() => navigate('/doctors', { state: { specialty } })}
+                  className="p-3 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg hover:shadow-md transition-shadow cursor-pointer text-center"
+                >
+                  <p className="text-sm font-medium text-gray-900">{specialty}</p>
+                </button>
               ))}
             </div>
           </CardContent>

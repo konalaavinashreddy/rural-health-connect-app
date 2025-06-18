@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Star, Clock, Award, Filter, MapPin, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,10 +11,21 @@ import { telanganaDoctors, telanganaSpecialties, telanganaDistricts } from '@/da
 const Doctors = () => {
   const location = useLocation();
   const preSelectedHospital = location.state?.hospital;
+  const urlSearchQuery = new URLSearchParams(location.search).get('search') || '';
+  const stateSearchQuery = location.state?.searchQuery || '';
+  const stateSpecialty = location.state?.specialty || '';
   
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSpecialty, setSelectedSpecialty] = useState('');
+  const [searchQuery, setSearchQuery] = useState(urlSearchQuery || stateSearchQuery);
+  const [selectedSpecialty, setSelectedSpecialty] = useState(stateSpecialty);
   const [selectedDistrict, setSelectedDistrict] = useState(preSelectedHospital?.district || '');
+
+  // Update search query when URL parameters change
+  useEffect(() => {
+    const urlSearch = new URLSearchParams(location.search).get('search');
+    if (urlSearch) {
+      setSearchQuery(urlSearch);
+    }
+  }, [location.search]);
 
   const filteredDoctors = telanganaDoctors.filter(doctor => 
     (searchQuery === '' || 
@@ -61,7 +72,7 @@ const Doctors = () => {
                     <SelectValue placeholder="Filter by specialty" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Specialties</SelectItem>
+                    <SelectItem value="all-specialties">All Specialties</SelectItem>
                     {telanganaSpecialties.map(specialty => (
                       <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
                     ))}
@@ -74,7 +85,7 @@ const Doctors = () => {
                     <SelectValue placeholder="Filter by district" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Districts</SelectItem>
+                    <SelectItem value="all-districts">All Districts</SelectItem>
                     {telanganaDistricts.map(district => (
                       <SelectItem key={district} value={district}>{district}</SelectItem>
                     ))}

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Phone, Navigation, Star, Calendar, Filter } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Phone, Navigation, Star, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -13,8 +13,8 @@ const Map = () => {
   const [selectedType, setSelectedType] = useState('');
 
   const filteredHospitals = telanganaHospitals.filter(hospital => 
-    (selectedDistrict === '' || hospital.district === selectedDistrict) &&
-    (selectedType === '' || hospital.type === selectedType)
+    (selectedDistrict === '' || selectedDistrict === 'all-districts' || hospital.district === selectedDistrict) &&
+    (selectedType === '' || selectedType === 'all-types' || hospital.type === selectedType)
   );
 
   return (
@@ -42,7 +42,7 @@ const Map = () => {
                   <SelectValue placeholder="Select District" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Districts</SelectItem>
+                  <SelectItem value="all-districts">All Districts</SelectItem>
                   {telanganaDistricts.map(district => (
                     <SelectItem key={district} value={district}>{district}</SelectItem>
                   ))}
@@ -53,7 +53,7 @@ const Map = () => {
                   <SelectValue placeholder="Hospital Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  <SelectItem value="all-types">All Types</SelectItem>
                   <SelectItem value="Government">Government</SelectItem>
                   <SelectItem value="Private">Private</SelectItem>
                 </SelectContent>
