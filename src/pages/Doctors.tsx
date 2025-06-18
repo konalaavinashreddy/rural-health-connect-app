@@ -1,65 +1,28 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Star, Clock, Award, Filter } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { ArrowLeft, Star, Clock, Award, Filter, MapPin, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { telanganaDoctors, telanganaSpecialties, telanganaDistricts } from '@/data/telanganaData';
 
 const Doctors = () => {
+  const location = useLocation();
+  const preSelectedHospital = location.state?.hospital;
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState(preSelectedHospital?.district || '');
 
-  const doctors = [
-    {
-      id: 1,
-      name: 'Dr. Sarah Johnson',
-      specialty: 'General Physician',
-      rating: 4.8,
-      experience: 12,
-      successRate: 95,
-      nextAvailable: 'Today, 2:00 PM',
-      avatar: 'SJ'
-    },
-    {
-      id: 2,
-      name: 'Dr. Michael Lee',
-      specialty: 'Cardiologist',
-      rating: 4.9,
-      experience: 15,
-      successRate: 97,
-      nextAvailable: 'Tomorrow, 10:30 AM',
-      avatar: 'ML'
-    },
-    {
-      id: 3,
-      name: 'Dr. Emily Chen',
-      specialty: 'Pediatrician',
-      rating: 4.7,
-      experience: 8,
-      successRate: 96,
-      nextAvailable: 'Today, 4:00 PM',
-      avatar: 'EC'
-    },
-    {
-      id: 4,
-      name: 'Dr. David Kim',
-      specialty: 'Dermatologist',
-      rating: 4.6,
-      experience: 10,
-      successRate: 94,
-      nextAvailable: 'Tomorrow, 9:00 AM',
-      avatar: 'DK'
-    }
-  ];
-
-  const specialties = ['General Physician', 'Cardiologist', 'Pediatrician', 'Dermatologist', 'Orthopedic'];
-
-  const filteredDoctors = doctors.filter(doctor => 
-    (searchQuery === '' || doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-     doctor.specialty.toLowerCase().includes(searchQuery.toLowerCase())) &&
-    (selectedSpecialty === '' || doctor.specialty === selectedSpecialty)
+  const filteredDoctors = telanganaDoctors.filter(doctor => 
+    (searchQuery === '' || 
+     doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+     doctor.specialty.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     doctor.hospital.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (selectedSpecialty === '' || doctor.specialty === selectedSpecialty) &&
+    (selectedDistrict === '' || doctor.district === selectedDistrict)
   );
 
   return (
@@ -73,7 +36,7 @@ const Doctors = () => {
                 <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Find Your Doctor</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Telangana Doctors</h1>
           </div>
         </div>
       </header>
@@ -82,11 +45,11 @@ const Doctors = () => {
         {/* Search and Filters */}
         <Card className="healthcare-card mb-6">
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <Input
                   type="text"
-                  placeholder="Search doctors or specialties..."
+                  placeholder="Search doctors, specialties, or hospitals..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="h-12 border-2 border-blue-100 focus:border-blue-300"
@@ -99,18 +62,43 @@ const Doctors = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">All Specialties</SelectItem>
-                    {specialties.map(specialty => (
+                    {telanganaSpecialties.map(specialty => (
                       <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
+                  <SelectTrigger className="h-12 border-2 border-blue-100 focus:border-blue-300">
+                    <SelectValue placeholder="Filter by district" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">All Districts</SelectItem>
+                    {telanganaDistricts.map(district => (
+                      <SelectItem key={district} value={district}>{district}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+            {preSelectedHospital && (
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                <p className="text-blue-800 text-sm">
+                  <strong>Showing doctors from:</strong> {preSelectedHospital.name}
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
+        {/* Results Count */}
+        <div className="mb-4">
+          <p className="text-gray-600">{filteredDoctors.length} doctors found in Telangana</p>
+        </div>
+
         {/* Doctor Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredDoctors.map((doctor) => (
             <Card key={doctor.id} className="doctor-card">
               <CardContent className="p-6">
@@ -120,7 +108,18 @@ const Doctors = () => {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-gray-900 mb-1">{doctor.name}</h3>
-                    <p className="text-blue-600 font-medium mb-3">{doctor.specialty}</p>
+                    <p className="text-blue-600 font-medium mb-1">{doctor.specialty}</p>
+                    <p className="text-gray-600 text-sm mb-2">{doctor.qualification}</p>
+                    
+                    <div className="flex items-center space-x-2 mb-2">
+                      <MapPin className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm text-gray-600">{doctor.hospital}</span>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="text-sm text-gray-600">District:</span>
+                      <span className="text-sm font-medium text-blue-600">{doctor.district}</span>
+                    </div>
                     
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div className="flex items-center space-x-2">
@@ -129,7 +128,7 @@ const Doctors = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Award className="w-4 h-4 text-green-500" />
-                        <span className="text-sm">{doctor.experience} Years Exp</span>
+                        <span className="text-sm">{doctor.experience} Years</span>
                       </div>
                     </div>
                     
@@ -145,18 +144,34 @@ const Doctors = () => {
                         ></div>
                       </div>
                     </div>
+
+                    <div className="mb-4">
+                      <p className="text-sm text-gray-600 mb-2">Languages:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {doctor.languages.map((lang, index) => (
+                          <span key={index} className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">
+                            {lang}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-2">
                         <Clock className="w-4 h-4 text-blue-500" />
                         <span className="text-sm text-gray-600">Next Available</span>
                       </div>
                       <span className="text-sm font-medium text-green-600">{doctor.nextAvailable}</span>
                     </div>
+
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm text-gray-600">Consultation Fee:</span>
+                      <span className="text-lg font-bold text-green-600">₹{doctor.consultationFee}</span>
+                    </div>
                     
                     <Link to="/appointment" state={{ doctor }}>
-                      <Button className="button-primary w-full mt-4">
-                        Book Now
+                      <Button className="button-primary w-full">
+                        Book Appointment - ₹{doctor.consultationFee}
                       </Button>
                     </Link>
                   </div>
@@ -165,6 +180,25 @@ const Doctors = () => {
             </Card>
           ))}
         </div>
+
+        {filteredDoctors.length === 0 && (
+          <Card className="healthcare-card">
+            <CardContent className="p-8 text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Doctors Found</h3>
+              <p className="text-gray-600">Try adjusting your search criteria or browse all available doctors.</p>
+              <Button 
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedSpecialty('');
+                  setSelectedDistrict('');
+                }}
+                className="button-secondary mt-4"
+              >
+                Clear Filters
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
