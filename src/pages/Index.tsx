@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User } from 'lucide-react';
+import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,6 +32,14 @@ const Index = () => {
   const handleQuickSearch = (suggestion: string) => {
     setSearchQuery(suggestion);
     navigate(`/doctors?search=${encodeURIComponent(suggestion)}`);
+  };
+
+  const handleVoiceClick = (text: string) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'te-IN';
+      speechSynthesis.speak(utterance);
+    }
   };
 
   return (
@@ -89,7 +97,7 @@ const Index = () => {
           </CardContent>
         </Card>
 
-        {/* Main Healthcare Services - New Design */}
+        {/* Main Healthcare Services - Updated Design with Real Doctor Images */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">
             Our Healthcare Services
@@ -99,82 +107,154 @@ const Index = () => {
           
           {/* Service Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {/* Doctor Visit Schedule */}
+            {/* Find PHC Visiting Doctors */}
             <Link to="/doctors" className="group">
-              <div className="relative bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-6 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-blue-100">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
-                    <Home className="w-8 h-8 text-blue-600" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Find PHC Visiting Doctors
-                  </h3>
-                  <p className="text-sm text-gray-700 font-medium">
-                    PHC వైద్యుల వేళలు
-                  </p>
+              <div className="relative bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-3xl p-6 h-80 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-cyan-100 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full">
+                  <img 
+                    src="/lovable-uploads/cd743846-16f7-43e3-a6db-95fa5f3a3a96.png" 
+                    alt="Female doctor for PHC visits"
+                    className="w-full h-full object-cover object-left"
+                    style={{ clipPath: 'polygon(0 0, 25% 0, 25% 100%, 0 100%)' }}
+                  />
                 </div>
-                <div className="absolute bottom-4 right-4 opacity-20">
-                  <Stethoscope className="w-12 h-12 text-blue-600" />
+                <div className="relative z-10 flex flex-col justify-between h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                      <Home className="w-6 h-6 text-cyan-600" />
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleVoiceClick('Find PHC Visiting Doctors - బాక్టర్ దెన్ న్హా');
+                      }}
+                      className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center hover:bg-white transition-colors"
+                    >
+                      <Volume2 className="w-4 h-4 text-cyan-600" />
+                    </button>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                      Find PHC Visiting Doctors
+                    </h3>
+                    <p className="text-sm text-gray-700 font-medium">
+                      బాక్టర్ దెన్ న్హా
+                    </p>
+                  </div>
                 </div>
               </div>
             </Link>
 
-            {/* Medicine Tracker */}
+            {/* Track My Medicines */}
             <Link to="/medicines" className="group">
-              <div className="relative bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-6 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-purple-100">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
-                    <Pill className="w-8 h-8 text-purple-600" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Track My Medicines
-                  </h3>
-                  <p className="text-sm text-gray-700 font-medium">
-                    మందుల ట్రాకింగ్
-                  </p>
+              <div className="relative bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-6 h-80 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-purple-100 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full">
+                  <img 
+                    src="/lovable-uploads/cd743846-16f7-43e3-a6db-95fa5f3a3a96.png" 
+                    alt="Medicine tracking illustration"
+                    className="w-full h-full object-cover object-center-left"
+                    style={{ clipPath: 'polygon(25% 0, 50% 0, 50% 100%, 25% 100%)' }}
+                  />
                 </div>
-                <div className="absolute bottom-4 right-4 opacity-20">
-                  <Pill className="w-12 h-12 text-purple-600" />
+                <div className="relative z-10 flex flex-col justify-between h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                      <Pill className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleVoiceClick('Track My Medicines - న్హా థుఓక్ ట్రుక్ టుయెన్');
+                      }}
+                      className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center hover:bg-white transition-colors"
+                    >
+                      <Volume2 className="w-4 h-4 text-purple-600" />
+                    </button>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                      Track My Medicines
+                    </h3>
+                    <p className="text-sm text-gray-700 font-medium">
+                      న్హా థుఓక్ ట్రుక్ టుయెన్
+                    </p>
+                  </div>
                 </div>
               </div>
             </Link>
 
-            {/* Find a Specialist */}
+            {/* Search by Disease */}
             <Link to="/doctors" state={{ searchByDisease: true }} className="group">
-              <div className="relative bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-6 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-green-100">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
-                    <Search className="w-8 h-8 text-green-600" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Search by Disease
-                  </h3>
-                  <p className="text-sm text-gray-700 font-medium">
-                    వ్యాధి ద్వారా వెతకండి
-                  </p>
+              <div className="relative bg-gradient-to-br from-pink-50 to-pink-100 rounded-3xl p-6 h-80 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-pink-100 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full">
+                  <img 
+                    src="/lovable-uploads/cd743846-16f7-43e3-a6db-95fa5f3a3a96.png" 
+                    alt="Male doctor specialist"
+                    className="w-full h-full object-cover object-center-right"
+                    style={{ clipPath: 'polygon(50% 0, 75% 0, 75% 100%, 50% 100%)' }}
+                  />
                 </div>
-                <div className="absolute bottom-4 right-4 opacity-20">
-                  <Stethoscope className="w-12 h-12 text-green-600" />
+                <div className="relative z-10 flex flex-col justify-between h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                      <Search className="w-6 h-6 text-pink-600" />
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleVoiceClick('Search by Disease - టిమ్ బాక్ సి');
+                      }}
+                      className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center hover:bg-white transition-colors"
+                    >
+                      <Volume2 className="w-4 h-4 text-pink-600" />
+                    </button>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                      Search by Disease
+                    </h3>
+                    <p className="text-sm text-gray-700 font-medium">
+                      టిమ్ బాక్ సి
+                    </p>
+                  </div>
                 </div>
               </div>
             </Link>
 
             {/* Government Schemes */}
             <Link to="/chatbot" state={{ topic: 'schemes' }} className="group">
-              <div className="relative bg-gradient-to-br from-orange-50 to-orange-100 rounded-3xl p-6 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-orange-100">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
-                    <Heart className="w-8 h-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    Government Schemes
-                  </h3>
-                  <p className="text-sm text-gray-700 font-medium">
-                    ప్రభుత్వ పథకాలు
-                  </p>
+              <div className="relative bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-3xl p-6 h-80 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-yellow-100 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full">
+                  <img 
+                    src="/lovable-uploads/cd743846-16f7-43e3-a6db-95fa5f3a3a96.png" 
+                    alt="Healthcare team for government schemes"
+                    className="w-full h-full object-cover object-right"
+                    style={{ clipPath: 'polygon(75% 0, 100% 0, 100% 100%, 75% 100%)' }}
+                  />
                 </div>
-                <div className="absolute bottom-4 right-4 opacity-20">
-                  <Star className="w-12 h-12 text-orange-600" />
+                <div className="relative z-10 flex flex-col justify-between h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                      <Heart className="w-6 h-6 text-yellow-600" />
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleVoiceClick('Government Schemes - గోయ్ చామ్ సోక్ సుక్ ఖోయె');
+                      }}
+                      className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center hover:bg-white transition-colors"
+                    >
+                      <Volume2 className="w-4 h-4 text-yellow-600" />
+                    </button>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                      Government Schemes
+                    </h3>
+                    <p className="text-sm text-gray-700 font-medium">
+                      గోయ్ చామ్ సోక్ సుక్ ఖోయె
+                    </p>
+                  </div>
                 </div>
               </div>
             </Link>
