@@ -29,7 +29,7 @@ const Index = () => {
     }
   };
 
-  const handleQuickSearch = (suggestion) => {
+  const handleQuickSearch = (suggestion: string) => {
     setSearchQuery(suggestion);
     navigate(`/doctors?search=${encodeURIComponent(suggestion)}`);
   };
@@ -281,7 +281,7 @@ const Index = () => {
               </div>
             </div>
           </CardContent>
-        </div>
+        </Card>
 
         {/* Available Specialties */}
         <Card className="healthcare-card">
