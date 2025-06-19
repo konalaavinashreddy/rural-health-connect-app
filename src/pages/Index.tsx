@@ -96,91 +96,85 @@ const Index = () => {
             <br />
             <span className="text-lg text-gray-600">మా ఆరోగ్య సేవలు</span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Find Doctors */}
+          
+          {/* Service Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {/* Doctor Visit Schedule */}
             <Link to="/doctors" className="group">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 p-8 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                <div className="absolute top-4 left-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <Home className="w-6 h-6 text-blue-600" />
+              <div className="relative bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-6 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-blue-100">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
+                    <Home className="w-8 h-8 text-blue-600" />
                   </div>
-                </div>
-                <div className="mt-16">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
-                    Find Doctors
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    Find PHC Visiting Doctors
                   </h3>
-                  <p className="text-base text-gray-700 font-medium">
-                    వైద్యులను కనుగొనండి
+                  <p className="text-sm text-gray-700 font-medium">
+                    PHC వైద్యుల వేళలు
                   </p>
                 </div>
-                <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10">
-                  <User className="w-full h-full text-blue-800" />
+                <div className="absolute bottom-4 right-4 opacity-20">
+                  <Stethoscope className="w-12 h-12 text-blue-600" />
                 </div>
               </div>
             </Link>
 
-            {/* Medicine Reminders */}
+            {/* Medicine Tracker */}
             <Link to="/medicines" className="group">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 p-8 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                <div className="absolute top-4 left-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <Pill className="w-6 h-6 text-purple-600" />
+              <div className="relative bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-6 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-purple-100">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
+                    <Pill className="w-8 h-8 text-purple-600" />
                   </div>
-                </div>
-                <div className="mt-16">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
-                    Medicine Reminders
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    Track My Medicines
                   </h3>
-                  <p className="text-base text-gray-700 font-medium">
-                    మందుల రిమైండర్‌లు
+                  <p className="text-sm text-gray-700 font-medium">
+                    మందుల ట్రాకింగ్
                   </p>
                 </div>
-                <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10">
-                  <Pill className="w-full h-full text-purple-800" />
+                <div className="absolute bottom-4 right-4 opacity-20">
+                  <Pill className="w-12 h-12 text-purple-600" />
                 </div>
               </div>
             </Link>
 
-            {/* Book Appointment */}
-            <Link to="/appointment" className="group">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-100 to-green-200 p-8 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                <div className="absolute top-4 left-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <Stethoscope className="w-6 h-6 text-green-600" />
+            {/* Find a Specialist */}
+            <Link to="/doctors" state={{ searchByDisease: true }} className="group">
+              <div className="relative bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-6 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-green-100">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
+                    <Search className="w-8 h-8 text-green-600" />
                   </div>
-                </div>
-                <div className="mt-16">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
-                    Book Appointment
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    Search by Disease
                   </h3>
-                  <p className="text-base text-gray-700 font-medium">
-                    అపాయింట్‌మెంట్ బుక్ చేయండి
+                  <p className="text-sm text-gray-700 font-medium">
+                    వ్యాధి ద్వారా వెతకండి
                   </p>
                 </div>
-                <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10">
-                  <Calendar className="w-full h-full text-green-800" />
+                <div className="absolute bottom-4 right-4 opacity-20">
+                  <Stethoscope className="w-12 h-12 text-green-600" />
                 </div>
               </div>
             </Link>
 
-            {/* Health Assistant */}
-            <Link to="/chatbot" className="group">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-100 to-orange-200 p-8 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                <div className="absolute top-4 left-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <MessageCircle className="w-6 h-6 text-orange-600" />
+            {/* Government Schemes */}
+            <Link to="/chatbot" state={{ topic: 'schemes' }} className="group">
+              <div className="relative bg-gradient-to-br from-orange-50 to-orange-100 rounded-3xl p-6 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:scale-105 border border-orange-100">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
+                    <Heart className="w-8 h-8 text-orange-600" />
                   </div>
-                </div>
-                <div className="mt-16">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
-                    Health Assistant
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    Government Schemes
                   </h3>
-                  <p className="text-base text-gray-700 font-medium">
-                    ఆరోగ్య సహాయకుడు
+                  <p className="text-sm text-gray-700 font-medium">
+                    ప్రభుత్వ పథకాలు
                   </p>
                 </div>
-                <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10">
-                  <MessageCircle className="w-full h-full text-orange-800" />
+                <div className="absolute bottom-4 right-4 opacity-20">
+                  <Star className="w-12 h-12 text-orange-600" />
                 </div>
               </div>
             </Link>
