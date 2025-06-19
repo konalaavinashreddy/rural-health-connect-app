@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart } from 'lucide-react';
+import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -89,37 +89,102 @@ const Index = () => {
           </CardContent>
         </Card>
 
-        {/* Main Action Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Link to="/appointment">
-            <Card className="action-card">
-              <CardContent className="p-6 text-center">
-                <Calendar className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Book Appointment</h3>
-                <p className="text-gray-600 text-sm">అపాయింట్‌మెంట్ బుక్ చేసుకోండి</p>
-              </CardContent>
-            </Card>
-          </Link>
+        {/* Main Healthcare Services - New Design */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">
+            Our Healthcare Services
+            <br />
+            <span className="text-lg text-gray-600">మా ఆరోగ్య సేవలు</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Find Doctors */}
+            <Link to="/doctors" className="group">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 p-8 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                <div className="absolute top-4 left-4">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <Home className="w-6 h-6 text-blue-600" />
+                  </div>
+                </div>
+                <div className="mt-16">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
+                    Find Doctors
+                  </h3>
+                  <p className="text-base text-gray-700 font-medium">
+                    వైద్యులను కనుగొనండి
+                  </p>
+                </div>
+                <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10">
+                  <User className="w-full h-full text-blue-800" />
+                </div>
+              </div>
+            </Link>
 
-          <Link to="/chatbot">
-            <Card className="action-card">
-              <CardContent className="p-6 text-center">
-                <MessageCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Health Assistant</h3>
-                <p className="text-gray-600 text-sm">ఆరోగ్య సహాయకుడు (Telugu/English)</p>
-              </CardContent>
-            </Card>
-          </Link>
+            {/* Medicine Reminders */}
+            <Link to="/medicines" className="group">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 p-8 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                <div className="absolute top-4 left-4">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <Pill className="w-6 h-6 text-purple-600" />
+                  </div>
+                </div>
+                <div className="mt-16">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
+                    Medicine Reminders
+                  </h3>
+                  <p className="text-base text-gray-700 font-medium">
+                    మందుల రిమైండర్‌లు
+                  </p>
+                </div>
+                <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10">
+                  <Pill className="w-full h-full text-purple-800" />
+                </div>
+              </div>
+            </Link>
 
-          <Link to="/medicines">
-            <Card className="action-card">
-              <CardContent className="p-6 text-center">
-                <Pill className="w-12 h-12 text-purple-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Medicine Reminders</h3>
-                <p className="text-gray-600 text-sm">మందుల రిమైండర్‌లు</p>
-              </CardContent>
-            </Card>
-          </Link>
+            {/* Book Appointment */}
+            <Link to="/appointment" className="group">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-100 to-green-200 p-8 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                <div className="absolute top-4 left-4">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <Stethoscope className="w-6 h-6 text-green-600" />
+                  </div>
+                </div>
+                <div className="mt-16">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
+                    Book Appointment
+                  </h3>
+                  <p className="text-base text-gray-700 font-medium">
+                    అపాయింట్‌మెంట్ బుక్ చేయండి
+                  </p>
+                </div>
+                <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10">
+                  <Calendar className="w-full h-full text-green-800" />
+                </div>
+              </div>
+            </Link>
+
+            {/* Health Assistant */}
+            <Link to="/chatbot" className="group">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-100 to-orange-200 p-8 h-64 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                <div className="absolute top-4 left-4">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <MessageCircle className="w-6 h-6 text-orange-600" />
+                  </div>
+                </div>
+                <div className="mt-16">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
+                    Health Assistant
+                  </h3>
+                  <p className="text-base text-gray-700 font-medium">
+                    ఆరోగ్య సహాయకుడు
+                  </p>
+                </div>
+                <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10">
+                  <MessageCircle className="w-full h-full text-orange-800" />
+                </div>
+              </div>
+            </Link>
+          </div>
         </div>
 
         {/* Weekend Specialists & Hospital Map */}
@@ -216,7 +281,7 @@ const Index = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </div>
 
         {/* Available Specialties */}
         <Card className="healthcare-card">
