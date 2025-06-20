@@ -79,6 +79,25 @@ const Index = () => {
     navigate(`/doctors?search=${encodeURIComponent(suggestion)}`);
   };
 
+  const handleStepClick = (stepNumber: number) => {
+    switch (stepNumber) {
+      case 1: // Book
+        navigate('/appointment');
+        break;
+      case 2: // Consult
+        navigate('/doctors');
+        break;
+      case 3: // Get Medicine
+        navigate('/medicines');
+        break;
+      case 4: // Receive Reminders
+        navigate('/chatbot', { state: { topic: 'reminders' } });
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
       {/* Hero Banner */}
@@ -126,7 +145,11 @@ const Index = () => {
               { step: 3, title: 'Get Medicine', telugu: 'మందులు తీసుకోండి', icon: Pill, desc: 'Receive prescribed medicines' },
               { step: 4, title: 'Receive Reminders', telugu: 'రిమైండర్లు పొందండి', icon: MessageCircle, desc: 'Get medication reminders' }
             ].map((item, index) => (
-              <div key={index} className="text-center group">
+              <div 
+                key={index} 
+                className="text-center group cursor-pointer"
+                onClick={() => handleStepClick(item.step)}
+              >
                 <div className="relative mb-6">
                   <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <item.icon className="w-10 h-10 text-white" />
@@ -140,7 +163,7 @@ const Index = () => {
                     </div>
                   )}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{item.title}</h3>
                 <p className="text-blue-600 font-medium mb-2">{item.telugu}</p>
                 <p className="text-gray-600 text-sm">{item.desc}</p>
               </div>
