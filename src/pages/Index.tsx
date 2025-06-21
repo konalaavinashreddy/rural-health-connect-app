@@ -89,7 +89,7 @@ const Index = () => {
       case 3: // Get Medicine - Fixed to go to prescriptions
         navigate('/prescriptions', { state: { returnTo: '/' } });
         break;
-      case 4: // Receive Reminders - Fixed to go to medicine reminders with auto-enable
+      case 4: // Receive Reminders - Fixed to go to medicine reminders
         navigate('/medicine-reminders', { 
           state: { 
             returnTo: '/', 
@@ -124,7 +124,7 @@ const Index = () => {
                 <Calendar className="w-6 h-6 mr-3" />
                 Book Appointment Now
                 <br />
-                <span className="text-sm">ఇప్పుడే అపాయింట్మెంట్ బుక్ చేయండి</span>
+                <span className="text-sm">ఇప్పుడే అపాయింట్ బుక్ చేయండి</span>
               </Button>
             </Link>
           </div>
