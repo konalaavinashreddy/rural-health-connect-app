@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info, Apple, Droplets, Baby, ChefHat, LogOut, Globe, Star, Users, Heart } from 'lucide-react';
+import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info, Apple, Droplets, Baby, ChefHat, LogOut, Globe, Star, Users, Heart, Clock, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,8 +12,80 @@ import { commonTranslations, homeTranslations } from '@/data/translations';
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCondition, setSelectedCondition] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [searchSuggestions, setSearchSuggestions] = useState<any[]>([]);
   const navigate = useNavigate();
   const { language, toggleLanguage, t } = useLanguage();
+
+  // Mock data for search suggestions
+  const mockSearchData = [
+    {
+      type: 'doctor',
+      name: 'Dr. Rajesh Kumar',
+      specialty: 'Cardiologist',
+      hospital: 'NIMS Hospital',
+      rating: 4.8,
+      available: 'Available Today'
+    },
+    {
+      type: 'doctor',
+      name: 'Dr. Priya Sharma',
+      specialty: 'Pediatrician',
+      hospital: 'Apollo Hospital',
+      rating: 4.9,
+      available: 'Available Today'
+    },
+    {
+      type: 'specialty',
+      name: 'General Medicine',
+      doctorCount: 15,
+      description: 'Primary healthcare services'
+    },
+    {
+      type: 'specialty',
+      name: 'Cardiology',
+      doctorCount: 8,
+      description: 'Heart and cardiovascular care'
+    },
+    {
+      type: 'condition',
+      name: 'Fever',
+      nameTelugu: 'జ్వరం',
+      type_label: 'Common Condition'
+    },
+    {
+      type: 'condition',
+      name: 'Diabetes',
+      nameTelugu: 'మధుమేహం',
+      type_label: 'Chronic Condition'
+    },
+    {
+      type: 'hospital',
+      name: 'Gandhi Hospital',
+      location: 'Secunderabad',
+      type_label: 'Government Hospital'
+    }
+  ];
+
+  // Filter suggestions based on search query
+  useEffect(() => {
+    if (searchQuery.trim().length > 1) {
+      const filtered = mockSearchData.filter(item => {
+        const searchLower = searchQuery.toLowerCase();
+        return (
+          item.name.toLowerCase().includes(searchLower) ||
+          (item.specialty && item.specialty.toLowerCase().includes(searchLower)) ||
+          (item.description && item.description.toLowerCase().includes(searchLower)) ||
+          (item.nameTelugu && item.nameTelugu.includes(searchQuery))
+        );
+      });
+      setSearchSuggestions(filtered.slice(0, 5)); // Show max 5 suggestions
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+      setSearchSuggestions([]);
+    }
+  }, [searchQuery]);
 
   const handleLogout = () => {
     // Clear any stored authentication data
@@ -82,7 +154,7 @@ const Index = () => {
       id: 'fever',
       title: 'Fever',
       titleTelugu: 'జ్వరం',
-      iconType: 'droplets', // Store icon type as string instead of component
+      iconType: 'droplets',
       recommendations: {
         do: ['Light khichdi, dal rice', 'Coconut water for hydration', 'Warm herbal teas'],
         avoid: ['Spicy/oily food', 'Heavy meals', 'Cold drinks'],
@@ -159,11 +231,39 @@ const Index = () => {
     } else {
       navigate('/doctors');
     }
+    setShowSuggestions(false);
+  };
+
+  const handleSuggestionClick = (suggestion: any) => {
+    if (suggestion.type === 'doctor') {
+      navigate(`/doctors?search=${encodeURIComponent(suggestion.name)}`);
+    } else if (suggestion.type === 'specialty') {
+      navigate('/doctors', { state: { specialty: suggestion.name } });
+    } else if (suggestion.type === 'condition' || suggestion.type === 'hospital') {
+      navigate(`/doctors?search=${encodeURIComponent(suggestion.name)}`);
+    }
+    setSearchQuery('');
+    setShowSuggestions(false);
   };
 
   const handleQuickSearch = (suggestion: string) => {
     setSearchQuery(suggestion);
     navigate(`/doctors?search=${encodeURIComponent(suggestion)}`);
+  };
+
+  const renderSuggestionIcon = (type: string) => {
+    switch (type) {
+      case 'doctor':
+        return <User className="w-4 h-4 text-blue-600" />;
+      case 'specialty':
+        return <Stethoscope className="w-4 h-4 text-green-600" />;
+      case 'condition':
+        return <Heart className="w-4 h-4 text-red-600" />;
+      case 'hospital':
+        return <MapPin className="w-4 h-4 text-purple-600" />;
+      default:
+        return <Search className="w-4 h-4 text-gray-600" />;
+    }
   };
 
   const handleWorkflowClick = (step: number) => {
@@ -305,7 +405,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Main Search */}
+      {/* Enhanced Main Search Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4">
           <Card className="healthcare-card">
@@ -314,21 +414,80 @@ const Index = () => {
                 <h2 className="text-2xl font-semibold text-gray-900 mb-2">{t('findHealthcare', homeTranslations)}</h2>
                 <p className="text-gray-600">{language === 'te' ? 'వ్యాధి, వైద్యుడు లేదా లక్షణాలతో వెతకండి' : 'Search by disease, specialist, or symptoms'}</p>
               </div>
-              <div className="flex flex-col md:flex-row gap-4 mb-4">
-                <div className="flex-1">
-                  <Input
-                    type="text"
-                    placeholder={t('searchPlaceholder', homeTranslations)}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-14 text-lg border-2 border-blue-100 focus:border-blue-300 rounded-xl"
-                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  />
+              
+              <div className="relative">
+                <div className="flex flex-col md:flex-row gap-4 mb-4">
+                  <div className="flex-1 relative">
+                    <Input
+                      type="text"
+                      placeholder={t('searchPlaceholder', homeTranslations)}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="h-14 text-lg border-2 border-blue-100 focus:border-blue-300 rounded-xl pr-4"
+                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                      onFocus={() => searchQuery.length > 1 && setShowSuggestions(true)}
+                      onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                    />
+                    
+                    {/* Search Suggestions Dropdown */}
+                    {showSuggestions && searchSuggestions.length > 0 && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto">
+                        {searchSuggestions.map((suggestion, index) => (
+                          <div
+                            key={index}
+                            className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+                            onClick={() => handleSuggestionClick(suggestion)}
+                          >
+                            <div className="flex items-center space-x-3">
+                              {renderSuggestionIcon(suggestion.type)}
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between">
+                                  <h4 className="font-medium text-gray-900">{suggestion.name}</h4>
+                                  {suggestion.rating && (
+                                    <div className="flex items-center space-x-1">
+                                      <Star className="w-4 h-4 text-yellow-500" />
+                                      <span className="text-sm text-gray-600">{suggestion.rating}</span>
+                                    </div>
+                                  )}
+                                </div>
+                                {suggestion.specialty && (
+                                  <p className="text-sm text-blue-600">{suggestion.specialty}</p>
+                                )}
+                                {suggestion.hospital && (
+                                  <p className="text-sm text-gray-600">{suggestion.hospital}</p>
+                                )}
+                                {suggestion.description && (
+                                  <p className="text-sm text-gray-600">{suggestion.description}</p>
+                                )}
+                                {suggestion.doctorCount && (
+                                  <p className="text-sm text-gray-600">{suggestion.doctorCount} doctors available</p>
+                                )}
+                                {suggestion.location && (
+                                  <p className="text-sm text-gray-600">{suggestion.location}</p>
+                                )}
+                                {suggestion.available && (
+                                  <div className="flex items-center space-x-1 mt-1">
+                                    <Clock className="w-3 h-3 text-green-500" />
+                                    <span className="text-xs text-green-600">{suggestion.available}</span>
+                                  </div>
+                                )}
+                                {suggestion.type_label && (
+                                  <span className="inline-block mt-1 px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                                    {suggestion.type_label}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <Button onClick={handleSearch} className="button-primary h-14 px-8 text-lg rounded-xl">
+                    <Search className="w-5 h-5 mr-2" />
+                    {t('search', commonTranslations)}
+                  </Button>
                 </div>
-                <Button onClick={handleSearch} className="button-primary h-14 px-8 text-lg rounded-xl">
-                  <Search className="w-5 h-5 mr-2" />
-                  {t('search', commonTranslations)}
-                </Button>
               </div>
               
               <div className="flex flex-wrap gap-2 justify-center">
