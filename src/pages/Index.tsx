@@ -123,7 +123,7 @@ const Index = () => {
     }
   ];
 
-  const filteredRecommendations = selectedCondition 
+  const filteredRecommendations = selectedCondition && selectedCondition !== 'all-conditions'
     ? foodRecommendations.filter(rec => rec.id === selectedCondition)
     : foodRecommendations;
 
@@ -396,7 +396,7 @@ const Index = () => {
                   <SelectValue placeholder="Select Health Condition" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Conditions</SelectItem>
+                  <SelectItem value="all-conditions">All Conditions</SelectItem>
                   <SelectItem value="fever">Fever / జ్వరం</SelectItem>
                   <SelectItem value="diabetes">Diabetes / మధుమేహం</SelectItem>
                   <SelectItem value="pregnancy">Pregnancy / గర్భధారణ</SelectItem>
@@ -475,7 +475,7 @@ const Index = () => {
             ))}
           </div>
           
-          {selectedCondition && (
+          {selectedCondition && selectedCondition !== 'all-conditions' && (
             <div className="text-center mt-8">
               <Button 
                 onClick={() => setSelectedCondition('')}
