@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,13 +7,12 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, User, Stethoscope } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   // Mock credentials for patient login
@@ -20,35 +20,6 @@ const Login = () => {
     username: 'patient123',
     password: 'password123'
   };
-
-  // Check if user is already authenticated
-  useEffect(() => {
-    const checkAuthState = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          // User is already logged in, redirect to home
-          navigate('/home', { replace: true });
-          return;
-        }
-      } catch (error) {
-        console.error('Error checking auth state:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuthState();
-
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        navigate('/home', { replace: true });
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
 
   const handlePatientLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +37,7 @@ const Login = () => {
         localStorage.setItem('auth-session', JSON.stringify(mockSession));
         
         // Navigate to home page
-        navigate('/home', { replace: true });
+        navigate('/home');
       } else {
         setError('Invalid username or password');
       }
@@ -81,18 +52,6 @@ const Login = () => {
     // Redirect to external doctor portal
     window.location.href = 'https://rural-health-connect-portal.lovable.app/';
   };
-
-  // Show loading while checking auth state
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">Checking authentication...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
