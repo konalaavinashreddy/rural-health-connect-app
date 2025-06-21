@@ -21,11 +21,13 @@ interface Hospital {
 interface HospitalMapProps {
   hospitals: Hospital[];
   onHospitalSelect: (hospital: Hospital) => void;
+  onLocationClick?: (lat: number, lng: number) => void;
 }
 
-const HospitalMap: React.FC<HospitalMapProps> = ({ hospitals, onHospitalSelect }) => {
+const HospitalMap: React.FC<HospitalMapProps> = ({ hospitals, onHospitalSelect, onLocationClick }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
+  const clickMarkerRef = useRef<L.Marker | null>(null);
 
   useEffect(() => {
     // Load Leaflet CSS dynamically
@@ -52,6 +54,34 @@ const HospitalMap: React.FC<HospitalMapProps> = ({ hospitals, onHospitalSelect }
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
+    // Add click event listener to the map
+    map.on('click', (e) => {
+      const { lat, lng } = e.latlng;
+      console.log('Map clicked at:', lat, lng);
+      
+      // Remove previous click marker if it exists
+      if (clickMarkerRef.current) {
+        map.removeLayer(clickMarkerRef.current);
+      }
+      
+      // Add a new marker at the clicked location
+      clickMarkerRef.current = L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup(`
+          <div style="text-align: center;">
+            <strong>Selected Location</strong><br/>
+            Latitude: ${lat.toFixed(6)}<br/>
+            Longitude: ${lng.toFixed(6)}
+          </div>
+        `)
+        .openPopup();
+      
+      // Call the callback function if provided
+      if (onLocationClick) {
+        onLocationClick(lat, lng);
+      }
+    });
+
     // Add markers for each hospital
     hospitals.forEach(hospital => {
       const marker = L.marker([hospital.latitude, hospital.longitude])
@@ -67,7 +97,7 @@ const HospitalMap: React.FC<HospitalMapProps> = ({ hospitals, onHospitalSelect }
           </div>
         `)
         .on('click', () => {
-          console.log('Marker clicked:', hospital.name);
+          console.log('Hospital marker clicked:', hospital.name);
           onHospitalSelect(hospital);
         });
     });
@@ -87,7 +117,7 @@ const HospitalMap: React.FC<HospitalMapProps> = ({ hospitals, onHospitalSelect }
         mapInstanceRef.current = null;
       }
     };
-  }, [hospitals, onHospitalSelect]);
+  }, [hospitals, onHospitalSelect, onLocationClick]);
 
   return (
     <Card className="healthcare-card h-[500px]">

@@ -11,6 +11,7 @@ import HospitalList from '@/components/HospitalList';
 
 const Map = () => {
   const [selectedHospital, setSelectedHospital] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedType, setSelectedType] = useState('');
 
@@ -21,6 +22,13 @@ const Map = () => {
 
   const handleHospitalSelect = (hospital) => {
     setSelectedHospital(hospital);
+    setSelectedLocation(null); // Clear location selection when hospital is selected
+  };
+
+  const handleLocationClick = (lat, lng) => {
+    setSelectedLocation({ lat, lng });
+    setSelectedHospital(null); // Clear hospital selection when location is clicked
+    console.log('Location selected:', lat, lng);
   };
 
   return (
@@ -70,7 +78,11 @@ const Map = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Map Section */}
-          <HospitalMap hospitals={filteredHospitals} onHospitalSelect={handleHospitalSelect} />
+          <HospitalMap 
+            hospitals={filteredHospitals} 
+            onHospitalSelect={handleHospitalSelect}
+            onLocationClick={handleLocationClick}
+          />
 
           {/* Hospital List */}
           <HospitalList 
@@ -126,6 +138,41 @@ const Map = () => {
                   <Navigation className="w-4 h-4 mr-2" />
                   Get Directions
                 </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Selected Location Details */}
+        {selectedLocation && (
+          <Card className="healthcare-card mt-8">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <MapPin className="w-5 h-5 text-blue-600" />
+                <span className="text-xl text-gray-900">Selected Location</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Location Details</h4>
+                  <p className="text-gray-600 mb-2"><strong>Latitude:</strong> {selectedLocation.lat.toFixed(6)}</p>
+                  <p className="text-gray-600 mb-2"><strong>Longitude:</strong> {selectedLocation.lng.toFixed(6)}</p>
+                  <p className="text-gray-600 mb-2"><strong>Coordinates:</strong> {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Available Actions</h4>
+                  <div className="space-y-2">
+                    <Button className="button-secondary w-full">
+                      <Navigation className="w-4 h-4 mr-2" />
+                      Get Directions to This Location
+                    </Button>
+                    <Button className="button-secondary w-full">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      Find Nearby Hospitals
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
