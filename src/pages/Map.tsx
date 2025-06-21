@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Phone, Navigation, Star, Calendar } from 'lucide-react';
+import { ArrowLeft, Clock, Phone, Navigation, Star, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { telanganaHospitals, telanganaDistricts } from '@/data/telanganaData';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix Leaflet's default icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 const Map = () => {
   const [selectedHospital, setSelectedHospital] = useState(null);
@@ -32,7 +43,6 @@ const Map = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Filters */}
         <Card className="healthcare-card mb-6">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -62,86 +72,34 @@ const Map = () => {
         </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Map Section */}
           <Card className="healthcare-card h-[500px]">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <MapPin className="w-5 h-5 text-red-500" />
-                <span>Telangana Hospital Locations</span>
+                <span className="text-lg">Hospital Locations (Leaflet)</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6">
-              <div className="relative w-full h-full bg-gradient-to-br from-green-100 to-blue-100 rounded-lg overflow-hidden">
-                {/* Telangana State Outline Background */}
-                <div className="absolute inset-0 opacity-20">
-                  <div className="w-full h-full bg-gradient-to-br from-orange-200 via-white to-green-300"></div>
-                  {/* Grid lines to simulate map */}
-                  <div className="absolute inset-0 opacity-30">
-                    {[...Array(10)].map((_, i) => (
-                      <div key={i}>
-                        <div 
-                          className="absolute border-gray-400 border-t-[1px]" 
-                          style={{ top: `${i * 10}%`, width: '100%' }}
-                        />
-                        <div 
-                          className="absolute border-gray-400 border-l-[1px]" 
-                          style={{ left: `${i * 10}%`, height: '100%' }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Your Location (Hyderabad Center) */}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <div className="w-4 h-4 bg-blue-600 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
-                  <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
-                    <span className="text-xs font-medium text-blue-600 bg-white px-2 py-1 rounded shadow">Your Location</span>
-                  </div>
-                </div>
-
-                {/* Hospital Markers */}
-                {filteredHospitals.map((hospital) => (
-                  <div
+            <CardContent className="p-0">
+              <MapContainer center={[17.385044, 78.486671]} zoom={7} style={{ height: '450px', width: '100%' }}>
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {filteredHospitals.map(hospital => (
+                  <Marker
                     key={hospital.id}
-                    className="absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2"
-                    style={{ top: hospital.position.top, left: hospital.position.left }}
-                    onClick={() => setSelectedHospital(hospital)}
+                    position={[hospital.latitude, hospital.longitude]}
+                    eventHandlers={{ click: () => setSelectedHospital(hospital) }}
                   >
-                    <div className={`w-6 h-6 rounded-full border-2 border-white shadow-lg hover:scale-110 transition-transform ${
-                      hospital.type === 'Government' ? 'bg-green-500' : 'bg-red-500'
-                    }`}>
-                      <MapPin className="w-3 h-3 text-white m-auto mt-0.5" />
-                    </div>
-                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                      <span className={`text-xs font-medium bg-white px-2 py-1 rounded shadow ${
-                        hospital.type === 'Government' ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                        {hospital.name.split(' ')[0]}
-                      </span>
-                    </div>
-                  </div>
+                    <Popup>
+                      <strong>{hospital.name}</strong><br />
+                      {hospital.address}
+                    </Popup>
+                  </Marker>
                 ))}
-
-                {/* Legend */}
-                <div className="absolute bottom-4 left-4 bg-white p-3 rounded shadow">
-                  <h4 className="text-xs font-semibold mb-2">Legend</h4>
-                  <div className="space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span className="text-xs">Government</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <span className="text-xs">Private</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </MapContainer>
             </CardContent>
           </Card>
 
-          {/* Hospital List */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold text-gray-900">Hospitals in Telangana</h2>
@@ -177,48 +135,12 @@ const Map = () => {
                       <span className="text-blue-600 font-medium text-sm">{hospital.distance}</span>
                     </div>
                   </div>
-                  
-                  <div className="mb-3">
-                    <div className="flex flex-wrap gap-2">
-                      {hospital.specialties.slice(0, 3).map((specialty, index) => (
-                        <span 
-                          key={index}
-                          className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full"
-                        >
-                          {specialty}
-                        </span>
-                      ))}
-                      {hospital.specialties.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                          +{hospital.specialties.length - 3} more
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4 text-sm text-gray-600">
-                      <div className="flex items-center space-x-1">
-                        <Clock className="w-4 h-4" />
-                        <span>{hospital.hours}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Phone className="w-4 h-4" />
-                        <span>{hospital.phone}</span>
-                      </div>
-                    </div>
-                    <Button size="sm" className="button-secondary">
-                      <Navigation className="w-4 h-4 mr-1" />
-                      Directions
-                    </Button>
-                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
 
-        {/* Selected Hospital Details */}
         {selectedHospital && (
           <Card className="healthcare-card mt-8">
             <CardHeader>
@@ -274,5 +196,3 @@ const Map = () => {
 };
 
 export default Map;
-
-
