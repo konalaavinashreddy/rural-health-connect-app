@@ -1,14 +1,16 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info } from 'lucide-react';
+import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info, Apple, Droplets, Baby, ChefHat } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { commonDiseases, telanganaSpecialties } from '@/data/telanganaData';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCondition, setSelectedCondition] = useState('');
+  const [languageToggle, setLanguageToggle] = useState(false);
   const navigate = useNavigate();
 
   const quickSearchSuggestions = [
@@ -65,6 +67,65 @@ const Index = () => {
       telugu: 'ఉచిత మందుల పథకం'
     }
   ];
+
+  const foodRecommendations = [
+    {
+      id: 'fever',
+      title: 'Fever',
+      titleTelugu: 'జ్వరం',
+      icon: <Droplets className="w-8 h-8 text-red-500" />,
+      recommendations: {
+        do: ['Light khichdi, dal rice', 'Coconut water for hydration', 'Warm herbal teas'],
+        avoid: ['Spicy/oily food', 'Heavy meals', 'Cold drinks'],
+        telugu: 'జ్వరం సమయంలో తేలికపాటి ఆహారం తీసుకోండి'
+      },
+      bgColor: 'from-red-50 to-orange-50',
+      borderColor: 'border-red-200'
+    },
+    {
+      id: 'diabetes',
+      title: 'Diabetes',
+      titleTelugu: 'మధుమేహం',
+      icon: <Apple className="w-8 h-8 text-green-500" />,
+      recommendations: {
+        do: ['Low GI foods: Oats, leafy greens', 'Include protein & fiber', 'Small frequent meals'],
+        avoid: ['Sugar, white rice', 'Processed foods', 'Sugary drinks'],
+        telugu: 'చక్కెర నియంత్రణకు తక్కువ GI ఆహారం తీసుకోండి'
+      },
+      bgColor: 'from-green-50 to-emerald-50',
+      borderColor: 'border-green-200'
+    },
+    {
+      id: 'pregnancy',
+      title: 'Pregnancy',
+      titleTelugu: 'గర్భధారణ',
+      icon: <Heart className="w-8 h-8 text-pink-500" />,
+      recommendations: {
+        do: ['Iron & folic-rich foods: Palak, citrus fruits', 'Milk, eggs for calcium', 'Regular hydration'],
+        avoid: ['Papaya, raw meat', 'Alcohol, caffeine', 'Raw eggs'],
+        telugu: 'గర్భిణులు పోషకాహారాన్ని తీసుకోవాలి'
+      },
+      bgColor: 'from-pink-50 to-purple-50',
+      borderColor: 'border-pink-200'
+    },
+    {
+      id: 'child-growth',
+      title: 'Child Growth',
+      titleTelugu: 'పిల్లల ఎదుగుదల',
+      icon: <Baby className="w-8 h-8 text-blue-500" />,
+      recommendations: {
+        do: ['Protein-rich diet: Eggs, dal', 'Milk & fruits daily', 'Variety of vegetables'],
+        avoid: ['Junk food', 'Excess sugar', 'Carbonated drinks'],
+        telugu: 'పిల్లల ఆరోగ్యానికి పోషకాహారం అవసరం'
+      },
+      bgColor: 'from-blue-50 to-cyan-50',
+      borderColor: 'border-blue-200'
+    }
+  ];
+
+  const filteredRecommendations = selectedCondition 
+    ? foodRecommendations.filter(rec => rec.id === selectedCondition)
+    : foodRecommendations;
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -314,6 +375,116 @@ const Index = () => {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Food Recommendations Section */}
+      <section className="py-16 bg-gradient-to-r from-green-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Food Recommendations by Health Condition
+              <br />
+              <span className="text-xl text-gray-600">
+                {languageToggle ? 'ఆరోగ్య పరిస్థితి ఆధారంగా ఆహార సిఫార్సులు' : 'Customized diet tips for better recovery and health – based on your illness'}
+              </span>
+            </h2>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
+              <Select value={selectedCondition} onValueChange={setSelectedCondition}>
+                <SelectTrigger className="w-64 h-12 border-2 border-green-200">
+                  <SelectValue placeholder="Select Health Condition" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Conditions</SelectItem>
+                  <SelectItem value="fever">Fever / జ్వరం</SelectItem>
+                  <SelectItem value="diabetes">Diabetes / మధుమేహం</SelectItem>
+                  <SelectItem value="pregnancy">Pregnancy / గర్భధారణ</SelectItem>
+                  <SelectItem value="child-growth">Child Growth / పిల్లల ఎదుగుదల</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Button 
+                onClick={() => setLanguageToggle(!languageToggle)}
+                className="button-secondary"
+              >
+                {languageToggle ? 'English' : 'తెలుగు'}
+              </Button>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {filteredRecommendations.map((condition, index) => (
+              <Card key={index} className={`healthcare-card hover:shadow-2xl transition-all duration-300 group bg-gradient-to-br ${condition.bgColor} border-2 ${condition.borderColor}`}>
+                <CardHeader className="text-center pb-4">
+                  <div className="flex justify-center mb-4">
+                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      {condition.icon}
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl text-gray-900">
+                    {languageToggle ? condition.titleTelugu : condition.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-green-700 mb-2 flex items-center">
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      {languageToggle ? 'తీసుకోవాల్సినవి:' : 'Recommended:'}
+                    </h4>
+                    <ul className="space-y-1">
+                      {condition.recommendations.do.map((item, idx) => (
+                        <li key={idx} className="text-sm text-gray-700 flex items-start">
+                          <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-red-700 mb-2 flex items-center">
+                      <span className="w-4 h-4 mr-2 text-red-500">❌</span>
+                      {languageToggle ? 'తీసుకోకూడనివి:' : 'Avoid:'}
+                    </h4>
+                    <ul className="space-y-1">
+                      {condition.recommendations.avoid.map((item, idx) => (
+                        <li key={idx} className="text-sm text-gray-700 flex items-start">
+                          <span className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-white/70 rounded-lg p-3 mt-4">
+                    <p className="text-xs text-gray-600 font-medium">
+                      {languageToggle ? 'తెలుగు సలహా:' : 'Health Tip:'}
+                    </p>
+                    <p className="text-sm text-gray-800 mt-1">
+                      {condition.recommendations.telugu}
+                    </p>
+                  </div>
+                  
+                  <Button className="w-full button-primary mt-4">
+                    <ChefHat className="w-4 h-4 mr-2" />
+                    {languageToggle ? 'మరిన్ని చిట్కాలు' : 'More Diet Tips'}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          {selectedCondition && (
+            <div className="text-center mt-8">
+              <Button 
+                onClick={() => setSelectedCondition('')}
+                className="button-secondary"
+              >
+                {languageToggle ? 'అన్ని పరిస్థితులు చూడండి' : 'View All Conditions'}
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
