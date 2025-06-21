@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info, Apple, Droplets, Baby, ChefHat } from 'lucide-react';
+import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info, Apple, Droplets, Baby, ChefHat, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,13 @@ const Index = () => {
   const [selectedCondition, setSelectedCondition] = useState('');
   const [languageToggle, setLanguageToggle] = useState(false);
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear any stored authentication data
+    localStorage.removeItem('auth-session');
+    // Navigate to login page
+    navigate('/');
+  };
 
   const quickSearchSuggestions = [
     'Fever', 'Diabetes', 'Heart Disease', 'Blood Pressure', 'Kidney Stones'
@@ -179,6 +186,18 @@ const Index = () => {
       {/* Hero Banner */}
       <section className="relative bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
+        
+        {/* Logout Button */}
+        <div className="absolute top-4 right-4 z-10">
+          <Button 
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+          >
+            <LogOut className="w-4 h-4" />
+            Logout
+          </Button>
+        </div>
+
         <div className="relative max-w-7xl mx-auto px-4 py-16 md:py-24">
           <div className="text-center animate-fade-in">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
