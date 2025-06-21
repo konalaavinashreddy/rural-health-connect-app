@@ -25,8 +25,8 @@ const Login = () => {
     setError('');
 
     if (username === mockCredentials.username && password === mockCredentials.password) {
-      // Navigate to Index page (main dashboard) since patient dashboard was removed
-      navigate('/');
+      // Navigate to Patient Dashboard
+      navigate('/patient-dashboard');
     } else {
       setError('Invalid username or password');
     }
