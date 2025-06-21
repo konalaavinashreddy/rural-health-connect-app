@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info, Apple, Droplets, Baby, ChefHat, LogOut } from 'lucide-react';
+import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info, Apple, Droplets, Baby, ChefHat, LogOut, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,7 +10,7 @@ import { commonDiseases, telanganaSpecialties } from '@/data/telanganaData';
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCondition, setSelectedCondition] = useState('');
-  const [languageToggle, setLanguageToggle] = useState(false);
+  const [languageToggle, setLanguageToggle] = useState(false); // false = English, true = Telugu
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -18,6 +18,251 @@ const Index = () => {
     localStorage.removeItem('auth-session');
     // Navigate to login page
     navigate('/');
+  };
+
+  // Translation object for all content
+  const translations = {
+    // Hero section
+    heroTitle: {
+      en: "Rural Health Connect",
+      te: "గ్రామీణ ఆరోగ్య కనెక్ట్"
+    },
+    heroSubtitle: {
+      en: "Complete healthcare solution for rural Telangana",
+      te: "తెలంగాణ గ్రామీణ ప్రాంతాలకు పూర్తి ఆరోగ్య సేవలు"
+    },
+    bookAppointment: {
+      en: "Book Appointment Now",
+      te: "ఇప్పుడే అపాయింట్మెంట్ బుక్ చేయండి"
+    },
+    
+    // How it works section
+    howItWorks: {
+      en: "How It Works",
+      te: "ఇది ఎలా పనిచేస్తుంది"
+    },
+    workflowSteps: {
+      book: { en: "Book", te: "బుక్ చేయండి" },
+      consult: { en: "Consult", te: "సంప్రదించండి" },
+      getMedicine: { en: "Get Medicine", te: "మందులు తీసుకోండి" },
+      receiveReminders: { en: "Receive Reminders", te: "రిమైండర్లు పొందండి" }
+    },
+    
+    // Search section
+    findHealthcare: {
+      en: "Find Healthcare Near You",
+      te: "మీ దగ్గర ఆరోగ్య సేవలను కనుగొనండి"
+    },
+    searchPlaceholder: {
+      en: "Search by disease or specialist...",
+      te: "వ్యాధి లేదా స్పెషలిస్ట్ వెతకండి..."
+    },
+    search: {
+      en: "Search",
+      te: "వెతకండి"
+    },
+    quickSearch: {
+      en: "Quick search:",
+      te: "వేగవంతమైన వెతుకులాట:"
+    },
+    
+    // Doctor profiles section
+    expertDoctors: {
+      en: "Our Expert Doctors",
+      te: "మా నిపుణ వైద్యులు"
+    },
+    experience: {
+      en: "experience",
+      te: "అనుభవం"
+    },
+    visitingHours: {
+      en: "Visiting Hours:",
+      te: "సందర్శన సమయం:"
+    },
+    
+    // Government schemes section
+    govSchemes: {
+      en: "Government Health Schemes",
+      te: "ప్రభుత్వ ఆరోగ్య పథకాలు"
+    },
+    learnMoreApply: {
+      en: "Learn More & Apply",
+      te: "మరింత తెలుసుకోండి మరియు దరఖాస్తు చేయండి"
+    },
+    
+    // Food recommendations section
+    foodRecommendations: {
+      en: "Food Recommendations by Health Condition",
+      te: "ఆరోగ్య పరిస్థితి ఆధారంగా ఆహార సిఫార్సులు"
+    },
+    foodSubtitle: {
+      en: "Customized diet tips for better recovery and health – based on your illness",
+      te: "మీ అనారోగ్యం ఆధారంగా మెరుగైన కోలుకునే సామర్థ్యం మరియు ఆరోగ్యం కోసం అనుకూలీకరించిన ఆహార చిట్కాలు"
+    },
+    selectCondition: {
+      en: "Select Health Condition",
+      te: "ఆరోగ్య పరిస్థితిని ఎంచుకోండి"
+    },
+    allConditions: {
+      en: "All Conditions",
+      te: "అన్ని పరిస్థితులు"
+    },
+    recommended: {
+      en: "Recommended:",
+      te: "సిఫార్సు చేయబడినవి:"
+    },
+    avoid: {
+      en: "Avoid:",
+      te: "తప్పించాల్సినవి:"
+    },
+    healthTip: {
+      en: "Health Tip:",
+      te: "ఆరోగ్య చిట్కా:"
+    },
+    moreDietTips: {
+      en: "More Diet Tips",
+      te: "మరిన్ని ఆహార చిట్కాలు"
+    },
+    viewAllConditions: {
+      en: "View All Conditions",
+      te: "అన్ని పరిస్థితులను చూడండి"
+    },
+    
+    // Chatbot section
+    healthAssistant: {
+      en: "Rural Health Assistant",
+      te: "గ్రామీణ ఆరోగ్య సహాయకుడు"
+    },
+    instantAdvice: {
+      en: "Get instant health advice in Telugu and English",
+      te: "తెలుగు మరియు ఆంగ్లంలో తక్షణ ఆరోగ్య సలహా పొందండి"
+    },
+    healthSupport: {
+      en: "24/7 Health Support",
+      te: "24/7 ఆరోగ్య సహాయం"
+    },
+    voiceTextChat: {
+      en: "Voice and text chat in your language",
+      te: "మీ భాషలో వాయిస్ మరియు టెక్స్ట్ చాట్"
+    },
+    startHealthChat: {
+      en: "Start Health Chat",
+      te: "ఆరోగ్య చాట్ ప్రారంభించండి"
+    },
+    
+    // Map section
+    findHospitals: {
+      en: "Find Hospitals Near You",
+      te: "మీ దగ్గర ఆసుపత్రులను కనుగొనండి"
+    },
+    viewFullMap: {
+      en: "View Full Map",
+      te: "పూర్తి మ్యాప్ చూడండి"
+    },
+    
+    // Statistics section
+    healthStats: {
+      en: "Telangana Healthcare Statistics",
+      te: "తెలంగాణ ఆరోగ్య సంరక్షణ గణాంకాలు"
+    },
+    qualifiedDoctors: {
+      en: "Qualified Doctors",
+      te: "అర్హత కలిగిన వైద్యులు"
+    },
+    hospitals: {
+      en: "Hospitals",
+      te: "ఆసుపత్రులు"
+    },
+    patientsServed: {
+      en: "Patients Served",
+      te: "రోగులకు సేవలు అందించారు"
+    },
+    averageRating: {
+      en: "Average Rating",
+      te: "సగటు రేటింగ్"
+    },
+    
+    // Specialties section
+    medicalSpecialties: {
+      en: "Available Medical Specialties in Telangana",
+      te: "తెలంగాణలో అందుబాటులో ఉన్న వైద్య విభాగాలు"
+    },
+    clickSpecialty: {
+      en: "Click on any specialty to find doctors in that field",
+      te: "ఆ రంగంలో వైద్యులను కనుగొనడానికి ఏదైనా స్పెషలిటీని క్లిక్ చేయండి"
+    },
+    viewDoctors: {
+      en: "View Doctors",
+      te: "వైద్యులను చూడండి"
+    },
+    
+    // Footer
+    aboutDescription: {
+      en: "Providing comprehensive healthcare solutions for rural Telangana communities.",
+      te: "గ్రామీణ తెలంగాణ కమ్యూనిటీలకు సమగ్ర ఆరోగ్య సేవల పరిష్కారాలను అందిస్తోంది."
+    },
+    quickLinks: {
+      en: "Quick Links",
+      te: "త్వరిత లింకులు"
+    },
+    findDoctors: {
+      en: "Find Doctors",
+      te: "వైద్యులను కనుగొనండి"
+    },
+    trackMedicines: {
+      en: "Track Medicines",
+      te: "మందులను ట్రాక్ చేయండి"
+    },
+    hospitalMap: {
+      en: "Hospital Map",
+      te: "ఆసుపత్రి మ్యాప్"
+    },
+    legal: {
+      en: "Legal",
+      te: "చట్టపరమైన"
+    },
+    aboutUs: {
+      en: "About Us",
+      te: "మా గురించి"
+    },
+    privacyPolicy: {
+      en: "Privacy Policy",
+      te: "గోప్యతా విధానం"
+    },
+    termsOfService: {
+      en: "Terms of Service",
+      te: "సేవా నియమాలు"
+    },
+    contact: {
+      en: "Contact",
+      te: "సంప్రదించండి"
+    },
+    contactUs: {
+      en: "Contact Us",
+      te: "మమ్మల్ని సంప్రదించండి"
+    },
+    followUs: {
+      en: "Follow Us",
+      te: "మమ్మల్ని అనుసరించండి"
+    },
+    allRightsReserved: {
+      en: "© 2024 Rural Health Connect. All rights reserved. | Made with ❤️ for rural Telangana",
+      te: "© 2024 గ్రామీణ ఆరోగ్య కనెక్ట్. అన్ని హక్కులు రిజర్వ్ చేయబడ్డాయి. | గ్రామీణ తెలంగాణ కోసం ❤️ తో తయారు చేయబడింది"
+    },
+    logout: {
+      en: "Logout",
+      te: "లాగ్ అవుట్"
+    }
+  };
+
+  // Helper function to get translated text
+  const t = (key: string) => {
+    const keys = key.split('.');
+    let value = translations;
+    for (const k of keys) {
+      value = value[k];
+    }
+    return languageToggle ? value.te : value.en;
   };
 
   const quickSearchSuggestions = [
@@ -187,35 +432,36 @@ const Index = () => {
       <section className="relative bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         
-        {/* Logout Button */}
-        <div className="absolute top-4 right-4 z-10">
+        {/* Language Toggle and Logout Buttons */}
+        <div className="absolute top-4 right-4 z-10 flex gap-3">
+          <Button 
+            onClick={() => setLanguageToggle(!languageToggle)}
+            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+          >
+            <Globe className="w-4 h-4" />
+            {languageToggle ? 'తెలుగు' : 'English'}
+          </Button>
           <Button 
             onClick={handleLogout}
             className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
           >
             <LogOut className="w-4 h-4" />
-            Logout
+            {t('logout')}
           </Button>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 py-16 md:py-24">
           <div className="text-center animate-fade-in">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Rural Health Connect
-              <br />
-              <span className="text-2xl md:text-3xl text-blue-100">గ్రామీణ ఆరోగ్య కనెక్ట్</span>
+              {t('heroTitle')}
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Complete healthcare solution for rural Telangana
-              <br />
-              <span className="text-lg">తెలంగాణ గ్రామీణ ప్రాంతాలకు పూర్తి ఆరోగ్య సేవలు</span>
+              {t('heroSubtitle')}
             </p>
             <Link to="/appointment">
               <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-xl rounded-full shadow-2xl hover:scale-105 transition-all duration-300">
                 <Calendar className="w-6 h-6 mr-3" />
-                Book Appointment Now
-                <br />
-                <span className="text-sm">ఇప్పుడే అపాయింట్ బుక్ చేయండి</span>
+                {t('bookAppointment')}
               </Button>
             </Link>
           </div>
@@ -227,18 +473,16 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How It Works
-              <br />
-              <span className="text-xl text-gray-600">ఇది ఎలా పనిచేస్తుంది</span>
+              {t('howItWorks')}
             </h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {[
-              { step: 1, title: 'Book', telugu: 'బుక్ చేయండి', icon: Calendar, desc: 'Schedule appointment with doctor' },
-              { step: 2, title: 'Consult', telugu: 'సంప్రదించండి', icon: Stethoscope, desc: 'Video or in-person consultation' },
-              { step: 3, title: 'Get Medicine', telugu: 'మందులు తీసుకోండి', icon: Pill, desc: 'Receive prescribed medicines' },
-              { step: 4, title: 'Receive Reminders', telugu: 'రిమైండర్లు పొందండి', icon: MessageCircle, desc: 'Get medication reminders' }
+              { step: 1, title: t('workflowSteps.book'), icon: Calendar, desc: 'Schedule appointment with doctor' },
+              { step: 2, title: t('workflowSteps.consult'), icon: Stethoscope, desc: 'Video or in-person consultation' },
+              { step: 3, title: t('workflowSteps.getMedicine'), icon: Pill, desc: 'Receive prescribed medicines' },
+              { step: 4, title: t('workflowSteps.receiveReminders'), icon: MessageCircle, desc: 'Get medication reminders' }
             ].map((item, index) => (
               <div 
                 key={index} 
@@ -259,7 +503,6 @@ const Index = () => {
                   )}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{item.title}</h3>
-                <p className="text-blue-600 font-medium mb-2">{item.telugu}</p>
                 <p className="text-gray-600 text-sm">{item.desc}</p>
               </div>
             ))}
@@ -273,14 +516,14 @@ const Index = () => {
           <Card className="healthcare-card">
             <CardContent className="p-8">
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">Find Healthcare Near You</h2>
-                <p className="text-gray-600">Search by disease, specialist, or symptoms (వ్యాధి, వైద్యుడు లేదా లక్షణాలతో వెతకండి)</p>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-2">{t('findHealthcare')}</h2>
+                <p className="text-gray-600">{languageToggle ? 'వ్యాధి, వైద్యుడు లేదా లక్షణాలతో వెతకండి' : 'Search by disease, specialist, or symptoms'}</p>
               </div>
               <div className="flex flex-col md:flex-row gap-4 mb-4">
                 <div className="flex-1">
                   <Input
                     type="text"
-                    placeholder="Search by disease or specialist (వ్యాధి లేదా స్పెషలిస్ట్ వెతకండి)..."
+                    placeholder={t('searchPlaceholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="h-14 text-lg border-2 border-blue-100 focus:border-blue-300 rounded-xl"
@@ -289,12 +532,12 @@ const Index = () => {
                 </div>
                 <Button onClick={handleSearch} className="button-primary h-14 px-8 text-lg rounded-xl">
                   <Search className="w-5 h-5 mr-2" />
-                  Search
+                  {t('search')}
                 </Button>
               </div>
               
               <div className="flex flex-wrap gap-2 justify-center">
-                <span className="text-sm text-gray-600 mr-2">Quick search:</span>
+                <span className="text-sm text-gray-600 mr-2">{t('quickSearch')}</span>
                 {quickSearchSuggestions.map((suggestion, index) => (
                   <button
                     key={index}
@@ -315,9 +558,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Our Expert Doctors
-              <br />
-              <span className="text-xl text-gray-600">మా నిపుణ వైద్యులు</span>
+              {t('expertDoctors')}
             </h2>
           </div>
           
@@ -337,16 +578,16 @@ const Index = () => {
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{doctor.name}</h3>
                   <p className="text-blue-600 font-semibold mb-2">{doctor.specialty}</p>
-                  <p className="text-gray-600 text-sm mb-2">{doctor.experience} experience</p>
+                  <p className="text-gray-600 text-sm mb-2">{doctor.experience} {t('experience')}</p>
                   <p className="text-gray-600 text-sm mb-2">{doctor.hospital}</p>
                   <div className="bg-gray-50 rounded-lg p-3 mb-4">
-                    <p className="text-xs text-gray-600 mb-1">Visiting Hours:</p>
+                    <p className="text-xs text-gray-600 mb-1">{t('visitingHours')}</p>
                     <p className="text-sm font-medium text-gray-800">{doctor.visitingTime}</p>
                   </div>
                   <Link to="/appointment" state={{ doctor, returnTo: '/home' }}>
                     <Button className="w-full button-primary rounded-xl">
                       <Calendar className="w-4 h-4 mr-2" />
-                      Book Appointment
+                      {t('bookAppointment')}
                     </Button>
                   </Link>
                 </CardContent>
@@ -361,9 +602,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Government Health Schemes
-              <br />
-              <span className="text-xl text-gray-600">ప్రభుత్వ ఆరోగ్య పథకాలు</span>
+              {t('govSchemes')}
             </h2>
           </div>
           
@@ -379,15 +618,14 @@ const Index = () => {
                       {scheme.eligibility}
                     </span>
                   </div>
-                  <CardTitle className="text-lg text-gray-900">{scheme.title}</CardTitle>
-                  <p className="text-blue-600 font-medium text-sm">{scheme.telugu}</p>
+                  <CardTitle className="text-lg text-gray-900">{languageToggle ? scheme.telugu : scheme.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 text-sm mb-6">{scheme.description}</p>
                   <Link to="/scheme-details" state={{ scheme: scheme.title }}>
                     <Button className="w-full button-secondary rounded-xl">
                       <CheckCircle className="w-4 h-4 mr-2" />
-                      Learn More & Apply
+                      {t('learnMoreApply')}
                     </Button>
                   </Link>
                 </CardContent>
@@ -402,33 +640,25 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Food Recommendations by Health Condition
-              <br />
-              <span className="text-xl text-gray-600">
-                {languageToggle ? 'ఆరోగ్య పరిస్థితి ఆధారంగా ఆహార సిఫార్సులు' : 'Customized diet tips for better recovery and health – based on your illness'}
-              </span>
+              {t('foodRecommendations')}
             </h2>
+            <p className="text-xl text-gray-600">
+              {t('foodSubtitle')}
+            </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
               <Select value={selectedCondition} onValueChange={setSelectedCondition}>
                 <SelectTrigger className="w-64 h-12 border-2 border-green-200">
-                  <SelectValue placeholder="Select Health Condition" />
+                  <SelectValue placeholder={t('selectCondition')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all-conditions">All Conditions</SelectItem>
-                  <SelectItem value="fever">Fever / జ్వరం</SelectItem>
-                  <SelectItem value="diabetes">Diabetes / మధుమేహం</SelectItem>
-                  <SelectItem value="pregnancy">Pregnancy / గర్భధారణ</SelectItem>
-                  <SelectItem value="child-growth">Child Growth / పిల్లల ఎదుగుదల</SelectItem>
+                  <SelectItem value="all-conditions">{t('allConditions')}</SelectItem>
+                  <SelectItem value="fever">{languageToggle ? 'జ్వరం' : 'Fever'}</SelectItem>
+                  <SelectItem value="diabetes">{languageToggle ? 'మధుమేహం' : 'Diabetes'}</SelectItem>
+                  <SelectItem value="pregnancy">{languageToggle ? 'గర్భధారణ' : 'Pregnancy'}</SelectItem>
+                  <SelectItem value="child-growth">{languageToggle ? 'పిల్లల ఎదుగుదల' : 'Child Growth'}</SelectItem>
                 </SelectContent>
               </Select>
-              
-              <Button 
-                onClick={() => setLanguageToggle(!languageToggle)}
-                className="button-secondary"
-              >
-                {languageToggle ? 'English' : 'తెలుగు'}
-              </Button>
             </div>
           </div>
           
@@ -449,7 +679,7 @@ const Index = () => {
                   <div>
                     <h4 className="font-semibold text-green-700 mb-2 flex items-center">
                       <CheckCircle className="w-4 h-4 mr-2" />
-                      {languageToggle ? 'తీసుకోవాల్సినవి:' : 'Recommended:'}
+                      {t('recommended')}
                     </h4>
                     <ul className="space-y-1">
                       {condition.recommendations.do.map((item, idx) => (
@@ -464,7 +694,7 @@ const Index = () => {
                   <div>
                     <h4 className="font-semibold text-red-700 mb-2 flex items-center">
                       <span className="w-4 h-4 mr-2 text-red-500">❌</span>
-                      {languageToggle ? 'తీసుకోకూడనివి:' : 'Avoid:'}
+                      {t('avoid')}
                     </h4>
                     <ul className="space-y-1">
                       {condition.recommendations.avoid.map((item, idx) => (
@@ -478,7 +708,7 @@ const Index = () => {
                   
                   <div className="bg-white/70 rounded-lg p-3 mt-4">
                     <p className="text-xs text-gray-600 font-medium">
-                      {languageToggle ? 'తెలుగు సలహా:' : 'Health Tip:'}
+                      {t('healthTip')}
                     </p>
                     <p className="text-sm text-gray-800 mt-1">
                       {condition.recommendations.telugu}
@@ -487,7 +717,7 @@ const Index = () => {
                   
                   <Button className="w-full button-primary mt-4">
                     <ChefHat className="w-4 h-4 mr-2" />
-                    {languageToggle ? 'మరిన్ని చిట్కాలు' : 'More Diet Tips'}
+                    {t('moreDietTips')}
                   </Button>
                 </CardContent>
               </Card>
@@ -500,7 +730,7 @@ const Index = () => {
                 onClick={() => setSelectedCondition('')}
                 className="button-secondary"
               >
-                {languageToggle ? 'అన్ని పరిస్థితులు చూడండి' : 'View All Conditions'}
+                {t('viewAllConditions')}
               </Button>
             </div>
           )}
@@ -512,11 +742,9 @@ const Index = () => {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Rural Health Assistant
-              <br />
-              <span className="text-xl text-gray-600">గ్రామీణ ఆరోగ్య సహాయకుడు</span>
+              {t('healthAssistant')}
             </h2>
-            <p className="text-gray-600 text-lg">Get instant health advice in Telugu and English</p>
+            <p className="text-gray-600 text-lg">{t('instantAdvice')}</p>
           </div>
           
           <Card className="healthcare-card max-w-2xl mx-auto">
@@ -525,8 +753,8 @@ const Index = () => {
                 <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <MessageCircle className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">24/7 Health Support</h3>
-                <p className="text-gray-600">Voice and text chat in your language</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t('healthSupport')}</h3>
+                <p className="text-gray-600">{t('voiceTextChat')}</p>
                 <p className="text-sm text-gray-500 mt-2">✓ Symptoms checker ✓ First aid tips ✓ PHC guidance</p>
               </div>
               
@@ -538,7 +766,7 @@ const Index = () => {
               <Link to="/chatbot">
                 <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl">
                   <MessageCircle className="w-4 h-4 mr-2" />
-                  Start Health Chat / ఆరోగ్య చాట్ ప్రారంభించండి
+                  {t('startHealthChat')}
                 </Button>
               </Link>
             </CardContent>
@@ -551,9 +779,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Find Hospitals Near You
-              <br />
-              <span className="text-xl text-gray-600">మీ దగ్గర ఆసుపత్రులను కనుగొనండి</span>
+              {t('findHospitals')}
             </h2>
           </div>
           
@@ -572,7 +798,7 @@ const Index = () => {
                 <Link to="/map">
                   <Button className="button-primary rounded-xl">
                     <MapPin className="w-4 h-4 mr-2" />
-                    View Full Map / పూర్తి మ్యాప్ చూడండి
+                    {t('viewFullMap')}
                   </Button>
                 </Link>
               </div>
@@ -586,7 +812,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4">
           <Card className="healthcare-card">
             <CardHeader>
-              <CardTitle className="text-center text-2xl">Telangana Healthcare Statistics</CardTitle>
+              <CardTitle className="text-center text-2xl">{t('healthStats')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -595,28 +821,28 @@ const Index = () => {
                     <Stethoscope className="w-8 h-8 text-blue-600" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900">500+</h3>
-                  <p className="text-gray-600">Qualified Doctors</p>
+                  <p className="text-gray-600">{t('qualifiedDoctors')}</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Heart className="w-8 h-8 text-green-600" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900">50+</h3>
-                  <p className="text-gray-600">Hospitals</p>
+                  <p className="text-gray-600">{t('hospitals')}</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Users className="w-8 h-8 text-purple-600" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900">10K+</h3>
-                  <p className="text-gray-600">Patients Served</p>
+                  <p className="text-gray-600">{t('patientsServed')}</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Star className="w-8 h-8 text-orange-600" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900">4.8</h3>
-                  <p className="text-gray-600">Average Rating</p>
+                  <p className="text-gray-600">{t('averageRating')}</p>
                 </div>
               </div>
             </CardContent>
@@ -629,8 +855,8 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4">
           <Card className="healthcare-card">
             <CardHeader>
-              <CardTitle>Available Medical Specialties in Telangana</CardTitle>
-              <p className="text-gray-600 text-sm mt-2">Click on any specialty to find doctors in that field</p>
+              <CardTitle>{t('medicalSpecialties')}</CardTitle>
+              <p className="text-gray-600 text-sm mt-2">{t('clickSpecialty')}</p>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
@@ -643,7 +869,7 @@ const Index = () => {
                     <div className="flex flex-col items-center space-y-2">
                       <Stethoscope className="w-6 h-6 text-blue-600" />
                       <p className="text-sm font-medium text-gray-900">{specialty}</p>
-                      <p className="text-xs text-gray-500">View Doctors</p>
+                      <p className="text-xs text-gray-500">{t('viewDoctors')}</p>
                     </div>
                   </button>
                 ))}
@@ -659,52 +885,49 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* About Section */}
             <div>
-              <h3 className="text-xl font-bold mb-4">Rural Health Connect</h3>
+              <h3 className="text-xl font-bold mb-4">{t('heroTitle')}</h3>
               <p className="text-gray-300 text-sm mb-4">
-                Providing comprehensive healthcare solutions for rural Telangana communities.
-              </p>
-              <p className="text-gray-300 text-sm">
-                గ్రామీణ తెలంగాణ కమ్యూనిటీలకు సమగ్ర ఆరోగ్య సేవలు అందిస్తోంది.
+                {t('aboutDescription')}
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('quickLinks')}</h4>
               <ul className="space-y-2">
-                <li><Link to="/doctors" className="text-gray-300 hover:text-white transition-colors">Find Doctors</Link></li>
-                <li><Link to="/appointment" className="text-gray-300 hover:text-white transition-colors">Book Appointment</Link></li>
-                <li><Link to="/medicines" className="text-gray-300 hover:text-white transition-colors">Track Medicines</Link></li>
-                <li><Link to="/map" className="text-gray-300 hover:text-white transition-colors">Hospital Map</Link></li>
+                <li><Link to="/doctors" className="text-gray-300 hover:text-white transition-colors">{t('findDoctors')}</Link></li>
+                <li><Link to="/appointment" className="text-gray-300 hover:text-white transition-colors">{t('bookAppointment')}</Link></li>
+                <li><Link to="/medicines" className="text-gray-300 hover:text-white transition-colors">{t('trackMedicines')}</Link></li>
+                <li><Link to="/map" className="text-gray-300 hover:text-white transition-colors">{t('hospitalMap')}</Link></li>
               </ul>
             </div>
 
             {/* Legal Pages */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Legal</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('legal')}</h4>
               <ul className="space-y-2">
                 <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <Info className="w-4 h-4 mr-2" />
-                    About Us
+                    {t('aboutUs')}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <Shield className="w-4 h-4 mr-2" />
-                    Privacy Policy
+                    {t('privacyPolicy')}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <FileText className="w-4 h-4 mr-2" />
-                    Terms of Service
+                    {t('termsOfService')}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <Phone className="w-4 h-4 mr-2" />
-                    Contact
+                    {t('contact')}
                   </a>
                 </li>
               </ul>
@@ -712,7 +935,7 @@ const Index = () => {
 
             {/* Contact & Social */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('contactUs')}</h4>
               <div className="space-y-3 mb-6">
                 <div className="flex items-center">
                   <Phone className="w-4 h-4 mr-3 text-blue-400" />
@@ -725,7 +948,7 @@ const Index = () => {
               </div>
               
               <div>
-                <h5 className="font-semibold mb-3">Follow Us</h5>
+                <h5 className="font-semibold mb-3">{t('followUs')}</h5>
                 <div className="flex space-x-3">
                   <a href="#" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
                     <Facebook className="w-5 h-5" />
@@ -746,7 +969,7 @@ const Index = () => {
 
           <div className="border-t border-gray-700 pt-8 text-center">
             <p className="text-gray-400 text-sm">
-              © 2024 Rural Health Connect. All rights reserved. | Made with ❤️ for rural Telangana
+              {t('allRightsReserved')}
             </p>
           </div>
         </div>
