@@ -59,7 +59,7 @@ const Chatbot = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
       <header className="bg-white border-b p-4 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <Link to="/">
+          <Link to="/home">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="w-5 h-5" />
             </Button>

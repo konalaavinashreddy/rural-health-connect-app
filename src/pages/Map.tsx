@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, Phone, Navigation, Star, Calendar, ExternalLink } from 'lucide-react';
@@ -43,7 +44,7 @@ const Map = () => {
       <header className="bg-white shadow-sm border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link to="/">
+            <Link to="/home">
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="w-5 h-5" />
               </Button>
