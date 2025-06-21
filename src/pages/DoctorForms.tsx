@@ -6,8 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PrescriptionForm from '@/components/PrescriptionForm';
 import PatientVitalsForm from '@/components/PatientVitalsForm';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { doctorFormsTranslations, commonTranslations } from '@/data/translations';
 
 const DoctorForms = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
       <header className="bg-white shadow-sm border-b border-blue-100">
@@ -19,8 +23,8 @@ const DoctorForms = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Doctor Forms</h1>
-              <p className="text-sm text-gray-600">Prescription & Patient Vitals</p>
+              <h1 className="text-xl font-bold text-gray-900">{t('doctorForms', doctorFormsTranslations)}</h1>
+              <p className="text-sm text-gray-600">{t('prescriptionAndPatientVitals', doctorFormsTranslations)}</p>
             </div>
           </div>
         </div>
@@ -29,8 +33,8 @@ const DoctorForms = () => {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <Tabs defaultValue="prescription" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="prescription">Add Prescription</TabsTrigger>
-            <TabsTrigger value="vitals">Record Vitals</TabsTrigger>
+            <TabsTrigger value="prescription">{t('addPrescription', doctorFormsTranslations)}</TabsTrigger>
+            <TabsTrigger value="vitals">{t('recordVitals', doctorFormsTranslations)}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="prescription" className="mt-6">

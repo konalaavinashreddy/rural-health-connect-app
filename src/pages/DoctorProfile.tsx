@@ -5,10 +5,13 @@ import { ArrowLeft, Star, Clock, Award, MapPin, Phone, Calendar, MessageCircle }
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { telanganaDoctors } from '@/data/telanganaData';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { doctorProfileTranslations, commonTranslations } from '@/data/translations';
 
 const DoctorProfile = () => {
   const { doctorId } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   const doctor = telanganaDoctors.find(doc => doc.id === Number(doctorId));
 
@@ -17,10 +20,10 @@ const DoctorProfile = () => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
         <Card className="healthcare-card">
           <CardContent className="p-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Doctor Not Found</h2>
-            <p className="text-gray-600 mb-4">The doctor profile you're looking for doesn't exist.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('doctorNotFound', doctorProfileTranslations)}</h2>
+            <p className="text-gray-600 mb-4">{t('doctorProfileNotExist', doctorProfileTranslations)}</p>
             <Link to="/doctors">
-              <Button className="button-primary">Back to Doctors</Button>
+              <Button className="button-primary">{t('backToDoctors', doctorProfileTranslations)}</Button>
             </Link>
           </CardContent>
         </Card>
@@ -51,8 +54,8 @@ const DoctorProfile = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Doctor Profile</h1>
-              <p className="text-blue-600 text-sm">{doctor.specialty} Specialist</p>
+              <h1 className="text-2xl font-bold text-gray-900">{t('doctorProfile', doctorProfileTranslations)}</h1>
+              <p className="text-blue-600 text-sm">{doctor.specialty} {t('specialist', doctorProfileTranslations)}</p>
             </div>
           </div>
         </div>
@@ -77,18 +80,18 @@ const DoctorProfile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div className="flex items-center space-x-2">
                     <Star className="w-5 h-5 text-yellow-500" />
-                    <span className="font-medium">{doctor.rating} Rating</span>
+                    <span className="font-medium">{doctor.rating} {t('rating', doctorProfileTranslations)}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Award className="w-5 h-5 text-green-500" />
-                    <span>{doctor.experience} Years Experience</span>
+                    <span>{doctor.experience} {t('yearsExperience', doctorProfileTranslations)}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <MapPin className="w-5 h-5 text-gray-500" />
                     <span>{doctor.hospital}</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-gray-600">District:</span>
+                    <span className="text-gray-600">{t('district', doctorProfileTranslations)}:</span>
                     <span className="font-medium text-blue-600">{doctor.district}</span>
                   </div>
                 </div>
@@ -96,7 +99,7 @@ const DoctorProfile = () => {
                 {/* Success Rate */}
                 <div className="mb-6">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-600">Success Rate</span>
+                    <span className="text-gray-600">{t('successRate', doctorProfileTranslations)}</span>
                     <span className="font-medium">{doctor.successRate}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-3">
@@ -109,7 +112,7 @@ const DoctorProfile = () => {
 
                 {/* Languages */}
                 <div className="mb-6">
-                  <p className="text-gray-600 mb-2">Languages Spoken:</p>
+                  <p className="text-gray-600 mb-2">{t('languagesSpoken', doctorProfileTranslations)}:</p>
                   <div className="flex flex-wrap gap-2">
                     {doctor.languages.map((lang, index) => (
                       <span key={index} className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">
@@ -127,17 +130,17 @@ const DoctorProfile = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <Card className="healthcare-card">
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Availability</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('availability', doctorProfileTranslations)}</h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Clock className="w-5 h-5 text-blue-500" />
-                    <span className="text-gray-600">Next Available</span>
+                    <span className="text-gray-600">{t('nextAvailable', doctorProfileTranslations)}</span>
                   </div>
                   <span className="font-medium text-green-600">{doctor.nextAvailable}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Consultation Fee</span>
+                  <span className="text-gray-600">{t('consultationFee', doctorProfileTranslations)}</span>
                   <span className="text-2xl font-bold text-green-600">₹{doctor.consultationFee}</span>
                 </div>
               </div>
@@ -146,11 +149,11 @@ const DoctorProfile = () => {
 
           <Card className="healthcare-card">
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('contactInformation', doctorProfileTranslations)}</h3>
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <Phone className="w-5 h-5 text-blue-500" />
-                  <span className="text-gray-600">Available for consultation</span>
+                  <span className="text-gray-600">{t('availableForConsultation', doctorProfileTranslations)}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <MapPin className="w-5 h-5 text-green-500" />
@@ -171,7 +174,7 @@ const DoctorProfile = () => {
             className="button-primary flex-1"
           >
             <Calendar className="w-5 h-5 mr-2" />
-            Book Appointment - ₹{doctor.consultationFee}
+            {t('bookAppointment', commonTranslations)} - ₹{doctor.consultationFee}
           </Button>
           <Button 
             variant="outline"
@@ -179,7 +182,7 @@ const DoctorProfile = () => {
             onClick={() => navigate('/chatbot')}
           >
             <MessageCircle className="w-5 h-5 mr-2" />
-            Chat with AI Assistant
+            {t('chatWithAIAssistant', doctorProfileTranslations)}
           </Button>
         </div>
       </div>

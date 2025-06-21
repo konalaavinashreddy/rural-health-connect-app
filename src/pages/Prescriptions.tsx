@@ -4,9 +4,12 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Download, MapPin, Pill, Clock, User, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { prescriptionsTranslations, commonTranslations } from '@/data/translations';
 
 const Prescriptions = () => {
   const [activeTab, setActiveTab] = useState('current');
+  const { t } = useLanguage();
 
   const currentPrescriptions = [
     {
@@ -50,7 +53,7 @@ const Prescriptions = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">My Prescriptions</h1>
+              <h1 className="text-xl font-bold text-gray-900">{t('myPrescriptions', prescriptionsTranslations)}</h1>
               <p className="text-sm text-gray-600">నా ప్రిస్క్రిప్షన్లు</p>
             </div>
           </div>
@@ -66,7 +69,7 @@ const Prescriptions = () => {
               activeTab === 'current' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
             }`}
           >
-            Current Prescriptions
+            {t('currentPrescriptions', prescriptionsTranslations)}
           </button>
           <button
             onClick={() => setActiveTab('history')}
@@ -74,7 +77,7 @@ const Prescriptions = () => {
               activeTab === 'history' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
             }`}
           >
-            Past Prescriptions
+            {t('pastPrescriptions', prescriptionsTranslations)}
           </button>
         </div>
 
@@ -88,11 +91,11 @@ const Prescriptions = () => {
                     <div>
                       <CardTitle className="text-lg">{prescription.doctorName}</CardTitle>
                       <p className="text-sm text-gray-600">{prescription.hospital}</p>
-                      <p className="text-sm text-blue-600">Prescribed on: {prescription.date}</p>
+                      <p className="text-sm text-blue-600">{t('prescribedOn', prescriptionsTranslations)}: {prescription.date}</p>
                     </div>
                     <Button variant="outline" size="sm">
                       <Download className="w-4 h-4 mr-2" />
-                      Download
+                      {t('download', prescriptionsTranslations)}
                     </Button>
                   </div>
                 </CardHeader>
@@ -101,7 +104,7 @@ const Prescriptions = () => {
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
                         <Pill className="w-4 h-4 mr-2 text-green-600" />
-                        Prescribed Medicines
+                        {t('prescribedMedicines', prescriptionsTranslations)}
                       </h4>
                       <div className="space-y-3">
                         {prescription.medicines.map((medicine, index) => (
@@ -109,11 +112,11 @@ const Prescriptions = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                               <div>
                                 <p className="font-medium text-gray-900">{medicine.name}</p>
-                                <p className="text-sm text-gray-600">Dosage: {medicine.dosage}</p>
+                                <p className="text-sm text-gray-600">{t('dosage', prescriptionsTranslations)}: {medicine.dosage}</p>
                               </div>
                               <div>
-                                <p className="text-sm text-gray-600">Frequency: {medicine.frequency}</p>
-                                <p className="text-sm text-gray-600">Duration: {medicine.duration}</p>
+                                <p className="text-sm text-gray-600">{t('frequency', prescriptionsTranslations)}: {medicine.frequency}</p>
+                                <p className="text-sm text-gray-600">{t('duration', prescriptionsTranslations)}: {medicine.duration}</p>
                               </div>
                             </div>
                           </div>
@@ -124,11 +127,11 @@ const Prescriptions = () => {
                     <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                       <div className="flex items-center text-sm text-gray-600">
                         <Clock className="w-4 h-4 mr-2" />
-                        Next visit: {prescription.nextVisit}
+                        {t('nextVisit', prescriptionsTranslations)}: {prescription.nextVisit}
                       </div>
                       <Link to="/medicines">
                         <Button variant="outline" size="sm">
-                          Set Reminders
+                          {t('setReminders', prescriptionsTranslations)}
                         </Button>
                       </Link>
                     </div>
@@ -144,7 +147,7 @@ const Prescriptions = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <MapPin className="w-5 h-5 mr-2 text-green-600" />
-              Nearby Pharmacies
+              {t('nearbyPharmacies', prescriptionsTranslations)}
               <span className="ml-2 text-sm text-gray-600">దగ్గరి మందుల దుకాణాలు</span>
             </CardTitle>
           </CardHeader>
@@ -155,16 +158,16 @@ const Prescriptions = () => {
                   <div>
                     <h4 className="font-medium text-gray-900">{pharmacy.name}</h4>
                     <p className="text-sm text-gray-600">{pharmacy.address}</p>
-                    <p className="text-sm text-blue-600">{pharmacy.distance} away</p>
+                    <p className="text-sm text-blue-600">{pharmacy.distance} {t('away', prescriptionsTranslations)}</p>
                   </div>
                   <div className="flex space-x-2">
                     <Button variant="outline" size="sm">
                       <Phone className="w-4 h-4 mr-1" />
-                      Call
+                      {t('call', prescriptionsTranslations)}
                     </Button>
                     <Button variant="outline" size="sm">
                       <MapPin className="w-4 h-4 mr-1" />
-                      Directions
+                      {t('directions', prescriptionsTranslations)}
                     </Button>
                   </div>
                 </div>

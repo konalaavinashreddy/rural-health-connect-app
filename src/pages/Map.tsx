@@ -8,12 +8,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { telanganaHospitals, telanganaDistricts } from '@/data/telanganaData';
 import HospitalMap from '@/components/HospitalMap';
 import HospitalList from '@/components/HospitalList';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { mapTranslations, commonTranslations } from '@/data/translations';
 
 const Map = () => {
   const [selectedHospital, setSelectedHospital] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const { t } = useLanguage();
 
   const filteredHospitals = telanganaHospitals.filter(hospital => 
     (selectedDistrict === '' || selectedDistrict === 'all-districts' || hospital.district === selectedDistrict) &&
@@ -49,7 +52,7 @@ const Map = () => {
                 <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Telangana Hospitals Map</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('telanganaHospitalsMap', mapTranslations)}</h1>
           </div>
         </div>
       </header>
@@ -60,10 +63,10 @@ const Map = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
                 <SelectTrigger className="h-12 border-2 border-blue-100">
-                  <SelectValue placeholder="Select District" />
+                  <SelectValue placeholder={t('selectDistrict', mapTranslations)} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all-districts">All Districts</SelectItem>
+                  <SelectItem value="all-districts">{t('allDistricts', mapTranslations)}</SelectItem>
                   {telanganaDistricts.map(district => (
                     <SelectItem key={district} value={district}>{district}</SelectItem>
                   ))}
@@ -71,12 +74,12 @@ const Map = () => {
               </Select>
               <Select value={selectedType} onValueChange={setSelectedType}>
                 <SelectTrigger className="h-12 border-2 border-blue-100">
-                  <SelectValue placeholder="Hospital Type" />
+                  <SelectValue placeholder={t('hospitalType', mapTranslations)} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all-types">All Types</SelectItem>
-                  <SelectItem value="Government">Government</SelectItem>
-                  <SelectItem value="Private">Private</SelectItem>
+                  <SelectItem value="all-types">{t('allTypes', mapTranslations)}</SelectItem>
+                  <SelectItem value="Government">{t('government', mapTranslations)}</SelectItem>
+                  <SelectItem value="Private">{t('private', mapTranslations)}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -100,21 +103,21 @@ const Map = () => {
           <Card className="healthcare-card mt-8">
             <CardHeader>
               <CardTitle className="text-xl text-gray-900">
-                {selectedHospital.name} - Detailed Information
+                {selectedHospital.name} - {t('detailedInformation', mapTranslations)}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Contact Information</h4>
-                  <p className="text-gray-600 mb-2"><strong>Address:</strong> {selectedHospital.address}</p>
-                  <p className="text-gray-600 mb-2"><strong>District:</strong> {selectedHospital.district}</p>
-                  <p className="text-gray-600 mb-2"><strong>Phone:</strong> {selectedHospital.phone}</p>
-                  <p className="text-gray-600 mb-2"><strong>Hours:</strong> {selectedHospital.hours}</p>
-                  <p className="text-gray-600"><strong>Type:</strong> {selectedHospital.type} Hospital</p>
+                  <h4 className="font-semibold text-gray-900 mb-2">{t('contactInformation', commonTranslations)}</h4>
+                  <p className="text-gray-600 mb-2"><strong>{t('address', mapTranslations)}:</strong> {selectedHospital.address}</p>
+                  <p className="text-gray-600 mb-2"><strong>{t('district', commonTranslations)}:</strong> {selectedHospital.district}</p>
+                  <p className="text-gray-600 mb-2"><strong>{t('phone', mapTranslations)}:</strong> {selectedHospital.phone}</p>
+                  <p className="text-gray-600 mb-2"><strong>{t('hours', mapTranslations)}:</strong> {selectedHospital.hours}</p>
+                  <p className="text-gray-600"><strong>{t('type', mapTranslations)}:</strong> {selectedHospital.type} {t('hospital', commonTranslations)}</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Available Specialties</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">{t('availableSpecialties', mapTranslations)}</h4>
                   <div className="space-y-2">
                     {selectedHospital.specialties.map((specialty, index) => (
                       <div key={index} className="flex items-center space-x-2">
@@ -129,12 +132,12 @@ const Map = () => {
                 <Link to="/appointment" state={{ hospital: selectedHospital }}>
                   <Button className="button-primary">
                     <Calendar className="w-4 h-4 mr-2" />
-                    Book Appointment
+                    {t('bookAppointment', commonTranslations)}
                   </Button>
                 </Link>
                 <Link to="/doctors" state={{ hospital: selectedHospital }}>
                   <Button className="button-secondary">
-                    Find Doctors
+                    {t('findDoctors', commonTranslations)}
                   </Button>
                 </Link>
                 <Button 
@@ -142,14 +145,14 @@ const Map = () => {
                   onClick={() => getDirections(selectedHospital.latitude, selectedHospital.longitude)}
                 >
                   <Navigation className="w-4 h-4 mr-2" />
-                  Get Directions
+                  {t('getDirections', mapTranslations)}
                 </Button>
                 <Button 
                   className="button-secondary"
                   onClick={() => openInGoogleMaps(selectedHospital.latitude, selectedHospital.longitude)}
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  Open in Maps
+                  {t('openInMaps', mapTranslations)}
                 </Button>
               </div>
             </CardContent>
@@ -161,40 +164,40 @@ const Map = () => {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <MapPin className="w-5 h-5 text-blue-600" />
-                <span className="text-xl text-gray-900">Selected Location Details</span>
+                <span className="text-xl text-gray-900">{t('selectedLocationDetails', mapTranslations)}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Location Information</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">{t('locationInformation', mapTranslations)}</h4>
                   {selectedLocation.address && (
-                    <p className="text-gray-600 mb-2"><strong>Address:</strong> {selectedLocation.address}</p>
+                    <p className="text-gray-600 mb-2"><strong>{t('address', mapTranslations)}:</strong> {selectedLocation.address}</p>
                   )}
-                  <p className="text-gray-600 mb-2"><strong>Latitude:</strong> {selectedLocation.lat.toFixed(6)}</p>
-                  <p className="text-gray-600 mb-2"><strong>Longitude:</strong> {selectedLocation.lng.toFixed(6)}</p>
-                  <p className="text-gray-600 mb-2"><strong>Coordinates:</strong> {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}</p>
+                  <p className="text-gray-600 mb-2"><strong>{t('latitude', mapTranslations)}:</strong> {selectedLocation.lat.toFixed(6)}</p>
+                  <p className="text-gray-600 mb-2"><strong>{t('longitude', mapTranslations)}:</strong> {selectedLocation.lng.toFixed(6)}</p>
+                  <p className="text-gray-600 mb-2"><strong>{t('coordinates', mapTranslations)}:</strong> {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Available Actions</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">{t('availableActions', mapTranslations)}</h4>
                   <div className="space-y-3">
                     <Button 
                       className="button-secondary w-full"
                       onClick={() => getDirections(selectedLocation.lat, selectedLocation.lng)}
                     >
                       <Navigation className="w-4 h-4 mr-2" />
-                      Get Directions to This Location
+                      {t('getDirectionsToLocation', mapTranslations)}
                     </Button>
                     <Button 
                       className="button-secondary w-full"
                       onClick={() => openInGoogleMaps(selectedLocation.lat, selectedLocation.lng)}
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
-                      Open in Google Maps
+                      {t('openInGoogleMaps', mapTranslations)}
                     </Button>
                     <Button className="button-secondary w-full">
                       <MapPin className="w-4 h-4 mr-2" />
-                      Find Nearby Hospitals
+                      {t('findNearbyHospitals', mapTranslations)}
                     </Button>
                   </div>
                 </div>

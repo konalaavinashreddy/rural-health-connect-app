@@ -169,6 +169,258 @@ export const commonTranslations = {
   }
 };
 
+// Appointment page translations
+export const appointmentTranslations = {
+  appointmentConfirmed: {
+    en: "Appointment Confirmed",
+    te: "అపాయింట్మెంట్ ధృవీకరించబడింది"
+  },
+  appointmentBookedSuccessfully: {
+    en: "Appointment Booked Successfully!",
+    te: "అపాయింట్మెంట్ విజయవంతంగా బుక్ చేయబడింది!"
+  },
+  appointmentDetails: {
+    en: "Appointment Details",
+    te: "అపాయింట్మెంట్ వివరాలు"
+  },
+  opid: {
+    en: "OPID",
+    te: "ఓపిఐడి"
+  },
+  date: {
+    en: "Date",
+    te: "తేదీ"
+  },
+  time: {
+    en: "Time",
+    te: "సమయం"
+  },
+  getDirectionsToHospital: {
+    en: "Get Directions to Hospital",
+    te: "ఆసుపత్రికి దిశలను పొందండి"
+  },
+  backToHome: {
+    en: "Back to Home",
+    te: "హోమ్‌కి తిరిగి వెళ్లండి"
+  },
+  selectAppointmentDetails: {
+    en: "Select Appointment Details",
+    te: "అపాయింట్మెంట్ వివరాలను ఎంచుకోండి"
+  },
+  selectHospital: {
+    en: "Select Hospital",
+    te: "ఆసుపత్రిని ఎంచుకోండి"
+  },
+  chooseHospital: {
+    en: "Choose a hospital",
+    te: "ఆసుపత్రిని ఎంచుకోండి"
+  },
+  selectDate: {
+    en: "Select Date",
+    te: "తేదీని ఎంచుకోండి"
+  },
+  chooseDate: {
+    en: "Choose date",
+    te: "తేదీని ఎంచుకోండి"
+  },
+  today: {
+    en: "Today",
+    te: "ఈరోజు"
+  },
+  tomorrow: {
+    en: "Tomorrow",
+    te: "రేపు"
+  },
+  dayAfterTomorrow: {
+    en: "Day After Tomorrow",
+    te: "ఎల్లుండి"
+  },
+  selectTimeSlot: {
+    en: "Select Time Slot",
+    te: "సమయ స్లాట్‌ను ఎంచుకోండి"
+  },
+  morning: {
+    en: "Morning",
+    te: "ఉదయం"
+  },
+  afternoon: {
+    en: "Afternoon",
+    te: "మధ్యాహ్నం"
+  },
+  evening: {
+    en: "Evening",
+    te: "సాయంత్రం"
+  },
+  confirmBooking: {
+    en: "Confirm Booking",
+    te: "బుకింగ్ ధృవీకరించండి"
+  }
+};
+
+// Doctor profile translations
+export const doctorProfileTranslations = {
+  doctorProfile: {
+    en: "Doctor Profile",
+    te: "వైద్య ప్రొఫైల్"
+  },
+  specialist: {
+    en: "Specialist",
+    te: "స్పెషలిస్ట్"
+  },
+  doctorNotFound: {
+    en: "Doctor Not Found",
+    te: "వైద్యుడు కనుగొనబడలేదు"
+  },
+  doctorProfileNotExist: {
+    en: "The doctor profile you're looking for doesn't exist.",
+    te: "మీరు వెతుకుతున్న వైద్య ప్రొఫైల్ లేదు."
+  },
+  backToDoctors: {
+    en: "Back to Doctors",
+    te: "వైద్యులకు తిరిగి వెళ్లండి"
+  },
+  rating: {
+    en: "Rating",
+    te: "రేటింగ్"
+  },
+  yearsExperience: {
+    en: "Years Experience",
+    te: "సంవత్సరాల అనుభవం"
+  },
+  district: {
+    en: "District",
+    te: "జిల్లా"
+  },
+  successRate: {
+    en: "Success Rate",
+    te: "విజయ రేటు"
+  },
+  languagesSpoken: {
+    en: "Languages Spoken",
+    te: "మాట్లాడే భాషలు"
+  },
+  availability: {
+    en: "Availability",
+    te: "అందుబాటు"
+  },
+  nextAvailable: {
+    en: "Next Available",
+    te: "తదుపరి అందుబాటు"
+  },
+  consultationFee: {
+    en: "Consultation Fee",
+    te: "సంప్రదింపు రుసుము"
+  },
+  contactInformation: {
+    en: "Contact Information",
+    te: "సంప్రదింపు సమాచారం"
+  },
+  availableForConsultation: {
+    en: "Available for consultation",
+    te: "సంప్రదింపు కోసం అందుబాటులో"
+  },
+  chatWithAIAssistant: {
+    en: "Chat with AI Assistant",
+    te: "AI సహాయకుడితో చాట్ చేయండి"
+  }
+};
+
+// Prescriptions page translations
+export const prescriptionsTranslations = {
+  myPrescriptions: {
+    en: "My Prescriptions",
+    te: "నా ప్రిస్క్రిప్షన్లు"
+  },
+  currentPrescriptions: {
+    en: "Current Prescriptions",
+    te: "ప్రస్తుత ప్రిస్క్రిప్షన్లు"
+  },
+  pastPrescriptions: {
+    en: "Past Prescriptions",
+    te: "గత ప్రిస్క్రిప్షన్లు"
+  },
+  prescribedOn: {
+    en: "Prescribed on",
+    te: "ప్రిస్క్రైబ్ చేసిన తేదీ"
+  },
+  download: {
+    en: "Download",
+    te: "డౌన్‌లోడ్"
+  },
+  prescribedMedicines: {
+    en: "Prescribed Medicines",
+    te: "ప్రిస్క్రైబ్ చేసిన మందులు"
+  },
+  dosage: {
+    en: "Dosage",
+    te: "మోతాదు"
+  },
+  frequency: {
+    en: "Frequency",
+    te: "ఫ్రీక్వెన్సీ"
+  },
+  duration: {
+    en: "Duration",
+    te: "వ్యవధి"
+  },
+  nextVisit: {
+    en: "Next visit",
+    te: "తదుపరి విజిట్"
+  },
+  setReminders: {
+    en: "Set Reminders",
+    te: "రిమైండర్లు సెట్ చేయండి"
+  },
+  nearbyPharmacies: {
+    en: "Nearby Pharmacies",
+    te: "దగ్గరి మందుల దుకాణాలు"
+  },
+  away: {
+    en: "away",
+    te: "దూరంలో"
+  },
+  call: {
+    en: "Call",
+    te: "కాల్ చేయండి"
+  },
+  directions: {
+    en: "Directions",
+    te: "దిశలు"
+  }
+};
+
+// Doctor Forms page translations
+export const doctorFormsTranslations = {
+  doctorForms: {
+    en: "Doctor Forms",
+    te: "వైద్య ఫారమ్‌లు"
+  },
+  prescriptionAndPatientVitals: {
+    en: "Prescription & Patient Vitals",
+    te: "ప్రిస్క్రిప్షన్ & రోగి వైటల్స్"
+  },
+  addPrescription: {
+    en: "Add Prescription",
+    te: "ప్రిస్క్రిప్షన్ జోడించండి"
+  },
+  recordVitals: {
+    en: "Record Vitals",
+    te: "వైటల్స్ రికార్డ్ చేయండి"
+  }
+};
+
+// Not Found page translations
+export const notFoundTranslations = {
+  pageNotFound: {
+    en: "Oops! Page not found",
+    te: "అయ్యో! పేజీ కనుగొనబడలేదు"
+  },
+  returnToHome: {
+    en: "Return to Home",
+    te: "హోమ్‌కి తిరిగి వెళ్లండి"
+  }
+};
+
 // Home page specific translations (moved from Index.tsx)
 export const homeTranslations = {
   // Hero section
@@ -387,5 +639,105 @@ export const dietTipsTranslations = {
   generalGuidelines: {
     en: "These are general guidelines. Always consult with a healthcare provider for personalized advice.",
     te: "ఈ సలహాలు సాధారణ మార్గదర్శకాలు మాత్రమే. వైద్యుని సలహా తీసుకోవాలి."
+  }
+};
+
+// Map page translations
+export const mapTranslations = {
+  telanganaHospitalsMap: {
+    en: "Telangana Hospitals Map",
+    te: "తెలంగాణ ఆసుపత్రుల మ్యాప్"
+  },
+  selectDistrict: {
+    en: "Select District",
+    te: "జిల్లాను ఎంచుకోండి"
+  },
+  allDistricts: {
+    en: "All Districts",
+    te: "అన్ని జిల్లాలు"
+  },
+  hospitalType: {
+    en: "Hospital Type",
+    te: "ఆసుపత్రి రకం"
+  },
+  allTypes: {
+    en: "All Types",
+    te: "అన్ని రకాలు"
+  },
+  government: {
+    en: "Government",
+    te: "ప్రభుత్వ"
+  },
+  private: {
+    en: "Private",
+    te: "ప్రైవేట్"
+  },
+  detailedInformation: {
+    en: "Detailed Information",
+    te: "వివరణాత్మక సమాచారం"
+  },
+  address: {
+    en: "Address",
+    te: "చిరునామా"
+  },
+  phone: {
+    en: "Phone",
+    te: "ఫోన్"
+  },
+  hours: {
+    en: "Hours",
+    te: "గంటలు"
+  },
+  type: {
+    en: "Type",
+    te: "రకం"
+  },
+  availableSpecialties: {
+    en: "Available Specialties",
+    te: "అందుబాటులో ఉన్న ప్రత్యేకతలు"
+  },
+  getDirections: {
+    en: "Get Directions",
+    te: "దిశలను పొందండి"
+  },
+  openInMaps: {
+    en: "Open in Maps",
+    te: "మ్యాప్‌లలో తెరవండి"
+  },
+  selectedLocationDetails: {
+    en: "Selected Location Details",
+    te: "ఎంచుకున్న స్థాన వివరాలు"
+  },
+  locationInformation: {
+    en: "Location Information",
+    te: "స్థాన సమాచారం"
+  },
+  latitude: {
+    en: "Latitude",
+    te: "అక్షాంశం"
+  },
+  longitude: {
+    en: "Longitude",
+    te: "రేఖాంశం"
+  },
+  coordinates: {
+    en: "Coordinates",
+    te: "కోఆర్డినేట్లు"
+  },
+  availableActions: {
+    en: "Available Actions",
+    te: "అందుబాటులో ఉన్న చర్యలు"
+  },
+  getDirectionsToLocation: {
+    en: "Get Directions to This Location",
+    te: "ఈ స్థానానికి దిశలను పొందండి"
+  },
+  openInGoogleMaps: {
+    en: "Open in Google Maps",
+    te: "గూగుల్ మ్యాప్‌లలో తెరవండి"
+  },
+  findNearbyHospitals: {
+    en: "Find Nearby Hospitals",
+    te: "దగ్గరి ఆసుపత్రులను కనుగొనండి"
   }
 };

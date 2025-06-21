@@ -5,11 +5,14 @@ import { ArrowLeft, Calendar, Clock, MapPin, User, CheckCircle } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { appointmentTranslations, commonTranslations } from '@/data/translations';
 
 const Appointment = () => {
   const location = useLocation();
   const selectedDoctor = location.state?.doctor;
   const returnTo = location.state?.returnTo || '/'; // Default to home page
+  const { t } = useLanguage();
   
   const [selectedHospital, setSelectedHospital] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
@@ -53,7 +56,7 @@ const Appointment = () => {
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Appointment Confirmed</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{t('appointmentConfirmed', appointmentTranslations)}</h1>
             </div>
           </div>
         </header>
@@ -62,31 +65,31 @@ const Appointment = () => {
           <Card className="healthcare-card text-center">
             <CardContent className="p-8">
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Appointment Booked Successfully!</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('appointmentBookedSuccessfully', appointmentTranslations)}</h2>
               
               <div className="bg-green-50 rounded-lg p-6 mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Appointment Details</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('appointmentDetails', appointmentTranslations)}</h3>
                 <div className="space-y-3 text-left">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">OPID:</span>
+                    <span className="text-gray-600">{t('opid', appointmentTranslations)}:</span>
                     <span className="font-bold text-blue-600">{opid}</span>
                   </div>
                   {selectedDoctor && (
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Doctor:</span>
+                      <span className="text-gray-600">{t('doctor', commonTranslations)}:</span>
                       <span className="font-medium">{selectedDoctor.name}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Hospital:</span>
+                    <span className="text-gray-600">{t('hospital', commonTranslations)}:</span>
                     <span className="font-medium">{selectedHospital}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Date:</span>
+                    <span className="text-gray-600">{t('date', appointmentTranslations)}:</span>
                     <span className="font-medium">{selectedDate}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Time:</span>
+                    <span className="text-gray-600">{t('time', appointmentTranslations)}:</span>
                     <span className="font-medium">{selectedTime}</span>
                   </div>
                 </div>
@@ -96,12 +99,12 @@ const Appointment = () => {
                 <Link to="/map">
                   <Button className="button-secondary w-full">
                     <MapPin className="w-4 h-4 mr-2" />
-                    Get Directions to Hospital
+                    {t('getDirectionsToHospital', appointmentTranslations)}
                   </Button>
                 </Link>
                 <Link to={returnTo}>
                   <Button className="button-primary w-full">
-                    Back to Home
+                    {t('backToHome', appointmentTranslations)}
                   </Button>
                 </Link>
               </div>
@@ -122,7 +125,7 @@ const Appointment = () => {
                 <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Book Appointment</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('bookAppointment', commonTranslations)}</h1>
           </div>
         </div>
       </header>
@@ -146,17 +149,17 @@ const Appointment = () => {
 
         <Card className="healthcare-card">
           <CardHeader>
-            <CardTitle>Select Appointment Details</CardTitle>
+            <CardTitle>{t('selectAppointmentDetails', appointmentTranslations)}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Hospital Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Hospital
+                {t('selectHospital', appointmentTranslations)}
               </label>
               <Select value={selectedHospital} onValueChange={setSelectedHospital}>
                 <SelectTrigger className="h-12 border-2 border-blue-100">
-                  <SelectValue placeholder="Choose a hospital" />
+                  <SelectValue placeholder={t('chooseHospital', appointmentTranslations)} />
                 </SelectTrigger>
                 <SelectContent>
                   {hospitals.map(hospital => (
@@ -169,16 +172,16 @@ const Appointment = () => {
             {/* Date Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Date
+                {t('selectDate', appointmentTranslations)}
               </label>
               <Select value={selectedDate} onValueChange={setSelectedDate}>
                 <SelectTrigger className="h-12 border-2 border-blue-100">
-                  <SelectValue placeholder="Choose date" />
+                  <SelectValue placeholder={t('chooseDate', appointmentTranslations)} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Today">Today</SelectItem>
-                  <SelectItem value="Tomorrow">Tomorrow</SelectItem>
-                  <SelectItem value="Day After Tomorrow">Day After Tomorrow</SelectItem>
+                  <SelectItem value="Today">{t('today', appointmentTranslations)}</SelectItem>
+                  <SelectItem value="Tomorrow">{t('tomorrow', appointmentTranslations)}</SelectItem>
+                  <SelectItem value="Day After Tomorrow">{t('dayAfterTomorrow', appointmentTranslations)}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -186,11 +189,11 @@ const Appointment = () => {
             {/* Time Slot Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Time Slot
+                {t('selectTimeSlot', appointmentTranslations)}
               </label>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-medium text-gray-800 mb-2">Morning</h4>
+                  <h4 className="font-medium text-gray-800 mb-2">{t('morning', appointmentTranslations)}</h4>
                   <div className="grid grid-cols-3 gap-2">
                     {timeSlots.morning.map(time => (
                       <Button
@@ -205,7 +208,7 @@ const Appointment = () => {
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-800 mb-2">Afternoon</h4>
+                  <h4 className="font-medium text-gray-800 mb-2">{t('afternoon', appointmentTranslations)}</h4>
                   <div className="grid grid-cols-3 gap-2">
                     {timeSlots.afternoon.map(time => (
                       <Button
@@ -220,7 +223,7 @@ const Appointment = () => {
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-800 mb-2">Evening</h4>
+                  <h4 className="font-medium text-gray-800 mb-2">{t('evening', appointmentTranslations)}</h4>
                   <div className="grid grid-cols-3 gap-2">
                     {timeSlots.evening.map(time => (
                       <Button
@@ -243,7 +246,7 @@ const Appointment = () => {
               disabled={!selectedHospital || !selectedDate || !selectedTime}
             >
               <Calendar className="w-5 h-5 mr-2" />
-              Confirm Booking
+              {t('confirmBooking', appointmentTranslations)}
             </Button>
           </CardContent>
         </Card>
