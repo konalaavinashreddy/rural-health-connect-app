@@ -8,12 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { telanganaSpecialties } from '@/data/telanganaData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { commonTranslations, homeTranslations } from '@/data/translations';
-import DetailedDietTips from '@/components/DetailedDietTips';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCondition, setSelectedCondition] = useState('');
-  const [selectedDietTip, setSelectedDietTip] = useState<any>(null);
   const navigate = useNavigate();
   const { language, toggleLanguage, t } = useLanguage();
 
@@ -84,7 +82,7 @@ const Index = () => {
       id: 'fever',
       title: 'Fever',
       titleTelugu: 'జ్వరం',
-      icon: <Droplets className="w-8 h-8 text-red-500" />,
+      iconType: 'droplets', // Store icon type as string instead of component
       recommendations: {
         do: ['Light khichdi, dal rice', 'Coconut water for hydration', 'Warm herbal teas'],
         avoid: ['Spicy/oily food', 'Heavy meals', 'Cold drinks'],
@@ -97,7 +95,7 @@ const Index = () => {
       id: 'diabetes',
       title: 'Diabetes',
       titleTelugu: 'మధుమేహం',
-      icon: <Apple className="w-8 h-8 text-green-500" />,
+      iconType: 'apple',
       recommendations: {
         do: ['Low GI foods: Oats, leafy greens', 'Include protein & fiber', 'Small frequent meals'],
         avoid: ['Sugar, white rice', 'Processed foods', 'Sugary drinks'],
@@ -110,7 +108,7 @@ const Index = () => {
       id: 'pregnancy',
       title: 'Pregnancy',
       titleTelugu: 'గర్భధారణ',
-      icon: <Heart className="w-8 h-8 text-pink-500" />,
+      iconType: 'heart',
       recommendations: {
         do: ['Iron & folic-rich foods: Palak, citrus fruits', 'Milk, eggs for calcium', 'Regular hydration'],
         avoid: ['Papaya, raw meat', 'Alcohol, caffeine', 'Raw eggs'],
@@ -123,7 +121,7 @@ const Index = () => {
       id: 'child-growth',
       title: 'Child Growth',
       titleTelugu: 'పిల్లల ఎదుగుదల',
-      icon: <Baby className="w-8 h-8 text-blue-500" />,
+      iconType: 'baby',
       recommendations: {
         do: ['Protein-rich diet: Eggs, dal', 'Milk & fruits daily', 'Variety of vegetables'],
         avoid: ['Junk food', 'Excess sugar', 'Carbonated drinks'],
@@ -133,6 +131,23 @@ const Index = () => {
       borderColor: 'border-blue-200'
     }
   ];
+
+  // Helper function to render icons based on type
+  const renderIcon = (iconType: string) => {
+    const iconProps = { className: "w-8 h-8" };
+    switch (iconType) {
+      case 'droplets':
+        return <Droplets {...iconProps} className="w-8 h-8 text-red-500" />;
+      case 'apple':
+        return <Apple {...iconProps} className="w-8 h-8 text-green-500" />;
+      case 'heart':
+        return <Heart {...iconProps} className="w-8 h-8 text-pink-500" />;
+      case 'baby':
+        return <Baby {...iconProps} className="w-8 h-8 text-blue-500" />;
+      default:
+        return <Heart {...iconProps} className="w-8 h-8 text-gray-500" />;
+    }
+  };
 
   const filteredRecommendations = selectedCondition && selectedCondition !== 'all-conditions'
     ? foodRecommendations.filter(rec => rec.id === selectedCondition)
@@ -186,7 +201,17 @@ const Index = () => {
   };
 
   const handleMoreDietTips = (condition: any) => {
-    navigate('/diet-tips', { state: { condition } });
+    // Create a serializable version of condition without React components
+    const serializableCondition = {
+      id: condition.id,
+      title: condition.title,
+      titleTelugu: condition.titleTelugu,
+      iconType: condition.iconType,
+      recommendations: condition.recommendations,
+      bgColor: condition.bgColor,
+      borderColor: condition.borderColor
+    };
+    navigate('/diet-tips', { state: { condition: serializableCondition } });
   };
 
   return (
@@ -412,10 +437,10 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
               <Select value={selectedCondition} onValueChange={setSelectedCondition}>
                 <SelectTrigger className="w-64 h-12 border-2 border-green-200">
-                  <SelectValue placeholder={t('selectCondition', homeTranslations) || 'Select Health Condition'} />
+                  <SelectValue placeholder={t('selectCondition', homeTranslations)} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all-conditions">{t('allConditions', homeTranslations) || 'All Conditions'}</SelectItem>
+                  <SelectItem value="all-conditions">{t('allConditions', homeTranslations)}</SelectItem>
                   <SelectItem value="fever">{language === 'te' ? 'జ్వరం' : 'Fever'}</SelectItem>
                   <SelectItem value="diabetes">{language === 'te' ? 'మధుమేహం' : 'Diabetes'}</SelectItem>
                   <SelectItem value="pregnancy">{language === 'te' ? 'గర్భధారణ' : 'Pregnancy'}</SelectItem>
@@ -431,7 +456,7 @@ const Index = () => {
                 <CardHeader className="text-center pb-4">
                   <div className="flex justify-center mb-4">
                     <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      {condition.icon}
+                      {renderIcon(condition.iconType)}
                     </div>
                   </div>
                   <CardTitle className="text-xl text-gray-900">
@@ -442,7 +467,7 @@ const Index = () => {
                   <div>
                     <h4 className="font-semibold text-green-700 mb-2 flex items-center">
                       <CheckCircle className="w-4 h-4 mr-2" />
-                      {t('recommended', homeTranslations) || 'Recommended:'}
+                      {t('recommended', homeTranslations)}
                     </h4>
                     <ul className="space-y-1">
                       {condition.recommendations.do.map((item, idx) => (
@@ -457,7 +482,7 @@ const Index = () => {
                   <div>
                     <h4 className="font-semibold text-red-700 mb-2 flex items-center">
                       <span className="w-4 h-4 mr-2 text-red-500">❌</span>
-                      {t('avoid', homeTranslations) || 'Avoid:'}
+                      {t('avoid', homeTranslations)}
                     </h4>
                     <ul className="space-y-1">
                       {condition.recommendations.avoid.map((item, idx) => (
@@ -471,7 +496,7 @@ const Index = () => {
                   
                   <div className="bg-white/70 rounded-lg p-3 mt-4">
                     <p className="text-xs text-gray-600 font-medium">
-                      {t('healthTip', homeTranslations) || 'Health Tip:'}
+                      {t('healthTip', homeTranslations)}
                     </p>
                     <p className="text-sm text-gray-800 mt-1">
                       {condition.recommendations.telugu}
@@ -483,7 +508,7 @@ const Index = () => {
                     className="w-full button-primary mt-4"
                   >
                     <ChefHat className="w-4 h-4 mr-2" />
-                    {t('moreDietTips', homeTranslations) || 'More Diet Tips'}
+                    {t('moreDietTips', homeTranslations)}
                   </Button>
                 </CardContent>
               </Card>
@@ -496,7 +521,7 @@ const Index = () => {
                 onClick={() => setSelectedCondition('')}
                 className="button-secondary"
               >
-                {t('viewAllConditions', homeTranslations) || 'View All Conditions'}
+                {t('viewAllConditions', homeTranslations)}
               </Button>
             </div>
           )}

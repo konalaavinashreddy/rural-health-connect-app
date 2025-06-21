@@ -1,4 +1,3 @@
-
 export const commonTranslations = {
   // Navigation and common UI
   back: {
@@ -88,6 +87,12 @@ export const commonTranslations = {
   logout: {
     en: "Logout",
     te: "లాగ్ అవుట్"
+  },
+  
+  // Add missing translations
+  viewDoctors: {
+    en: "View Doctors",
+    te: "వైద్యులను చూడండి"
   }
 };
 
@@ -147,5 +152,111 @@ export const homeTranslations = {
   allRightsReserved: {
     en: "© 2024 Rural Health Connect. All rights reserved. | Made with ❤️ for rural Telangana",
     te: "© 2024 గ్రామీణ ఆరోగ్య కనెక్ట్. అన్ని హక్కులు రిజర్వ్ చేయబడ్డాయి. | గ్రామీణ తెలంగాణ కోసం ❤️ తో తయారు చేయబడింది"
+  },
+  
+  // Add missing translations
+  quickLinks: {
+    en: "Quick Links",
+    te: "త్వరిత లింకులు"
+  },
+  selectCondition: {
+    en: "Select Health Condition",
+    te: "ఆరోగ్య పరిస్థితిని ఎంచుకోండి"
+  },
+  allConditions: {
+    en: "All Conditions",
+    te: "అన్ని పరిస్థితులు"
+  },
+  recommended: {
+    en: "Recommended",
+    te: "సిఫార్సు చేయబడింది"
+  },
+  avoid: {
+    en: "Avoid",
+    te: "తరుగుండి"
+  },
+  healthTip: {
+    en: "Health Tip",
+    te: "ఆరోగ్య చిట్కా"
+  },
+  moreDietTips: {
+    en: "More Diet Tips",
+    te: "మరిన్ని ఆహార చిట్కాలు"
+  },
+  viewAllConditions: {
+    en: "View All Conditions",
+    te: "అన్ని పరిస్థితులను చూడండి"
+  },
+  expertDoctors: {
+    en: "Our Expert Doctors",
+    te: "మా నిపుణ వైద్యులు"
+  },
+  experience: {
+    en: "experience",
+    te: "అనుభవం"
+  },
+  visitingHours: {
+    en: "Visiting Hours",
+    te: "వైద్య సమయాలు"
+  },
+  govSchemes: {
+    en: "Government Health Schemes",
+    te: "ప్రభుత్వ ఆరోగ్య పథకాలు"
+  },
+  learnMoreApply: {
+    en: "Learn More & Apply",
+    te: "మరింత తెలుసుకోండి మరియు దరఖాస్తు చేయండి"
+  },
+  healthAssistant: {
+    en: "Rural Health Assistant",
+    te: "గ్రామీణ ఆరోగ్య సహాయకుడు"
+  },
+  instantAdvice: {
+    en: "Get instant health advice in Telugu and English",
+    te: "తెలుగు మరియు ఇంగ్లీష్‌లో తక్షణ ఆరోగ్య సలహా పొందండి"
+  },
+  healthSupport: {
+    en: "24/7 Health Support",
+    te: "24/7 ఆరోగ్య మద్దతు"
+  },
+  voiceTextChat: {
+    en: "Voice and text chat in your language",
+    te: "మీ భాషలో వాయిస్ మరియు టెక్స్ట్ చాట్"
+  },
+  startHealthChat: {
+    en: "Start Health Chat",
+    te: "ఆరోగ్య చాట్ ప్రారంభించండి"
+  },
+  findHospitals: {
+    en: "Find Hospitals Near You",
+    te: "మీ దగ్గర ఆసుపత్రులను కనుగొనండి"
+  },
+  viewFullMap: {
+    en: "View Full Map",
+    te: "పూర్తి మ్యాప్ చూడండి"
+  },
+  healthStats: {
+    en: "Telangana Healthcare Statistics",
+    te: "తెలంగాణ ఆరోగ్య గణాంకాలు"
+  },
+  qualifiedDoctors: {
+    en: "Qualified Doctors",
+    te: "అర్హత కలిగిన వైద్యులు"
+  },
+  patientsServed: {
+    en: "Patients Served",
+    te: "రోగులకు సేవలు అందించారు"
+  },
+  averageRating: {
+    en: "Average Rating",
+    te: "సగటు రేటింగ్"
+  },
+  medicalSpecialties: {
+    en: "Available Medical Specialties in Telangana",
+    te: "తెలంగాణలో అందుబాటులో ఉన్న వైద్య ప్రత్యేకతలు"
+  },
+  clickSpecialty: {
+    en: "Click on any specialty to find doctors in that field",
+    te: "ఆ రంగంలోని వైద్యులను కనుగొనడానికి ఏదైనా ప్రత్యేకతపై క్లిక్ చేయండి"
   }
 };

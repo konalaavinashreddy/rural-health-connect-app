@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, AlertCircle, Clock, Utensils, Home } from 'lucide-react';
+import { ArrowLeft, CheckCircle, AlertCircle, Clock, Utensils, Home, Droplets, Apple, Heart, Baby } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,6 +11,23 @@ const DietTips = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const condition = location.state?.condition;
+
+  // Helper function to render icons based on type
+  const renderIcon = (iconType: string) => {
+    const iconProps = { className: "w-8 h-8" };
+    switch (iconType) {
+      case 'droplets':
+        return <Droplets {...iconProps} className="w-8 h-8 text-red-500" />;
+      case 'apple':
+        return <Apple {...iconProps} className="w-8 h-8 text-green-500" />;
+      case 'heart':
+        return <Heart {...iconProps} className="w-8 h-8 text-pink-500" />;
+      case 'baby':
+        return <Baby {...iconProps} className="w-8 h-8 text-blue-500" />;
+      default:
+        return <Heart {...iconProps} className="w-8 h-8 text-gray-500" />;
+    }
+  };
 
   // If no condition data, redirect to home
   if (!condition) {
@@ -139,7 +156,7 @@ const DietTips = () => {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg">
-              {condition.icon}
+              {renderIcon(condition.iconType)}
             </div>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
