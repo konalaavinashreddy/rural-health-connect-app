@@ -8,10 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { telanganaSpecialties } from '@/data/telanganaData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { commonTranslations, homeTranslations } from '@/data/translations';
+import DetailedDietTips from '@/components/DetailedDietTips';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCondition, setSelectedCondition] = useState('');
+  const [selectedDietTip, setSelectedDietTip] = useState<any>(null);
   const navigate = useNavigate();
   const { language, toggleLanguage, t } = useLanguage();
 
@@ -181,6 +183,10 @@ const Index = () => {
         clearSearch: true 
       } 
     });
+  };
+
+  const handleMoreDietTips = (condition: any) => {
+    setSelectedDietTip(condition);
   };
 
   return (
@@ -472,7 +478,10 @@ const Index = () => {
                     </p>
                   </div>
                   
-                  <Button className="w-full button-primary mt-4">
+                  <Button 
+                    onClick={() => handleMoreDietTips(condition)}
+                    className="w-full button-primary mt-4"
+                  >
                     <ChefHat className="w-4 h-4 mr-2" />
                     {t('moreDietTips', homeTranslations) || 'More Diet Tips'}
                   </Button>
