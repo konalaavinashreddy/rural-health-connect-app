@@ -1,30 +1,71 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft, Send, Mic, Bot, User, Heart,
-  Thermometer, Baby, Pill
+  Thermometer, Baby, Pill, Globe
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { commonTranslations } from '@/data/translations';
 
 const Chatbot = () => {
+  const { language, toggleLanguage, t } = useLanguage();
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Namaste! I'm your Rural Health Assistant. I can help you with symptoms, first aid, finding doctors, and health guidance in Telugu and English. What health concern can I help you with today? \n\n\u0c28\u0c2e\u0c38\u0c4d\u0c15\u0c3e\u0c30\u0c02! \u0c28\u0c47\u0c28\u0c41 \u0c2e\u0c40 \u0c17\u0c4d\u0c30\u0c3e\u0c2e\u0c40\u0c23 \u0c06\u0c30\u0c4b\u0c17\u0c4d\u0c2f \u0c38\u0c39\u0c3e\u0c2f\u0c15\u0c41\u0c21\u0c28\u0c41. \u0c32\u0c15\u0c4d\u0c37\u0c23\u0c3e\u0c32\u0c41, \u0c2a\u0c4d\u0c30\u0c25\u0c2e\u0c1a\u0c3f\u0c15\u0c3f\u0c24\u0c4d\u0c38, \u0c35\u0c48\u0c27\u0c4d\u0c2f\u0c41\u0c32\u0c28\u0c41 \u0c15\u0c28\u0c41\u0c17\u0c4a\u0c28\u0c21\u0c02 \u0c2e\u0c30\u0c3f\u0c2f\u0c41 \u0c06\u0c30\u0c4b\u0c17\u0c4d\u0c2f \u0c2e\u0c3e\u0c30\u0c4d\u0c17\u0c26\u0c30\u0c4d\u0c36\u0c15\u0c24\u0c4d\u0c35\u0c02\u0c32\u0c4b \u0c28\u0c47\u0c28\u0c41 \u0c2e\u0c40\u0c15\u0c41 \u0c38\u0c39\u0c3e\u0c2f\u0c02 \u0c1a\u0c47\u0c2f\u0c17\u0c32\u0c28\u0c41\u0c02।",
+      text: language === 'te' 
+        ? "నమస్కారం! నేను మీ గ్రామీణ ఆరోగ్య సహాయకుడను. లక్షణాలు, ప్రథమ చికిత్స, వైద్యులను కనుగొనడం మరియు తెలుగు మరియు ఆంగ్లంలో ఆరోగ్య మార్గదర్శకత్వంలో నేను మీకు సహాయం చేయగలను. ఈ రోజు నేను మీకు ఏ ఆరోగ్య సమస్యతో సహాయం చేయగలను?"
+        : "Namaste! I'm your Rural Health Assistant. I can help you with symptoms, first aid, finding doctors, and health guidance in Telugu and English. What health concern can I help you with today?",
       sender: 'bot',
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('english');
+
+  const chatbotTranslations = {
+    ruralHealthAssistant: {
+      en: "Rural Health Assistant",
+      te: "గ్రామీణ ఆరోగ్య సహాయకుడు"
+    },
+    quickHealthQuestions: {
+      en: "Quick Health Questions",
+      te: "త్వరిత ఆరోగ్య ప్రశ్నలు"
+    },
+    typePlaceholder: {
+      en: "Type your health question...",
+      te: "మీ ఆరోగ్య ప్రశ్నను టైప్ చేయండి..."
+    },
+    emergencyNotice: {
+      en: "⚠️ This chatbot is for informational purposes only. For emergencies, dial 108.",
+      te: "⚠️ ఈ చాట్‌బాట్ కేవలం సమాచార ప్రయోజనాల కోసం మాత్రమే. అత్యవసర పరిస్థితుల కోసం, 108కు డయల్ చేయండి."
+    }
+  };
 
   const quickQuestions = [
-    { text: "I have fever, what should I do?", telugu: "\u0c28\u0c3e\u0c15\u0c41 \u0c1c\u0c4d\u0c35\u0c30\u0c02 \u0c35\u0c1a\u0c4d\u0c1a\u0c3f\u0c02\u0c26\u0c3f, \u0c0f\u0c2e\u0c3f \u0c1a\u0c47\u0c2f\u0c3e\u0c32\u0c3f?", icon: Thermometer },
-    { text: "Child health tips", telugu: "\u0c2a\u0c3f\u0c32\u0c4d\u0c32\u0c32\u0c3e\u0c30\u0c4b\u0c17\u0c4d\u0c2f \u0c1a\u0c3f\u0c1f\u0c4d\u0c15\u0c3e\u0c32\u0c41", icon: Baby },
-    { text: "Medicine reminder help", telugu: "\u0c2e\u0c02\u0c26\u0c41\u0c32 \u0c17\u0c41\u0c30\u0c4d\u0c24\u0c41\u0c17\u0c3e \u0c38\u0c39\u0c3e\u0c2f\u0c02", icon: Pill }
+    { 
+      text: "I have fever, what should I do?", 
+      telugu: "నాకు జ్వరం వచ్చింది, ఏమి చేయాలి?", 
+      icon: Thermometer 
+    },
+    { 
+      text: "Child health tips", 
+      telugu: "పిల్లల ఆరోగ్య చిట్కాలు", 
+      icon: Baby 
+    },
+    { 
+      text: "Medicine reminder help", 
+      telugu: "మందుల గుర్తుగా సహాయం", 
+      icon: Pill 
+    }
   ];
+
+  const chatT = (key: string) => {
+    const translation = chatbotTranslations[key];
+    return translation ? (language === 'te' ? translation.te : translation.en) : key;
+  };
 
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
@@ -49,10 +90,24 @@ const Chatbot = () => {
 
   const getBotResponse = (message) => {
     const msg = message.toLowerCase();
-    if (msg.includes('fever') || msg.includes('జ్వరం')) return 'Drink fluids, rest, and take paracetamol if needed.';
-    if (msg.includes('child')) return 'Ensure regular vaccinations and hygiene for children.';
-    if (msg.includes('medicine')) return 'Set reminders to take medicine regularly. Would you like help setting that?';
-    return 'Please describe your health concern more clearly.';
+    if (msg.includes('fever') || msg.includes('జ్వరం')) {
+      return language === 'te' 
+        ? 'ద్రవ పదార్థాలు తాగండి, విశ్రాంతి తీసుకోండి మరియు అవసరమైతే పారాసిటమాల్ తీసుకోండి।'
+        : 'Drink fluids, rest, and take paracetamol if needed.';
+    }
+    if (msg.includes('child') || msg.includes('పిల్లల')) {
+      return language === 'te'
+        ? 'పిల్లలకు క్రమ వ్యాధిప్రతిరోధక టీకాలు మరియు పరిశుభ్రతను నిర్ధారించండి।'
+        : 'Ensure regular vaccinations and hygiene for children.';
+    }
+    if (msg.includes('medicine') || msg.includes('మందు')) {
+      return language === 'te'
+        ? 'మందులను క్రమం తప్పకుండా తీసుకోవడానికి రిమైండర్లను సెట్ చేయండి। దాన్ని సెట్ చేయడంలో మీకు సహాయం కావాలా?'
+        : 'Set reminders to take medicine regularly. Would you like help setting that?';
+    }
+    return language === 'te'
+      ? 'దయచేసి మీ ఆరోగ్య సమస్యను మరింత స్పష్టంగా వివరించండి।'
+      : 'Please describe your health concern more clearly.';
   };
 
   return (
@@ -64,12 +119,15 @@ const Chatbot = () => {
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
-          <h1 className="text-xl font-bold text-gray-800">Rural Health Assistant</h1>
+          <h1 className="text-xl font-bold text-gray-800">{chatT('ruralHealthAssistant')}</h1>
         </div>
-        <div className="flex space-x-2">
-          <Button variant={selectedLanguage === 'telugu' ? 'default' : 'outline'} onClick={() => setSelectedLanguage('telugu')}>తెలుగు</Button>
-          <Button variant={selectedLanguage === 'english' ? 'default' : 'outline'} onClick={() => setSelectedLanguage('english')}>English</Button>
-        </div>
+        <Button 
+          onClick={toggleLanguage}
+          className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+        >
+          <Globe className="w-4 h-4" />
+          {t('language', commonTranslations)}
+        </Button>
       </header>
 
       <main className="max-w-4xl mx-auto p-4">
@@ -88,17 +146,17 @@ const Chatbot = () => {
 
         <Card className="mb-4">
           <CardHeader>
-            <CardTitle className="text-sm">Quick Health Questions</CardTitle>
+            <CardTitle className="text-sm">{chatT('quickHealthQuestions')}</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-2">
             {quickQuestions.map((q, i) => (
               <Button
                 key={i}
                 variant="outline"
-                onClick={() => setInputMessage(selectedLanguage === 'telugu' ? q.telugu : q.text)}
+                onClick={() => setInputMessage(language === 'te' ? q.telugu : q.text)}
               >
                 <q.icon className="w-4 h-4 mr-2" />
-                {selectedLanguage === 'telugu' ? q.telugu : q.text}
+                {language === 'te' ? q.telugu : q.text}
               </Button>
             ))}
           </CardContent>
@@ -110,7 +168,7 @@ const Chatbot = () => {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder={selectedLanguage === 'telugu' ? 'మీ ఆరోగ్య ప్రశ్నను టైప్ చేయండి...' : 'Type your health question...'}
+              placeholder={chatT('typePlaceholder')}
               className="flex-1"
             />
             <Button onClick={handleSendMessage} disabled={!inputMessage.trim()}>
@@ -120,7 +178,7 @@ const Chatbot = () => {
         </Card>
 
         <p className="text-center text-xs text-gray-500 mt-2">
-          ⚠️ This chatbot is for informational purposes only. For emergencies, dial 108.
+          {chatT('emergencyNotice')}
         </p>
       </main>
     </div>

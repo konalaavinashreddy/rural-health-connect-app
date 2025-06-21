@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Doctors from "./pages/Doctors";
@@ -22,27 +23,29 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Index />} />
-          <Route path="/doctors" element={<Doctors />} />
-          <Route path="/doctor/:doctorId" element={<DoctorProfile />} />
-          <Route path="/appointment" element={<Appointment />} />
-          <Route path="/medicines" element={<Medicines />} />
-          <Route path="/prescriptions" element={<Prescriptions />} />
-          <Route path="/medicine-reminders" element={<MedicineReminders />} />
-          <Route path="/chatbot" element={<Chatbot />} />
-          <Route path="/scheme-details" element={<SchemeDetails />} />
-          <Route path="/map" element={<Map />} />
-          <Route path="/doctor-forms" element={<DoctorForms />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <LanguageProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Index />} />
+            <Route path="/doctors" element={<Doctors />} />
+            <Route path="/doctor/:doctorId" element={<DoctorProfile />} />
+            <Route path="/appointment" element={<Appointment />} />
+            <Route path="/medicines" element={<Medicines />} />
+            <Route path="/prescriptions" element={<Prescriptions />} />
+            <Route path="/medicine-reminders" element={<MedicineReminders />} />
+            <Route path="/chatbot" element={<Chatbot />} />
+            <Route path="/scheme-details" element={<SchemeDetails />} />
+            <Route path="/map" element={<Map />} />
+            <Route path="/doctor-forms" element={<DoctorForms />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 
