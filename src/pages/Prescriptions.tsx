@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Download, MapPin, Pill, Clock, User, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +9,15 @@ import { prescriptionsTranslations, commonTranslations } from '@/data/translatio
 const Prescriptions = () => {
   const [activeTab, setActiveTab] = useState('current');
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the return path from navigation state, default to home
+  const returnTo = location.state?.returnTo || '/home';
+
+  const handleBackClick = () => {
+    navigate(returnTo);
+  };
 
   const currentPrescriptions = [
     {
@@ -47,11 +55,9 @@ const Prescriptions = () => {
       <header className="bg-white shadow-sm border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link to="/">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
-            </Link>
+            <Button variant="ghost" size="sm" onClick={handleBackClick}>
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
             <div>
               <h1 className="text-xl font-bold text-gray-900">{t('myPrescriptions', prescriptionsTranslations)}</h1>
               <p className="text-sm text-gray-600">నా ప్రిస్క్రిప్షన్లు</p>
