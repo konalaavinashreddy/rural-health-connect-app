@@ -14,27 +14,38 @@ const Doctors = () => {
   const urlSearchQuery = new URLSearchParams(location.search).get('search') || '';
   const stateSearchQuery = location.state?.searchQuery || '';
   const stateSpecialty = location.state?.specialty || '';
+  const shouldClearSearch = location.state?.clearSearch || false;
   
-  const [searchQuery, setSearchQuery] = useState(urlSearchQuery || stateSearchQuery);
+  const [searchQuery, setSearchQuery] = useState(() => {
+    if (shouldClearSearch) return '';
+    return urlSearchQuery || stateSearchQuery;
+  });
   const [selectedSpecialty, setSelectedSpecialty] = useState(stateSpecialty);
   const [selectedDistrict, setSelectedDistrict] = useState(preSelectedHospital?.district || '');
 
   // Update search query when URL parameters change
   useEffect(() => {
     const urlSearch = new URLSearchParams(location.search).get('search');
-    if (urlSearch) {
+    if (urlSearch && !shouldClearSearch) {
       setSearchQuery(urlSearch);
     }
-  }, [location.search]);
+  }, [location.search, shouldClearSearch]);
 
   const filteredDoctors = telanganaDoctors.filter(doctor => 
     (searchQuery === '' || 
      doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
      doctor.specialty.toLowerCase().includes(searchQuery.toLowerCase()) ||
-     doctor.hospital.toLowerCase().includes(searchQuery.toLowerCase())) &&
+     doctor.hospital.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     doctor.district.toLowerCase().includes(searchQuery.toLowerCase())) &&
     (selectedSpecialty === '' || doctor.specialty === selectedSpecialty) &&
     (selectedDistrict === '' || doctor.district === selectedDistrict)
   );
+
+  const handleClearFilters = () => {
+    setSearchQuery('');
+    setSelectedSpecialty('');
+    setSelectedDistrict('');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
@@ -47,7 +58,12 @@ const Doctors = () => {
                 <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Telangana Doctors</h1>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Telangana Doctors</h1>
+              {selectedSpecialty && (
+                <p className="text-blue-600 text-sm">Showing: {selectedSpecialty} specialists</p>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -60,7 +76,7 @@ const Doctors = () => {
               <div>
                 <Input
                   type="text"
-                  placeholder="Search doctors, specialties, or hospitals..."
+                  placeholder="Search doctors, hospitals, or districts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="h-12 border-2 border-blue-100 focus:border-blue-300"
@@ -72,7 +88,7 @@ const Doctors = () => {
                     <SelectValue placeholder="Filter by specialty" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all-specialties">All Specialties</SelectItem>
+                    <SelectItem value="">All Specialties</SelectItem>
                     {telanganaSpecialties.map(specialty => (
                       <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
                     ))}
@@ -85,7 +101,7 @@ const Doctors = () => {
                     <SelectValue placeholder="Filter by district" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all-districts">All Districts</SelectItem>
+                    <SelectItem value="">All Districts</SelectItem>
                     {telanganaDistricts.map(district => (
                       <SelectItem key={district} value={district}>{district}</SelectItem>
                     ))}
@@ -93,6 +109,37 @@ const Doctors = () => {
                 </Select>
               </div>
             </div>
+            
+            {/* Active Filters Display */}
+            {(selectedSpecialty || selectedDistrict || searchQuery) && (
+              <div className="mt-4 flex items-center gap-2 flex-wrap">
+                <span className="text-sm text-gray-600">Active filters:</span>
+                {selectedSpecialty && (
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                    {selectedSpecialty}
+                  </span>
+                )}
+                {selectedDistrict && (
+                  <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                    {selectedDistrict}
+                  </span>
+                )}
+                {searchQuery && (
+                  <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
+                    Search: "{searchQuery}"
+                  </span>
+                )}
+                <Button
+                  onClick={handleClearFilters}
+                  variant="outline"
+                  size="sm"
+                  className="ml-2"
+                >
+                  Clear All
+                </Button>
+              </div>
+            )}
+
             {preSelectedHospital && (
               <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                 <p className="text-blue-800 text-sm">
@@ -105,7 +152,10 @@ const Doctors = () => {
 
         {/* Results Count */}
         <div className="mb-4">
-          <p className="text-gray-600">{filteredDoctors.length} doctors found in Telangana</p>
+          <p className="text-gray-600">
+            {filteredDoctors.length} doctor{filteredDoctors.length !== 1 ? 's' : ''} found in Telangana
+            {selectedSpecialty && ` for ${selectedSpecialty}`}
+          </p>
         </div>
 
         {/* Doctor Cards */}
@@ -195,18 +245,32 @@ const Doctors = () => {
         {filteredDoctors.length === 0 && (
           <Card className="healthcare-card">
             <CardContent className="p-8 text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Doctors Found</h3>
-              <p className="text-gray-600">Try adjusting your search criteria or browse all available doctors.</p>
-              <Button 
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedSpecialty('');
-                  setSelectedDistrict('');
-                }}
-                className="button-secondary mt-4"
-              >
-                Clear Filters
-              </Button>
+              <div className="flex flex-col items-center space-y-4">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                  <Filter className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">No Doctors Found</h3>
+                <p className="text-gray-600 max-w-md">
+                  {selectedSpecialty 
+                    ? `No ${selectedSpecialty} specialists found matching your criteria.`
+                    : 'No doctors found matching your search criteria.'
+                  }
+                </p>
+                <div className="space-y-2 text-sm text-gray-500">
+                  <p>Try adjusting your filters:</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>Check the spelling of your search terms</li>
+                    <li>Try a broader search or different specialty</li>
+                    <li>Clear filters to see all available doctors</li>
+                  </ul>
+                </div>
+                <Button 
+                  onClick={handleClearFilters}
+                  className="button-secondary mt-4"
+                >
+                  Clear All Filters
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}

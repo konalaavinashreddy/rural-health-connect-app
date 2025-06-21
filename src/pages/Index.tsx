@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info } from 'lucide-react';
@@ -100,6 +101,16 @@ const Index = () => {
       default:
         break;
     }
+  };
+
+  const handleSpecialtyClick = (specialty: string) => {
+    // Navigate to doctors page with specialty filter and clear any existing search
+    navigate('/doctors', { 
+      state: { 
+        specialty: specialty,
+        clearSearch: true 
+      } 
+    });
   };
 
   return (
@@ -429,16 +440,21 @@ const Index = () => {
           <Card className="healthcare-card">
             <CardHeader>
               <CardTitle>Available Medical Specialties in Telangana</CardTitle>
+              <p className="text-gray-600 text-sm mt-2">Click on any specialty to find doctors in that field</p>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
                 {telanganaSpecialties.map((specialty, index) => (
                   <button
                     key={index}
-                    onClick={() => navigate('/doctors', { state: { specialty } })}
-                    className="p-3 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl hover:shadow-md transition-shadow cursor-pointer text-center hover:scale-105 duration-300"
+                    onClick={() => handleSpecialtyClick(specialty)}
+                    className="p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl hover:shadow-lg transition-all duration-300 cursor-pointer text-center hover:scale-105 hover:from-blue-100 hover:to-green-100 border border-gray-200 hover:border-blue-300"
                   >
-                    <p className="text-sm font-medium text-gray-900">{specialty}</p>
+                    <div className="flex flex-col items-center space-y-2">
+                      <Stethoscope className="w-6 h-6 text-blue-600" />
+                      <p className="text-sm font-medium text-gray-900">{specialty}</p>
+                      <p className="text-xs text-gray-500">View Doctors</p>
+                    </div>
                   </button>
                 ))}
               </div>
