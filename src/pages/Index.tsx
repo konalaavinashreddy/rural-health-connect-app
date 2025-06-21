@@ -143,18 +143,18 @@ const Index = () => {
   const handleWorkflowClick = (step: number) => {
     switch (step) {
       case 1: // Book
-        navigate('/appointment', { state: { returnTo: '/' } });
+        navigate('/appointment', { state: { returnTo: '/home' } });
         break;
       case 2: // Consult
-        navigate('/doctors', { state: { returnTo: '/' } });
+        navigate('/doctors', { state: { returnTo: '/home' } });
         break;
       case 3: // Get Medicine - Fixed to go to prescriptions
-        navigate('/prescriptions', { state: { returnTo: '/' } });
+        navigate('/prescriptions', { state: { returnTo: '/home' } });
         break;
       case 4: // Receive Reminders - Fixed to go to medicine reminders
         navigate('/medicine-reminders', { 
           state: { 
-            returnTo: '/', 
+            returnTo: '/home', 
             autoEnable: true 
           } 
         });
@@ -324,7 +324,7 @@ const Index = () => {
                     <p className="text-xs text-gray-600 mb-1">Visiting Hours:</p>
                     <p className="text-sm font-medium text-gray-800">{doctor.visitingTime}</p>
                   </div>
-                  <Link to="/appointment" state={{ doctor, returnTo: '/' }}>
+                  <Link to="/appointment" state={{ doctor, returnTo: '/home' }}>
                     <Button className="w-full button-primary rounded-xl">
                       <Calendar className="w-4 h-4 mr-2" />
                       Book Appointment
