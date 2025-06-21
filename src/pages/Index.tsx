@@ -255,14 +255,33 @@ const Index = () => {
     }
   };
 
-  // Helper function to get translated text
-  const t = (key: string) => {
+  // Helper function to get translated text with proper typing
+  const t = (key: string): string => {
     const keys = key.split('.');
-    let value = translations;
+    let value: any = translations;
+    
+    // Navigate through the nested object
     for (const k of keys) {
-      value = value[k];
+      if (value && typeof value === 'object' && k in value) {
+        value = value[k];
+      } else {
+        console.warn(`Translation key not found: ${key}`);
+        return key; // Return the key itself if translation not found
+      }
     }
-    return languageToggle ? value.te : value.en;
+    
+    // Check if the final value has the expected language structure
+    if (value && typeof value === 'object' && 'en' in value && 'te' in value) {
+      return languageToggle ? value.te : value.en;
+    }
+    
+    // If it's a direct string value, return it
+    if (typeof value === 'string') {
+      return value;
+    }
+    
+    console.warn(`Invalid translation structure for key: ${key}`);
+    return key;
   };
 
   const quickSearchSuggestions = [
