@@ -55,11 +55,18 @@ const HospitalMap: React.FC<HospitalMapProps> = ({ hospitals, onHospitalSelect }
             <Marker
               key={hospital.id}
               position={[hospital.latitude, hospital.longitude]}
-              eventHandlers={{ click: () => onHospitalSelect(hospital) }}
+              eventHandlers={{ 
+                click: () => {
+                  console.log('Marker clicked:', hospital.name);
+                  onHospitalSelect(hospital);
+                }
+              }}
             >
               <Popup>
-                <strong>{hospital.name}</strong><br />
-                {hospital.address}
+                <div>
+                  <strong>{hospital.name}</strong><br />
+                  {hospital.address}
+                </div>
               </Popup>
             </Marker>
           ))}
