@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, FileText, CheckCircle, Users, Heart, Phone, Mail, ExternalLink } from 'lucide-react';
@@ -113,7 +112,7 @@ const SchemeDetails = () => {
       <header className="bg-white shadow-sm border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link to="/">
+            <Link to="/home">
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="w-5 h-5" />
               </Button>
