@@ -1,3 +1,4 @@
+
 export const commonTranslations = {
   // Navigation and common UI
   back: {
@@ -77,8 +78,12 @@ export const commonTranslations = {
     te: "వివరాలు చూడండి"
   },
   
-  // Language toggle
-  language: {
+  // Language toggle - Enhanced
+  languageToggle: {
+    en: "English / తెలుగు",
+    te: "English / తెలుగు"
+  },
+  currentLanguage: {
     en: "English",
     te: "తెలుగు"
   },
@@ -89,10 +94,78 @@ export const commonTranslations = {
     te: "లాగ్ అవుట్"
   },
   
+  // Navigation items
+  dashboard: {
+    en: "Dashboard",
+    te: "డాష్‌బోర్డు"
+  },
+  appointments: {
+    en: "Appointments",
+    te: "అప్పాయింట్మెంట్లు"
+  },
+  prescriptions: {
+    en: "Prescriptions",
+    te: "ప్రిస్క్రిప్షన్లు"
+  },
+  reminders: {
+    en: "Reminders",
+    te: "రిమైండర్లు"
+  },
+  chatbot: {
+    en: "Health Assistant",
+    te: "ఆరోగ్య సహాయకుడు"
+  },
+  map: {
+    en: "Hospital Map",
+    te: "ఆసుపత్రి మ్యాప్"
+  },
+  
   // Add missing translations
   viewDoctors: {
     en: "View Doctors",
     te: "వైద్యులను చూడండి"
+  },
+  
+  // New comprehensive translations
+  welcome: {
+    en: "Welcome to Rural Health Connect",
+    te: "రూరల్ హెల్త్ కనెక్ట్‌కు స్వాగతం"
+  },
+  bookNow: {
+    en: "Book Now",
+    te: "ఇప్పుడు బుక్ చేయండి"
+  },
+  aboutUs: {
+    en: "About Us",
+    te: "మా గురించి"
+  },
+  contact: {
+    en: "Contact",
+    te: "సంప్రదింపు"
+  },
+  privacyPolicy: {
+    en: "Privacy Policy",
+    te: "గోప్యతా విధానం"
+  },
+  termsOfService: {
+    en: "Terms of Service",
+    te: "సేవా నిబంధనలు"
+  },
+  support: {
+    en: "Support",
+    te: "మద్దతు"
+  },
+  followUs: {
+    en: "Follow Us",
+    te: "మమ్మల్ని అనుసరించండి"
+  },
+  legal: {
+    en: "Legal",
+    te: "చట్టపరమైన"
+  },
+  contactUs: {
+    en: "Contact Us",
+    te: "మమ్మల్ని సంప్రదించండి"
   }
 };
 
@@ -258,5 +331,61 @@ export const homeTranslations = {
   clickSpecialty: {
     en: "Click on any specialty to find doctors in that field",
     te: "ఆ రంగంలోని వైద్యులను కనుగొనడానికి ఏదైనా ప్రత్యేకతపై క్లిక్ చేయండి"
+  }
+};
+
+// Diet tips page translations
+export const dietTipsTranslations = {
+  noInfoAvailable: {
+    en: "No Diet Information Available",
+    te: "ఆహార సమాచారం అందుబాటులో లేదు"
+  },
+  selectConditionFromHome: {
+    en: "Please select a health condition from the home page.",
+    te: "దయచేసి హోమ్ పేజీ నుండి ఆరోగ్య పరిస్థితిని ఎంచుకోండి."
+  },
+  goToHome: {
+    en: "Go to Home",
+    te: "హోమ్‌కి వెళ్లండి"
+  },
+  detailedDietTips: {
+    en: "Detailed Diet Tips",
+    te: "వివరణాత్మక ఆహార చిట్కాలు"
+  },
+  mealTiming: {
+    en: "Meal Timing",
+    te: "భోజన సమయం"
+  },
+  hydration: {
+    en: "Hydration",
+    te: "నీరు తాగడం"
+  },
+  nutritionalFocus: {
+    en: "Nutritional Focus",
+    te: "పోషకాలు"
+  },
+  cookingMethods: {
+    en: "Cooking Methods",
+    te: "వంట పద్ధతులు"
+  },
+  quickSummary: {
+    en: "Quick Summary",
+    te: "సారాంశం"
+  },
+  include: {
+    en: "Include:",
+    te: "తీసుకోవాల్సినవి:"
+  },
+  avoid: {
+    en: "Avoid:",
+    te: "తరుగుండవాల్సినవి:"
+  },
+  note: {
+    en: "Note:",
+    te: "గమనిక:"
+  },
+  generalGuidelines: {
+    en: "These are general guidelines. Always consult with a healthcare provider for personalized advice.",
+    te: "ఈ సలహాలు సాధారణ మార్గదర్శకాలు మాత్రమే. వైద్యుని సలహా తీసుకోవాలి."
   }
 };

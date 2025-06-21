@@ -27,39 +27,45 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Save language preference to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('preferred-language', language);
+    console.log(`Language switched to: ${language}`);
   }, [language]);
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'en' ? 'te' : 'en');
   };
 
-  // Helper function to get translated text with proper typing
+  // Enhanced helper function to get translated text with proper typing and fallback
   const t = (key: string, translations: any): string => {
-    const keys = key.split('.');
-    let value: any = translations;
-    
-    // Navigate through the nested object
-    for (const k of keys) {
-      if (value && typeof value === 'object' && k in value) {
-        value = value[k];
-      } else {
-        console.warn(`Translation key not found: ${key}`);
-        return key; // Return the key itself if translation not found
+    try {
+      const keys = key.split('.');
+      let value: any = translations;
+      
+      // Navigate through the nested object
+      for (const k of keys) {
+        if (value && typeof value === 'object' && k in value) {
+          value = value[k];
+        } else {
+          console.warn(`Translation key not found: ${key}`);
+          return key; // Return the key itself if translation not found
+        }
       }
+      
+      // Check if the final value has the expected language structure
+      if (value && typeof value === 'object' && 'en' in value && 'te' in value) {
+        return language === 'te' ? value.te : value.en;
+      }
+      
+      // If it's a direct string value, return it
+      if (typeof value === 'string') {
+        return value;
+      }
+      
+      console.warn(`Invalid translation structure for key: ${key}`);
+      return key;
+    } catch (error) {
+      console.error(`Error translating key ${key}:`, error);
+      return key;
     }
-    
-    // Check if the final value has the expected language structure
-    if (value && typeof value === 'object' && 'en' in value && 'te' in value) {
-      return language === 'te' ? value.te : value.en;
-    }
-    
-    // If it's a direct string value, return it
-    if (typeof value === 'string') {
-      return value;
-    }
-    
-    console.warn(`Invalid translation structure for key: ${key}`);
-    return key;
   };
 
   return (

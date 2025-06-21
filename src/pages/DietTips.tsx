@@ -1,15 +1,15 @@
-
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, AlertCircle, Clock, Utensils, Home, Droplets, Apple, Heart, Baby } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { commonTranslations, dietTipsTranslations } from '@/data/translations';
 
 const DietTips = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const condition = location.state?.condition;
 
   // Helper function to render icons based on type
@@ -35,12 +35,12 @@ const DietTips = () => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
         <Card className="max-w-md mx-auto">
           <CardContent className="p-8 text-center">
-            <h2 className="text-xl font-bold mb-4">No Diet Information Available</h2>
-            <p className="text-gray-600 mb-6">Please select a health condition from the home page.</p>
+            <h2 className="text-xl font-bold mb-4">{t('noInfoAvailable', dietTipsTranslations)}</h2>
+            <p className="text-gray-600 mb-6">{t('selectConditionFromHome', dietTipsTranslations)}</p>
             <Link to="/home">
               <Button className="w-full">
                 <Home className="w-4 h-4 mr-2" />
-                Go to Home
+                {t('goToHome', dietTipsTranslations)}
               </Button>
             </Link>
           </CardContent>
@@ -138,12 +138,12 @@ const DietTips = () => {
               className="flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
-              {language === 'te' ? 'వెనుకకు' : 'Back'}
+              {t('back', commonTranslations)}
             </Button>
             <Link to="/home">
               <Button variant="outline" className="flex items-center gap-2">
                 <Home className="w-4 h-4" />
-                {language === 'te' ? 'హోమ్' : 'Home'}
+                {t('home', commonTranslations)}
               </Button>
             </Link>
           </div>
@@ -163,7 +163,7 @@ const DietTips = () => {
             {language === 'te' ? condition.titleTelugu : condition.title}
           </h1>
           <p className="text-xl text-gray-600">
-            {language === 'te' ? 'వివరణాత్మక ఆహార చిట్కాలు' : 'Detailed Diet Tips'}
+            {t('detailedDietTips', dietTipsTranslations)}
           </p>
         </div>
 
@@ -174,7 +174,7 @@ const DietTips = () => {
               <div className="flex items-center mb-4">
                 <Clock className="w-6 h-6 text-blue-600 mr-3" />
                 <h3 className="text-xl font-semibold text-blue-900">
-                  {language === 'te' ? 'భోజన సమయం' : 'Meal Timing'}
+                  {t('mealTiming', dietTipsTranslations)}
                 </h3>
               </div>
               <p className="text-blue-800 leading-relaxed">
@@ -189,7 +189,7 @@ const DietTips = () => {
               <div className="flex items-center mb-4">
                 <Utensils className="w-6 h-6 text-cyan-600 mr-3" />
                 <h3 className="text-xl font-semibold text-cyan-900">
-                  {language === 'te' ? 'నీరు తాగడం' : 'Hydration'}
+                  {t('hydration', dietTipsTranslations)}
                 </h3>
               </div>
               <p className="text-cyan-800 leading-relaxed">
@@ -204,7 +204,7 @@ const DietTips = () => {
               <div className="flex items-center mb-4">
                 <CheckCircle className="w-6 h-6 text-green-600 mr-3" />
                 <h3 className="text-xl font-semibold text-green-900">
-                  {language === 'te' ? 'పోషకాలు' : 'Nutritional Focus'}
+                  {t('nutritionalFocus', dietTipsTranslations)}
                 </h3>
               </div>
               <p className="text-green-800 leading-relaxed">
@@ -219,7 +219,7 @@ const DietTips = () => {
               <div className="flex items-center mb-4">
                 <AlertCircle className="w-6 h-6 text-orange-600 mr-3" />
                 <h3 className="text-xl font-semibold text-orange-900">
-                  {language === 'te' ? 'వంట పద్ధతులు' : 'Cooking Methods'}
+                  {t('cookingMethods', dietTipsTranslations)}
                 </h3>
               </div>
               <p className="text-orange-800 leading-relaxed">
@@ -232,7 +232,7 @@ const DietTips = () => {
           <Card className="bg-gray-50 border-gray-200">
             <CardHeader>
               <CardTitle className="text-gray-900">
-                {language === 'te' ? 'సారాంశం' : 'Quick Summary'}
+                {t('quickSummary', dietTipsTranslations)}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -240,7 +240,7 @@ const DietTips = () => {
                 <div>
                   <h4 className="font-semibold text-green-700 mb-3 flex items-center">
                     <CheckCircle className="w-5 h-5 mr-2" />
-                    {language === 'te' ? 'తీసుకోవాల্સినవి:' : 'Include:'}
+                    {t('include', dietTipsTranslations)}
                   </h4>
                   <ul className="space-y-2">
                     {condition.recommendations.do.map((item, idx) => (
@@ -255,7 +255,7 @@ const DietTips = () => {
                 <div>
                   <h4 className="font-semibold text-red-700 mb-3 flex items-center">
                     <span className="w-5 h-5 mr-2 text-red-500">❌</span>
-                    {language === 'te' ? 'తరుगుండవाल्सินవি:' : 'Avoid:'}
+                    {t('avoid', dietTipsTranslations)}
                   </h4>
                   <ul className="space-y-2">
                     {condition.recommendations.avoid.map((item, idx) => (
@@ -274,11 +274,8 @@ const DietTips = () => {
           <Card className="bg-yellow-50 border-yellow-200">
             <CardContent className="p-6">
               <p className="text-yellow-800">
-                <strong>{language === 'te' ? 'గమనిక:' : 'Note:'}</strong> {' '}
-                {language === 'te' 
-                  ? 'ఈ సలహాలు సాధారణ మార్గదर్శకాలు మాత్రమే. వైద్యుని సలహా తీసుకోవాలి.'
-                  : 'These are general guidelines. Always consult with a healthcare provider for personalized advice.'
-                }
+                <strong>{t('note', dietTipsTranslations)}</strong> {' '}
+                {t('generalGuidelines', dietTipsTranslations)}
               </p>
             </CardContent>
           </Card>

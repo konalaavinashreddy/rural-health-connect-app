@@ -220,21 +220,28 @@ const Index = () => {
       <section className="relative bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         
-        {/* Language Toggle and Logout Buttons */}
+        {/* Enhanced Language Toggle and Logout Buttons */}
         <div className="absolute top-4 right-4 z-10 flex gap-3">
           <Button 
             onClick={toggleLanguage}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+            className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 font-semibold transition-all duration-300 hover:scale-105"
           >
-            <Globe className="w-4 h-4" />
-            {t('language', commonTranslations)}
+            <Globe className="w-5 h-5" />
+            <span className="hidden sm:inline">
+              {t('languageToggle', commonTranslations)}
+            </span>
+            <span className="sm:hidden">
+              {language === 'en' ? 'EN' : 'తె'}
+            </span>
           </Button>
           <Button 
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 transition-all duration-300 hover:scale-105"
           >
-            <LogOut className="w-4 h-4" />
-            {t('logout', commonTranslations)}
+            <LogOut className="w-5 h-5" />
+            <span className="hidden sm:inline">
+              {t('logout', commonTranslations)}
+            </span>
           </Button>
         </div>
 
@@ -684,41 +691,41 @@ const Index = () => {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">{t('quickLinks', homeTranslations) || 'Quick Links'}</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('quickLinks', homeTranslations)}</h4>
               <ul className="space-y-2">
                 <li><Link to="/doctors" className="text-gray-300 hover:text-white transition-colors">{t('findDoctors', commonTranslations)}</Link></li>
                 <li><Link to="/appointment" className="text-gray-300 hover:text-white transition-colors">{t('bookAppointment', commonTranslations)}</Link></li>
-                <li><Link to="/medicines" className="text-gray-300 hover:text-white transition-colors">Track Medicines</Link></li>
-                <li><Link to="/map" className="text-gray-300 hover:text-white transition-colors">Hospital Map</Link></li>
+                <li><Link to="/medicines" className="text-gray-300 hover:text-white transition-colors">{t('medicines', commonTranslations)}</Link></li>
+                <li><Link to="/map" className="text-gray-300 hover:text-white transition-colors">{t('map', commonTranslations)}</Link></li>
               </ul>
             </div>
 
             {/* Legal Pages */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Legal</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('legal', commonTranslations)}</h4>
               <ul className="space-y-2">
                 <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <Info className="w-4 h-4 mr-2" />
-                    About Us
+                    {t('aboutUs', commonTranslations)}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <Shield className="w-4 h-4 mr-2" />
-                    Privacy Policy
+                    {t('privacyPolicy', commonTranslations)}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <FileText className="w-4 h-4 mr-2" />
-                    Terms of Service
+                    {t('termsOfService', commonTranslations)}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center">
                     <Phone className="w-4 h-4 mr-2" />
-                    Contact
+                    {t('contact', commonTranslations)}
                   </a>
                 </li>
               </ul>
@@ -726,7 +733,7 @@ const Index = () => {
 
             {/* Contact & Social */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('contactUs', commonTranslations)}</h4>
               <div className="space-y-3 mb-6">
                 <div className="flex items-center">
                   <Phone className="w-4 h-4 mr-3 text-blue-400" />
@@ -739,7 +746,7 @@ const Index = () => {
               </div>
               
               <div>
-                <h5 className="font-semibold mb-3">Follow Us</h5>
+                <h5 className="font-semibold mb-3">{t('followUs', commonTranslations)}</h5>
                 <div className="flex space-x-3">
                   <a href="#" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
                     <Facebook className="w-5 h-5" />
