@@ -17,6 +17,7 @@ import Prescriptions from "./pages/Prescriptions";
 import MedicineReminders from "./pages/MedicineReminders";
 import SchemeDetails from "./pages/SchemeDetails";
 import DoctorForms from "./pages/DoctorForms";
+import DietTips from "./pages/DietTips";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/scheme-details" element={<SchemeDetails />} />
             <Route path="/map" element={<Map />} />
             <Route path="/doctor-forms" element={<DoctorForms />} />
+            <Route path="/diet-tips" element={<DietTips />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

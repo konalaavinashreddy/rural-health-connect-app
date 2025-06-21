@@ -186,7 +186,7 @@ const Index = () => {
   };
 
   const handleMoreDietTips = (condition: any) => {
-    setSelectedDietTip(condition);
+    navigate('/diet-tips', { state: { condition } });
   };
 
   return (
