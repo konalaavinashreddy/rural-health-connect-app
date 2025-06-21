@@ -9,7 +9,81 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      patient_vitals: {
+        Row: {
+          bp_diastolic: number | null
+          bp_systolic: number | null
+          created_at: string
+          id: string
+          opid: string
+          recorded_at: string
+          sugar_level: number | null
+          temperature: number | null
+        }
+        Insert: {
+          bp_diastolic?: number | null
+          bp_systolic?: number | null
+          created_at?: string
+          id?: string
+          opid: string
+          recorded_at?: string
+          sugar_level?: number | null
+          temperature?: number | null
+        }
+        Update: {
+          bp_diastolic?: number | null
+          bp_systolic?: number | null
+          created_at?: string
+          id?: string
+          opid?: string
+          recorded_at?: string
+          sugar_level?: number | null
+          temperature?: number | null
+        }
+        Relationships: []
+      }
+      prescriptions: {
+        Row: {
+          created_at: string
+          dosage: string
+          duration: string
+          id: string
+          instructions: string | null
+          medicine_name: string
+          opid: string
+          patient_name: string
+          prescribed_by: string
+          time: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dosage: string
+          duration: string
+          id?: string
+          instructions?: string | null
+          medicine_name: string
+          opid: string
+          patient_name: string
+          prescribed_by: string
+          time: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dosage?: string
+          duration?: string
+          id?: string
+          instructions?: string | null
+          medicine_name?: string
+          opid?: string
+          patient_name?: string
+          prescribed_by?: string
+          time?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

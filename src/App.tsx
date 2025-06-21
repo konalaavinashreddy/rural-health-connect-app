@@ -14,6 +14,7 @@ import Map from "./pages/Map";
 import Prescriptions from "./pages/Prescriptions";
 import MedicineReminders from "./pages/MedicineReminders";
 import SchemeDetails from "./pages/SchemeDetails";
+import DoctorForms from "./pages/DoctorForms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/scheme-details" element={<SchemeDetails />} />
           <Route path="/map" element={<Map />} />
+          <Route path="/doctor-forms" element={<DoctorForms />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
