@@ -14,8 +14,6 @@ import Prescriptions from "./pages/Prescriptions";
 import MedicineReminders from "./pages/MedicineReminders";
 import SchemeDetails from "./pages/SchemeDetails";
 import DoctorForms from "./pages/DoctorForms";
-import PatientDashboard from "./pages/PatientDashboard";
-import DoctorDashboard from "./pages/DoctorDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,8 +26,6 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/patient-dashboard" element={<PatientDashboard />} />
-          <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
           <Route path="/doctors" element={<Doctors />} />
           <Route path="/appointment" element={<Appointment />} />
           <Route path="/medicines" element={<Medicines />} />
