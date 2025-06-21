@@ -1,4 +1,3 @@
-
 export const telanganaDistricts = [
   'Hyderabad', 'Secunderabad', 'Warangal', 'Nizamabad', 'Khammam', 
   'Karimnagar', 'Mahbubnagar', 'Nalgonda', 'Adilabad', 'Medak',
@@ -21,7 +20,9 @@ export const telanganaHospitals = [
     hours: '24/7',
     phone: '+91 40 2348 8001',
     position: { top: '25%', left: '45%' },
-    type: 'Government'
+    type: 'Government',
+    latitude: 17.4239,
+    longitude: 78.4738
   },
   {
     id: 2,
@@ -34,7 +35,9 @@ export const telanganaHospitals = [
     hours: '24/7',
     phone: '+91 40 2360 7777',
     position: { top: '35%', left: '50%' },
-    type: 'Private'
+    type: 'Private',
+    latitude: 17.4316,
+    longitude: 78.3994
   },
   {
     id: 3,
@@ -47,7 +50,9 @@ export const telanganaHospitals = [
     hours: '24/7',
     phone: '+91 40 2770 1146',
     position: { top: '20%', left: '55%' },
-    type: 'Government'
+    type: 'Government',
+    latitude: 17.4507,
+    longitude: 78.4988
   },
   {
     id: 4,
@@ -60,7 +65,9 @@ export const telanganaHospitals = [
     hours: '24/7',
     phone: '+91 40 2460 7070',
     position: { top: '40%', left: '40%' },
-    type: 'Government'
+    type: 'Government',
+    latitude: 17.3616,
+    longitude: 78.4747
   },
   {
     id: 5,
@@ -73,7 +80,9 @@ export const telanganaHospitals = [
     hours: '24/7',
     phone: '+91 870 257 8425',
     position: { top: '60%', left: '70%' },
-    type: 'Government'
+    type: 'Government',
+    latitude: 17.9689,
+    longitude: 79.5941
   },
   {
     id: 6,
@@ -86,7 +95,9 @@ export const telanganaHospitals = [
     hours: '24/7',
     phone: '+91 846 225 2344',
     position: { top: '15%', left: '35%' },
-    type: 'Government'
+    type: 'Government',
+    latitude: 18.6725,
+    longitude: 78.0941
   }
 ];
 
