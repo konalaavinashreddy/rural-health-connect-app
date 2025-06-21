@@ -274,10 +274,10 @@ const Index = () => {
       case 2: // Consult
         navigate('/doctors', { state: { returnTo: '/home' } });
         break;
-      case 3: // Get Medicine - Fixed to go to prescriptions
+      case 3: // Get Medicine - Fixed to go to prescriptions with proper return state
         navigate('/prescriptions', { state: { returnTo: '/home' } });
         break;
-      case 4: // Receive Reminders - Fixed to go to medicine reminders
+      case 4: // Receive Reminders - Fixed to go to medicine reminders with proper return state
         navigate('/medicine-reminders', { 
           state: { 
             returnTo: '/home', 
@@ -353,12 +353,13 @@ const Index = () => {
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
               {t('heroSubtitle', homeTranslations)}
             </p>
-            <Link to="/appointment">
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-xl rounded-full shadow-2xl hover:scale-105 transition-all duration-300">
-                <Calendar className="w-6 h-6 mr-3" />
-                {t('bookAppointment', commonTranslations)}
-              </Button>
-            </Link>
+            <Button 
+              onClick={() => navigate('/appointment', { state: { returnTo: '/home' } })}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-xl rounded-full shadow-2xl hover:scale-105 transition-all duration-300"
+            >
+              <Calendar className="w-6 h-6 mr-3" />
+              {t('bookAppointment', commonTranslations)}
+            </Button>
           </div>
         </div>
       </section>
