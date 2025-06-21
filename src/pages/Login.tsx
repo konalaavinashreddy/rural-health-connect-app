@@ -1,47 +1,65 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Stethoscope, User } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
-  const [userType, setUserType] = useState('patient');
-  const [username, setUsername] = useState('');
+  const [userType, setUserType] = useState<'patient' | 'doctor'>('patient');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      if (user.role === 'patient') {
+        navigate('/patient-dashboard');
+      } else {
+        navigate('/doctor-dashboard');
+      }
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
 
-    // Simulate loading delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    const success = await login(email, password, userType);
 
-    // Validate credentials
-    let isValid = false;
-    let redirectUrl = '';
-
-    if (userType === 'doctor') {
-      isValid = username === 'doctor01' && password === 'test123';
-      redirectUrl = 'https://rural-health-connect-portal.lovable.app/';
+    if (success) {
+      if (userType === 'patient') {
+        navigate('/patient-dashboard');
+      } else {
+        navigate('/doctor-dashboard');
+      }
     } else {
-      isValid = username === 'patient01' && password === 'demo123';
-      redirectUrl = 'https://rural-health-connect-app.lovable.app/';
-    }
-
-    if (isValid) {
-      window.location.href = redirectUrl;
-    } else {
-      setErrorMessage('Invalid login. Please try again.');
+      setErrorMessage('Invalid login credentials. Please try again.');
     }
 
     setIsLoading(false);
   };
+
+  // Set default demo credentials when user type changes
+  useEffect(() => {
+    if (userType === 'patient') {
+      setEmail('patient@example.com');
+      setPassword('1234');
+    } else {
+      setEmail('doctor@example.com');
+      setPassword('1234');
+    }
+  }, [userType]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -64,10 +82,8 @@ const Login = () => {
               value={userType}
               onValueChange={(value) => {
                 if (value) {
-                  setUserType(value);
+                  setUserType(value as 'patient' | 'doctor');
                   setErrorMessage('');
-                  setUsername('');
-                  setPassword('');
                 }
               }}
               className="grid w-full grid-cols-2"
@@ -92,15 +108,15 @@ const Login = () => {
           {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-sm font-medium text-gray-700">
-                Username / Email
+              <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                Email
               </Label>
               <Input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder={userType === 'doctor' ? 'doctor01' : 'patient01'}
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={userType === 'doctor' ? 'doctor@example.com' : 'patient@example.com'}
                 required
                 className="rounded-lg"
               />
@@ -115,7 +131,7 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={userType === 'doctor' ? 'test123' : 'demo123'}
+                placeholder="1234"
                 required
                 className="rounded-lg"
               />
@@ -141,8 +157,8 @@ const Login = () => {
             <p className="font-medium">Demo Credentials:</p>
             <p>
               {userType === 'doctor' 
-                ? 'Doctor: doctor01 / test123' 
-                : 'Patient: patient01 / demo123'
+                ? 'Doctor: doctor@example.com / 1234' 
+                : 'Patient: patient@example.com / 1234'
               }
             </p>
           </div>

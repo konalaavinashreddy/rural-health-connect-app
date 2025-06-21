@@ -9,6 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      doctors: {
+        Row: {
+          created_at: string
+          email: string
+          hospital: string | null
+          id: string
+          name: string
+          password: string
+          phone: string | null
+          specialty: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          hospital?: string | null
+          id?: string
+          name: string
+          password: string
+          phone?: string | null
+          specialty: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          hospital?: string | null
+          id?: string
+          name?: string
+          password?: string
+          phone?: string | null
+          specialty?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       patient_vitals: {
         Row: {
           bp_diastolic: number | null
@@ -39,6 +75,36 @@ export type Database = {
           recorded_at?: string
           sugar_level?: number | null
           temperature?: number | null
+        }
+        Relationships: []
+      }
+      patients: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          password: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          password: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          password?: string
+          phone?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

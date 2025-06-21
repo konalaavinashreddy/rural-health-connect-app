@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Star, Clock, Award, Filter, MapPin, Phone } from 'lucide-react';
@@ -45,6 +44,11 @@ const Doctors = () => {
     setSearchQuery('');
     setSelectedSpecialty('');
     setSelectedDistrict('');
+  };
+
+  const handleDoctorCardClick = () => {
+    // Skip login and redirect directly to doctor portal
+    window.location.href = 'https://rural-health-connect-portal.lovable.app/';
   };
 
   return (
@@ -230,11 +234,12 @@ const Doctors = () => {
                       <span className="text-lg font-bold text-green-600">₹{doctor.consultationFee}</span>
                     </div>
                     
-                    <Link to="/appointment" state={{ doctor }}>
-                      <Button className="button-primary w-full">
-                        Book Appointment - ₹{doctor.consultationFee}
-                      </Button>
-                    </Link>
+                    <Button 
+                      onClick={handleDoctorCardClick}
+                      className="button-primary w-full"
+                    >
+                      View Doctor Profile - ₹{doctor.consultationFee}
+                    </Button>
                   </div>
                 </div>
               </CardContent>
