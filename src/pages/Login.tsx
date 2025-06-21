@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,11 +6,13 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, User, Stethoscope } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   // Mock credentials for patient login
@@ -20,15 +21,59 @@ const Login = () => {
     password: 'password123'
   };
 
-  const handlePatientLogin = (e: React.FormEvent) => {
+  // Check if user is already authenticated
+  useEffect(() => {
+    const checkAuthState = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          // User is already logged in, redirect to home
+          navigate('/home', { replace: true });
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking auth state:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuthState();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        navigate('/home', { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  const handlePatientLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
-    if (username === mockCredentials.username && password === mockCredentials.password) {
-      // Navigate to home page
-      navigate('/home');
-    } else {
-      setError('Invalid username or password');
+    try {
+      if (username === mockCredentials.username && password === mockCredentials.password) {
+        // Create a mock session in localStorage for demo purposes
+        const mockSession = {
+          user: { id: 'mock-user-id', email: 'patient123@example.com' },
+          access_token: 'mock-token',
+          expires_at: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+        };
+        localStorage.setItem('auth-session', JSON.stringify(mockSession));
+        
+        // Navigate to home page
+        navigate('/home', { replace: true });
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      setError('Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,6 +81,18 @@ const Login = () => {
     // Redirect to external doctor portal
     window.location.href = 'https://rural-health-connect-portal.lovable.app/';
   };
+
+  // Show loading while checking auth state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
@@ -84,6 +141,7 @@ const Login = () => {
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       required
+                      disabled={isLoading}
                     />
                   </div>
                   <div className="space-y-2">
@@ -95,6 +153,7 @@ const Login = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
+                      disabled={isLoading}
                     />
                   </div>
                   {error && (
@@ -103,8 +162,12 @@ const Login = () => {
                   <div className="text-xs text-gray-500 text-center">
                     Demo credentials: patient123 / password123
                   </div>
-                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-                    Login to Patient Portal
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-primary hover:bg-primary/90"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Logging in...' : 'Login to Patient Portal'}
                   </Button>
                 </form>
               </CardContent>
@@ -125,6 +188,7 @@ const Login = () => {
                 <Button 
                   onClick={handleDoctorLogin}
                   className="w-full bg-accent hover:bg-accent/90"
+                  disabled={isLoading}
                 >
                   Access Doctor Portal
                 </Button>
