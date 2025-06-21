@@ -25,8 +25,8 @@ const Login = () => {
     setError('');
 
     if (username === mockCredentials.username && password === mockCredentials.password) {
-      // Navigate to Patient Dashboard
-      navigate('/patient-dashboard');
+      // Navigate to home page
+      navigate('/home');
     } else {
       setError('Invalid username or password');
     }
