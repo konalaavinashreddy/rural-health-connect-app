@@ -7,20 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { telanganaHospitals, telanganaDistricts } from '@/data/telanganaData';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-
-// Fix Leaflet's default icon issue
-const defaultIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-L.Marker.prototype.options.icon = defaultIcon;
 
 const Map = () => {
   const [selectedHospital, setSelectedHospital] = useState(null);
@@ -94,7 +80,7 @@ const Map = () => {
           <Card className="healthcare-card h-[500px]">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <span className="text-lg">Hospital Locations (Leaflet)</span>
+                <span className="text-lg">Hospital Locations</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -107,7 +93,6 @@ const Map = () => {
                   <Marker
                     key={hospital.id}
                     position={[hospital.latitude, hospital.longitude]}
-                    icon={defaultIcon}
                     eventHandlers={{ click: () => setSelectedHospital(hospital) }}
                   >
                     <Popup>
