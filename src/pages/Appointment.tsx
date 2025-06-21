@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 const Appointment = () => {
   const location = useLocation();
   const selectedDoctor = location.state?.doctor;
+  const returnTo = location.state?.returnTo || '/'; // Default to home page
   
   const [selectedHospital, setSelectedHospital] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
@@ -47,7 +48,7 @@ const Appointment = () => {
         <header className="bg-white shadow-sm border-b border-blue-100">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center space-x-4">
-              <Link to="/">
+              <Link to={returnTo}>
                 <Button variant="ghost" size="sm">
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
@@ -98,7 +99,7 @@ const Appointment = () => {
                     Get Directions to Hospital
                   </Button>
                 </Link>
-                <Link to="/">
+                <Link to={returnTo}>
                   <Button className="button-primary w-full">
                     Back to Home
                   </Button>
@@ -116,7 +117,7 @@ const Appointment = () => {
       <header className="bg-white shadow-sm border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link to="/doctors">
+            <Link to={returnTo}>
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="w-5 h-5" />
               </Button>

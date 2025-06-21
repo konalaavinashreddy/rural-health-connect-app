@@ -53,10 +53,10 @@ const Index = () => {
       telugu: 'ఆరోగ్య శ్రీ ఆరోగ్య భీమా'
     },
     {
-      title: 'KCR Kits for Pregnant Women',
+      title: 'Mother & Child Care Kit Scheme',
       description: 'Free nutritional kits and medical support for expecting mothers',
       eligibility: 'Pregnant women',
-      telugu: 'గర్భిణీ మహిళలకు KCR కిట్స్'
+      telugu: 'తల్లి మరియు శిశు సంరక్షణ కిట్ పథకం'
     },
     {
       title: 'Free Medicine Scheme',
@@ -87,10 +87,10 @@ const Index = () => {
       case 2: // Consult
         navigate('/doctors');
         break;
-      case 3: // Get Medicine
+      case 3: // Get Medicine - Fixed to go to prescriptions
         navigate('/prescriptions');
         break;
-      case 4: // Receive Reminders
+      case 4: // Receive Reminders - Fixed to go to medicine reminders
         navigate('/medicine-reminders');
         break;
       default:
@@ -273,26 +273,7 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Arogya Sri Health Insurance',
-                description: 'Free health insurance up to ₹5 lakhs for eligible families',
-                eligibility: 'BPL families',
-                telugu: 'ఆరోగ్య శ్రీ ఆరోగ్య భీమా'
-              },
-              {
-                title: 'Mother & Child Care Kit Scheme',
-                description: 'Free nutritional kits and medical support for expecting mothers',
-                eligibility: 'Pregnant women',
-                telugu: 'తల్లి మరియు శిశు సంరక్షణ కిట్ పథకం'
-              },
-              {
-                title: 'Free Medicine Scheme',
-                description: 'Essential medicines available free at government hospitals',
-                eligibility: 'All citizens',
-                telugu: 'ఉచిత మందుల పథకం'
-              }
-            ].map((scheme, index) => (
+            {governmentSchemes.map((scheme, index) => (
               <Card key={index} className="healthcare-card hover:shadow-xl transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
