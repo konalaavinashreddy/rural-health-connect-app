@@ -10,7 +10,7 @@ const DoctorProfile = () => {
   const { doctorId } = useParams();
   const navigate = useNavigate();
   
-  const doctor = telanganaDoctors.find(doc => doc.id === doctorId);
+  const doctor = telanganaDoctors.find(doc => doc.id === Number(doctorId));
 
   if (!doctor) {
     return (

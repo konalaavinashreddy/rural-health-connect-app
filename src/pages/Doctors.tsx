@@ -47,8 +47,8 @@ const Doctors = () => {
     setSelectedDistrict('');
   };
 
-  const handleDoctorCardClick = (doctorId: string) => {
-    navigate(`/doctor/${doctorId}`);
+  const handleDoctorCardClick = (doctorId: number) => {
+    navigate(`/doctor/${doctorId.toString()}`);
   };
 
   return (
