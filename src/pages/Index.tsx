@@ -88,10 +88,10 @@ const Index = () => {
         navigate('/doctors');
         break;
       case 3: // Get Medicine
-        navigate('/medicines');
+        navigate('/prescriptions');
         break;
       case 4: // Receive Reminders
-        navigate('/chatbot', { state: { topic: 'reminders' } });
+        navigate('/medicine-reminders');
         break;
       default:
         break;
@@ -248,7 +248,7 @@ const Index = () => {
                     <p className="text-xs text-gray-600 mb-1">Visiting Hours:</p>
                     <p className="text-sm font-medium text-gray-800">{doctor.visitingTime}</p>
                   </div>
-                  <Link to="/appointment" state={{ doctor }}>
+                  <Link to="/appointment" state={{ doctor, returnTo: '/' }}>
                     <Button className="w-full button-primary rounded-xl">
                       <Calendar className="w-4 h-4 mr-2" />
                       Book Appointment
@@ -273,7 +273,26 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {governmentSchemes.map((scheme, index) => (
+            {[
+              {
+                title: 'Arogya Sri Health Insurance',
+                description: 'Free health insurance up to ₹5 lakhs for eligible families',
+                eligibility: 'BPL families',
+                telugu: 'ఆరోగ్య శ్రీ ఆరోగ్య భీమా'
+              },
+              {
+                title: 'Mother & Child Care Kit Scheme',
+                description: 'Free nutritional kits and medical support for expecting mothers',
+                eligibility: 'Pregnant women',
+                telugu: 'తల్లి మరియు శిశు సంరక్షణ కిట్ పథకం'
+              },
+              {
+                title: 'Free Medicine Scheme',
+                description: 'Essential medicines available free at government hospitals',
+                eligibility: 'All citizens',
+                telugu: 'ఉచిత మందుల పథకం'
+              }
+            ].map((scheme, index) => (
               <Card key={index} className="healthcare-card hover:shadow-xl transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
@@ -289,10 +308,10 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 text-sm mb-6">{scheme.description}</p>
-                  <Link to="/chatbot" state={{ topic: 'schemes', scheme: scheme.title }}>
+                  <Link to="/scheme-details" state={{ scheme: scheme.title }}>
                     <Button className="w-full button-secondary rounded-xl">
                       <CheckCircle className="w-4 h-4 mr-2" />
-                      Apply Now
+                      Learn More & Apply
                     </Button>
                   </Link>
                 </CardContent>
@@ -307,9 +326,9 @@ const Index = () => {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              AI Health Assistant
+              Rural Health Assistant
               <br />
-              <span className="text-xl text-gray-600">AI ఆరోగ్య సహాయకుడు</span>
+              <span className="text-xl text-gray-600">గ్రామీణ ఆరోగ్య సహాయకుడు</span>
             </h2>
             <p className="text-gray-600 text-lg">Get instant health advice in Telugu and English</p>
           </div>
@@ -322,18 +341,18 @@ const Index = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">24/7 Health Support</h3>
                 <p className="text-gray-600">Voice and text chat in your language</p>
+                <p className="text-sm text-gray-500 mt-2">✓ Symptoms checker ✓ First aid tips ✓ PHC guidance</p>
               </div>
               
-              {/* Placeholder for MindStudio Chatbot Embed */}
               <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-8 mb-6">
-                <p className="text-gray-500 text-sm mb-2">MindStudio Chatbot Integration</p>
-                <p className="text-xs text-gray-400">Embed code will be placed here</p>
+                <p className="text-gray-500 text-sm mb-2">Rural Health Assistant Integration</p>
+                <p className="text-xs text-gray-400">Smart health guidance for rural communities</p>
               </div>
               
               <Link to="/chatbot">
                 <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl">
                   <MessageCircle className="w-4 h-4 mr-2" />
-                  Start Chat / చాట్ ప్రారంభించండి
+                  Start Health Chat / ఆరోగ్య చాట్ ప్రారంభించండి
                 </Button>
               </Link>
             </CardContent>

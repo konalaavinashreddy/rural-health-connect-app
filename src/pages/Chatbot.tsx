@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Send, Mic, Bot, User } from 'lucide-react';
+import { ArrowLeft, Send, Mic, Bot, User, Heart, Thermometer, Baby, Pill } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,7 +10,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I'm your HealthBot AI assistant. I can help you find doctors, book appointments, and answer health questions in Telugu and English. How can I assist you today?",
+      text: "Namaste! I'm your Rural Health Assistant. I can help you with symptoms, first aid, finding doctors, and health guidance in Telugu and English. What health concern can I help you with today? \n\nనమస్కారం! నేను మీ గ్రామీణ ఆరోగ్య సహాయకుడను. లక్షణాలు, ప్రథమచికిత్స, వైద్యులను కనుగొనడం మరియు ఆరోగ్య మార్గదర్శకత్వంలో నేను మీకు సహాయం చేయగలను।",
       sender: 'bot',
       timestamp: new Date()
     }
@@ -20,10 +20,26 @@ const Chatbot = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('english');
 
   const quickQuestions = [
-    "I have fever, what should I do?",
-    "Find a cardiologist near me",
-    "Book an appointment",
-    "Show my medicine reminders"
+    {
+      text: "I have fever, what should I do?",
+      telugu: "నాకు జ్వరం వచ్చింది, ఏమి చేయాలి?",
+      icon: Thermometer
+    },
+    {
+      text: "Find a doctor near me",
+      telugu: "నా దగ్గర వైద్యుడిని కనుగొనండి",
+      icon: Heart
+    },
+    {
+      text: "Child health tips",
+      telugu: "పిల్లల ఆరోగ్య చిట్కాలు",
+      icon: Baby
+    },
+    {
+      text: "Medicine reminder help",
+      telugu: "మందుల రిమైండర్ సహాయం",
+      icon: Pill
+    }
   ];
 
   const handleSendMessage = () => {
@@ -54,21 +70,26 @@ const Chatbot = () => {
   const getBotResponse = (userMessage: string) => {
     const message = userMessage.toLowerCase();
     
-    if (message.includes('fever')) {
-      return "For fever, here are some immediate steps: 1) Rest and stay hydrated 2) Take paracetamol if needed 3) Monitor your temperature. If fever persists above 101°F for more than 2 days, please consult a doctor. Would you like me to help you find a nearby doctor?";
-    } else if (message.includes('cardiologist') || message.includes('heart')) {
-      return "I can help you find cardiologists in your area. We have Dr. Michael Lee (4.9★, 15 years exp) available tomorrow at 10:30 AM. Would you like to book an appointment?";
-    } else if (message.includes('appointment') || message.includes('book')) {
-      return "I'd be happy to help you book an appointment! Please let me know: 1) What type of doctor do you need? 2) Any specific symptoms or concerns? 3) Your preferred date/time?";
-    } else if (message.includes('medicine') || message.includes('reminder')) {
-      return "Your current medicine reminders: Amoxicillin (8:00 AM - Due), Insulin (6:30 PM), Eye drops (8:00 PM). Would you like to add a new medicine or modify existing reminders?";
+    if (message.includes('fever') || message.includes('జ్వరం')) {
+      return "For fever management:\n\n🌡️ **Immediate Steps:**\n• Rest and drink plenty of fluids\n• Take paracetamol 650mg if fever above 100°F\n• Use cool cloth on forehead\n• Monitor temperature every 2 hours\n\n⚠️ **Seek immediate medical help if:**\n• Fever above 103°F (39.4°C)\n• Difficulty breathing\n• Severe headache or vomiting\n• Fever for more than 3 days\n\nWould you like me to help you find the nearest PHC or doctor?";
+    } else if (message.includes('child') || message.includes('baby') || message.includes('పిల్లల')) {
+      return "**Child Health Guidelines:**\n\n👶 **For Infants (0-1 year):**\n• Exclusive breastfeeding for 6 months\n• Regular vaccination schedule\n• Monitor weight gain monthly\n\n🧒 **For Toddlers (1-3 years):**\n• Balanced diet with iron-rich foods\n• Proper hygiene practices\n• Regular growth monitoring\n\n**Warning Signs - Visit doctor immediately:**\n• High fever, difficulty breathing\n• Persistent vomiting or diarrhea\n• Unusual lethargy or irritability\n\nNeed specific child health information or want to find a pediatrician?";
+    } else if (message.includes('doctor') || message.includes('find') || message.includes('వైద్యుడు')) {
+      return "I can help you find the right healthcare provider! 🏥\n\n**Available Options:**\n• General Physicians - For common health issues\n• Specialists - Heart, diabetes, women's health\n• Emergency Care - 24/7 services\n• PHC Centers - Primary healthcare in your area\n\n**To find the best match:**\n1. Tell me your symptoms or health concern\n2. Your preferred location\n3. Any urgency level\n\nOr click here to browse all doctors: Would you like me to help you book an appointment?";
+    } else if (message.includes('medicine') || message.includes('reminder') || message.includes('మందు')) {
+      return "**Medicine Management Help:** 💊\n\n**Setting up reminders:**\n• Add medicine name and timing\n• Set frequency (daily, twice, etc.)\n• Enable notifications\n\n**Taking medicines safely:**\n• Follow prescribed dosage exactly\n• Take with/without food as instructed\n• Complete full course even if feeling better\n\n**Common mistakes to avoid:**\n• Don't share medicines with others\n• Don't stop suddenly without consulting doctor\n• Check expiry dates regularly\n\nWould you like me to help you set up medicine reminders or need guidance about a specific medication?";
+    } else if (message.includes('emergency') || message.includes('urgent') || message.includes('pain')) {
+      return "🚨 **Emergency Health Guidance:**\n\n**Call 108 immediately for:**\n• Chest pain or heart attack symptoms\n• Difficulty breathing\n• Severe bleeding\n• Unconsciousness\n• Severe allergic reactions\n\n**First Aid Tips:**\n• Keep patient calm and comfortable\n• Don't give food/water if unconscious\n• Apply pressure to stop bleeding\n• Keep airways clear\n\n**24/7 Emergency Contacts:**\n• Ambulance: 108\n• Medical Emergency: 102\n• Women Helpline: 181\n\nIs this a current emergency? Should I help you contact emergency services?";
+    } else if (message.includes('pregnant') || message.includes('pregnancy') || message.includes('గర్భిణీ')) {
+      return "**Pregnancy Care Guidance:** 🤱\n\n**Essential Care Steps:**\n• Regular antenatal checkups (monthly)\n• Take iron and folic acid tablets daily\n• Eat nutritious food - green vegetables, fruits\n• Avoid alcohol, smoking completely\n\n**Government Support Available:**\n• Free delivery at government hospitals\n• Mother & Child Care Kit (₹12,000 value)\n• Free medicines and checkups\n\n**Warning Signs - Contact doctor immediately:**\n• Heavy bleeding\n• Severe headaches\n• Decreased baby movements\n• High fever or severe vomiting\n\nWould you like information about government pregnancy schemes or finding an OB-GYN doctor?";
     } else {
-      return "I understand your concern. To provide the best assistance, could you please specify: 1) Your symptoms 2) How long you've been experiencing them 3) Any specific area of concern? I'm here to help guide you to the right healthcare solution.";
+      return "I understand you need health guidance. Let me help you better! 🏥\n\n**I can assist with:**\n• Symptom checking and first aid\n• Finding doctors and hospitals\n• Medicine information and reminders\n• Government health schemes\n• Pregnancy and child health\n• Emergency guidance\n\n**Please tell me:**\n1. Your specific health concern or symptoms\n2. How urgent is the situation?\n3. Any preferred language (English/Telugu)\n\nOr choose from the quick options below to get started.";
     }
   };
 
-  const handleQuickQuestion = (question: string) => {
-    setInputMessage(question);
+  const handleQuickQuestion = (question: any) => {
+    const text = selectedLanguage === 'telugu' ? question.telugu : question.text;
+    setInputMessage(text);
   };
 
   const toggleVoiceInput = () => {
@@ -89,11 +110,11 @@ const Chatbot = () => {
               </Link>
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
-                  <Bot className="w-6 h-6 text-white" />
+                  <Heart className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900">HealthBot AI</h1>
-                  <p className="text-sm text-green-500">Online</p>
+                  <h1 className="text-xl font-bold text-gray-900">Rural Health Assistant</h1>
+                  <p className="text-sm text-green-500">Online • గ్రామీణ ఆరోగ్య సహాయకుడు</p>
                 </div>
               </div>
             </div>
@@ -128,15 +149,15 @@ const Chatbot = () => {
                   className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div className={`flex items-start space-x-3 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${message.sender === 'user' ? 'bg-blue-500' : 'bg-green-500'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${message.sender === 'user' ? 'bg-blue-500' : 'bg-gradient-to-r from-green-500 to-blue-500'}`}>
                       {message.sender === 'user' ? (
                         <User className="w-4 h-4 text-white" />
                       ) : (
-                        <Bot className="w-4 h-4 text-white" />
+                        <Heart className="w-4 h-4 text-white" />
                       )}
                     </div>
                     <div className={`rounded-lg p-4 ${message.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-900'}`}>
-                      <p className="text-sm">{message.text}</p>
+                      <p className="text-sm whitespace-pre-line">{message.text}</p>
                       <p className={`text-xs mt-2 ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
@@ -151,7 +172,7 @@ const Chatbot = () => {
         {/* Quick Questions */}
         <Card className="healthcare-card mb-4">
           <CardHeader>
-            <CardTitle className="text-sm">Quick Questions</CardTitle>
+            <CardTitle className="text-sm">Quick Health Questions</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -163,7 +184,10 @@ const Chatbot = () => {
                   onClick={() => handleQuickQuestion(question)}
                   className="text-left justify-start h-auto p-3 whitespace-normal"
                 >
-                  {question}
+                  <question.icon className="w-4 h-4 mr-2 flex-shrink-0" />
+                  <span className="text-left">
+                    {selectedLanguage === 'telugu' ? question.telugu : question.text}
+                  </span>
                 </Button>
               ))}
             </div>
@@ -176,7 +200,7 @@ const Chatbot = () => {
             <div className="flex space-x-2">
               <Input
                 type="text"
-                placeholder="Type your health question here..."
+                placeholder={selectedLanguage === 'telugu' ? "మీ ఆరోగ్య ప్రశ్న టైప్ చేయండి..." : "Type your health question here..."}
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -198,6 +222,9 @@ const Chatbot = () => {
                 <Send className="w-5 h-5" />
               </Button>
             </div>
+            <p className="text-xs text-gray-500 mt-2 text-center">
+              ⚠️ This is AI guidance only. For emergencies, call 108. Always consult a doctor for serious conditions.
+            </p>
           </CardContent>
         </Card>
       </div>
