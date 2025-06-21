@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Phone, Navigation, Star, Calendar } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Phone, Navigation, Star, Calendar, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -22,13 +21,21 @@ const Map = () => {
 
   const handleHospitalSelect = (hospital) => {
     setSelectedHospital(hospital);
-    setSelectedLocation(null); // Clear location selection when hospital is selected
+    setSelectedLocation(null);
   };
 
-  const handleLocationClick = (lat, lng) => {
-    setSelectedLocation({ lat, lng });
-    setSelectedHospital(null); // Clear hospital selection when location is clicked
-    console.log('Location selected:', lat, lng);
+  const handleLocationClick = (lat, lng, address) => {
+    setSelectedLocation({ lat, lng, address });
+    setSelectedHospital(null);
+    console.log('Location selected:', lat, lng, address);
+  };
+
+  const openInGoogleMaps = (lat, lng) => {
+    window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+  };
+
+  const getDirections = (lat, lng) => {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
   };
 
   return (
@@ -47,7 +54,6 @@ const Map = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Filters */}
         <Card className="healthcare-card mb-6">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -77,14 +83,11 @@ const Map = () => {
         </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Map Section */}
           <HospitalMap 
             hospitals={filteredHospitals} 
             onHospitalSelect={handleHospitalSelect}
             onLocationClick={handleLocationClick}
           />
-
-          {/* Hospital List */}
           <HospitalList 
             hospitals={filteredHospitals}
             selectedHospital={selectedHospital}
@@ -92,7 +95,6 @@ const Map = () => {
           />
         </div>
 
-        {/* Selected Hospital Details */}
         {selectedHospital && (
           <Card className="healthcare-card mt-8">
             <CardHeader>
@@ -122,7 +124,7 @@ const Map = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 flex space-x-4">
+              <div className="mt-6 flex flex-wrap gap-3">
                 <Link to="/appointment" state={{ hospital: selectedHospital }}>
                   <Button className="button-primary">
                     <Calendar className="w-4 h-4 mr-2" />
@@ -134,38 +136,60 @@ const Map = () => {
                     Find Doctors
                   </Button>
                 </Link>
-                <Button className="button-secondary">
+                <Button 
+                  className="button-secondary"
+                  onClick={() => getDirections(selectedHospital.latitude, selectedHospital.longitude)}
+                >
                   <Navigation className="w-4 h-4 mr-2" />
                   Get Directions
+                </Button>
+                <Button 
+                  className="button-secondary"
+                  onClick={() => openInGoogleMaps(selectedHospital.latitude, selectedHospital.longitude)}
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Open in Maps
                 </Button>
               </div>
             </CardContent>
           </Card>
         )}
 
-        {/* Selected Location Details */}
         {selectedLocation && (
           <Card className="healthcare-card mt-8">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <MapPin className="w-5 h-5 text-blue-600" />
-                <span className="text-xl text-gray-900">Selected Location</span>
+                <span className="text-xl text-gray-900">Selected Location Details</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Location Details</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">Location Information</h4>
+                  {selectedLocation.address && (
+                    <p className="text-gray-600 mb-2"><strong>Address:</strong> {selectedLocation.address}</p>
+                  )}
                   <p className="text-gray-600 mb-2"><strong>Latitude:</strong> {selectedLocation.lat.toFixed(6)}</p>
                   <p className="text-gray-600 mb-2"><strong>Longitude:</strong> {selectedLocation.lng.toFixed(6)}</p>
                   <p className="text-gray-600 mb-2"><strong>Coordinates:</strong> {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}</p>
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Available Actions</h4>
-                  <div className="space-y-2">
-                    <Button className="button-secondary w-full">
+                  <div className="space-y-3">
+                    <Button 
+                      className="button-secondary w-full"
+                      onClick={() => getDirections(selectedLocation.lat, selectedLocation.lng)}
+                    >
                       <Navigation className="w-4 h-4 mr-2" />
                       Get Directions to This Location
+                    </Button>
+                    <Button 
+                      className="button-secondary w-full"
+                      onClick={() => openInGoogleMaps(selectedLocation.lat, selectedLocation.lng)}
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Open in Google Maps
                     </Button>
                     <Button className="button-secondary w-full">
                       <MapPin className="w-4 h-4 mr-2" />
