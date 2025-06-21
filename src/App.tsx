@@ -4,9 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
 import Doctors from "./pages/Doctors";
 import Appointment from "./pages/Appointment";
 import Medicines from "./pages/Medicines";
@@ -24,31 +22,28 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/patient-dashboard" element={<PatientDashboard />} />
-            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
-            <Route path="/doctors" element={<Doctors />} />
-            <Route path="/appointment" element={<Appointment />} />
-            <Route path="/medicines" element={<Medicines />} />
-            <Route path="/prescriptions" element={<Prescriptions />} />
-            <Route path="/medicine-reminders" element={<MedicineReminders />} />
-            <Route path="/chatbot" element={<Chatbot />} />
-            <Route path="/scheme-details" element={<SchemeDetails />} />
-            <Route path="/map" element={<Map />} />
-            <Route path="/doctor-forms" element={<DoctorForms />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/patient-dashboard" element={<PatientDashboard />} />
+          <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+          <Route path="/doctors" element={<Doctors />} />
+          <Route path="/appointment" element={<Appointment />} />
+          <Route path="/medicines" element={<Medicines />} />
+          <Route path="/prescriptions" element={<Prescriptions />} />
+          <Route path="/medicine-reminders" element={<MedicineReminders />} />
+          <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/scheme-details" element={<SchemeDetails />} />
+          <Route path="/map" element={<Map />} />
+          <Route path="/doctor-forms" element={<DoctorForms />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 

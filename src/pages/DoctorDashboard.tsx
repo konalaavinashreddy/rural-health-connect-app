@@ -3,17 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/contexts/AuthContext';
-import { Calendar, Users, FileText, MessageCircle, LogOut, ExternalLink } from 'lucide-react';
+import { Calendar, Users, FileText, MessageCircle, Home, ExternalLink } from 'lucide-react';
 
 const DoctorDashboard = () => {
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    window.location.href = '/';
-  };
-
   const handlePortalRedirect = () => {
     window.location.href = 'https://rural-health-connect-portal.lovable.app/';
   };
@@ -24,20 +16,19 @@ const DoctorDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Doctor Dashboard</h1>
-            <p className="text-blue-600">Welcome, {user?.name}</p>
-            {user?.specialty && (
-              <p className="text-sm text-gray-600">{user.specialty} • {user.hospital}</p>
-            )}
+            <p className="text-blue-600">Welcome to Rural Health Connect</p>
           </div>
           <div className="flex space-x-2">
             <Button onClick={handlePortalRedirect} className="bg-green-600 hover:bg-green-700">
               <ExternalLink className="w-4 h-4 mr-2" />
               Doctor Portal
             </Button>
-            <Button onClick={handleLogout} variant="outline" size="sm">
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+            <Link to="/">
+              <Button variant="outline" size="sm">
+                <Home className="w-4 h-4 mr-2" />
+                Home
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
