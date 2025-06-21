@@ -37,8 +37,8 @@ const Doctors = () => {
      doctor.specialty.toLowerCase().includes(searchQuery.toLowerCase()) ||
      doctor.hospital.toLowerCase().includes(searchQuery.toLowerCase()) ||
      doctor.district.toLowerCase().includes(searchQuery.toLowerCase())) &&
-    (selectedSpecialty === '' || doctor.specialty === selectedSpecialty) &&
-    (selectedDistrict === '' || doctor.district === selectedDistrict)
+    (selectedSpecialty === '' || selectedSpecialty === 'all-specialties' || doctor.specialty === selectedSpecialty) &&
+    (selectedDistrict === '' || selectedDistrict === 'all-districts' || doctor.district === selectedDistrict)
   );
 
   const handleClearFilters = () => {
@@ -60,7 +60,7 @@ const Doctors = () => {
             </Link>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Telangana Doctors</h1>
-              {selectedSpecialty && (
+              {selectedSpecialty && selectedSpecialty !== 'all-specialties' && (
                 <p className="text-blue-600 text-sm">Showing: {selectedSpecialty} specialists</p>
               )}
             </div>
@@ -88,7 +88,7 @@ const Doctors = () => {
                     <SelectValue placeholder="Filter by specialty" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Specialties</SelectItem>
+                    <SelectItem value="all-specialties">All Specialties</SelectItem>
                     {telanganaSpecialties.map(specialty => (
                       <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
                     ))}
@@ -101,7 +101,7 @@ const Doctors = () => {
                     <SelectValue placeholder="Filter by district" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Districts</SelectItem>
+                    <SelectItem value="all-districts">All Districts</SelectItem>
                     {telanganaDistricts.map(district => (
                       <SelectItem key={district} value={district}>{district}</SelectItem>
                     ))}
@@ -111,15 +111,15 @@ const Doctors = () => {
             </div>
             
             {/* Active Filters Display */}
-            {(selectedSpecialty || selectedDistrict || searchQuery) && (
+            {(selectedSpecialty && selectedSpecialty !== 'all-specialties' || selectedDistrict && selectedDistrict !== 'all-districts' || searchQuery) && (
               <div className="mt-4 flex items-center gap-2 flex-wrap">
                 <span className="text-sm text-gray-600">Active filters:</span>
-                {selectedSpecialty && (
+                {selectedSpecialty && selectedSpecialty !== 'all-specialties' && (
                   <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                     {selectedSpecialty}
                   </span>
                 )}
-                {selectedDistrict && (
+                {selectedDistrict && selectedDistrict !== 'all-districts' && (
                   <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
                     {selectedDistrict}
                   </span>
@@ -154,7 +154,7 @@ const Doctors = () => {
         <div className="mb-4">
           <p className="text-gray-600">
             {filteredDoctors.length} doctor{filteredDoctors.length !== 1 ? 's' : ''} found in Telangana
-            {selectedSpecialty && ` for ${selectedSpecialty}`}
+            {selectedSpecialty && selectedSpecialty !== 'all-specialties' && ` for ${selectedSpecialty}`}
           </p>
         </div>
 
@@ -251,7 +251,7 @@ const Doctors = () => {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">No Doctors Found</h3>
                 <p className="text-gray-600 max-w-md">
-                  {selectedSpecialty 
+                  {selectedSpecialty && selectedSpecialty !== 'all-specialties'
                     ? `No ${selectedSpecialty} specialists found matching your criteria.`
                     : 'No doctors found matching your search criteria.'
                   }
