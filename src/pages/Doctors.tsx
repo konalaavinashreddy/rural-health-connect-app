@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star, Clock, Award, Filter, MapPin, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,7 @@ import { telanganaDoctors, telanganaSpecialties, telanganaDistricts } from '@/da
 
 const Doctors = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const preSelectedHospital = location.state?.hospital;
   const urlSearchQuery = new URLSearchParams(location.search).get('search') || '';
   const stateSearchQuery = location.state?.searchQuery || '';
@@ -46,9 +47,8 @@ const Doctors = () => {
     setSelectedDistrict('');
   };
 
-  const handleDoctorCardClick = () => {
-    // Skip login and redirect directly to doctor portal
-    window.location.href = 'https://rural-health-connect-portal.lovable.app/';
+  const handleDoctorCardClick = (doctorId: string) => {
+    navigate(`/doctor/${doctorId}`);
   };
 
   return (
@@ -235,7 +235,7 @@ const Doctors = () => {
                     </div>
                     
                     <Button 
-                      onClick={handleDoctorCardClick}
+                      onClick={() => handleDoctorCardClick(doctor.id)}
                       className="button-primary w-full"
                     >
                       View Doctor Profile - ₹{doctor.consultationFee}

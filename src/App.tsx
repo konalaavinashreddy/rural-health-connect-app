@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Doctors from "./pages/Doctors";
+import DoctorProfile from "./pages/DoctorProfile";
 import Appointment from "./pages/Appointment";
 import Medicines from "./pages/Medicines";
 import Chatbot from "./pages/Chatbot";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Index />} />
           <Route path="/doctors" element={<Doctors />} />
+          <Route path="/doctor/:doctorId" element={<DoctorProfile />} />
           <Route path="/appointment" element={<Appointment />} />
           <Route path="/medicines" element={<Medicines />} />
           <Route path="/prescriptions" element={<Prescriptions />} />
