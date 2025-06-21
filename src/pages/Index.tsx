@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Calendar, MessageCircle, Pill, MapPin, Stethoscope, Clock, Star, Users, Heart, Home, User, ArrowRight, CheckCircle, Phone, Mail, Facebook, Twitter, Instagram, Youtube, Shield, FileText, Info } from 'lucide-react';
@@ -79,19 +78,24 @@ const Index = () => {
     navigate(`/doctors?search=${encodeURIComponent(suggestion)}`);
   };
 
-  const handleStepClick = (stepNumber: number) => {
-    switch (stepNumber) {
+  const handleWorkflowClick = (step: number) => {
+    switch (step) {
       case 1: // Book
-        navigate('/appointment');
+        navigate('/appointment', { state: { returnTo: '/' } });
         break;
       case 2: // Consult
-        navigate('/doctors');
+        navigate('/doctors', { state: { returnTo: '/' } });
         break;
       case 3: // Get Medicine - Fixed to go to prescriptions
-        navigate('/prescriptions');
+        navigate('/prescriptions', { state: { returnTo: '/' } });
         break;
-      case 4: // Receive Reminders - Fixed to go to medicine reminders
-        navigate('/medicine-reminders');
+      case 4: // Receive Reminders - Fixed to go to medicine reminders with auto-enable
+        navigate('/medicine-reminders', { 
+          state: { 
+            returnTo: '/', 
+            autoEnable: true 
+          } 
+        });
         break;
       default:
         break;
@@ -148,7 +152,7 @@ const Index = () => {
               <div 
                 key={index} 
                 className="text-center group cursor-pointer"
-                onClick={() => handleStepClick(item.step)}
+                onClick={() => handleWorkflowClick(item.step)}
               >
                 <div className="relative mb-6">
                   <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
