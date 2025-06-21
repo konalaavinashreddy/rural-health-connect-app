@@ -1,4 +1,3 @@
-
 export const commonTranslations = {
   // Navigation and common UI
   back: {
@@ -740,4 +739,144 @@ export const mapTranslations = {
     en: "Find Nearby Hospitals",
     te: "దగ్గరి ఆసుపత్రులను కనుగొనండి"
   }
+};
+
+// Doctors page translations
+export const doctorsPageTranslations = {
+  telanganaDoctors: {
+    en: "Telangana Doctors",
+    te: "తెలంగాణ వైద్యులు"
+  },
+  showing: {
+    en: "Showing:",
+    te: "చూపిస్తోంది:"
+  },
+  specialists: {
+    en: "specialists",
+    te: "స్పెషలిస్టులు"
+  },
+  searchDoctorsHospitals: {
+    en: "Search doctors, hospitals, or districts...",
+    te: "వైద్యులు, ఆసుపత్రులు లేదా జిల్లాలను వెతకండి..."
+  },
+  filterBySpecialty: {
+    en: "Filter by specialty",
+    te: "ప్రత్యేకత ద్వారా ఫిల్టర్ చేయండి"
+  },
+  filterByDistrict: {
+    en: "Filter by district",
+    te: "జిల్లా ద్వారా ఫిల్టర్ చేయండి"
+  },
+  allSpecialties: {
+    en: "All Specialties",
+    te: "అన్ని ప్రత్యేకతలు"
+  },
+  allDistricts: {
+    en: "All Districts",
+    te: "అన్ని జిల్లాలు"
+  },
+  activeFilters: {
+    en: "Active filters:",
+    te: "చురుకైన ఫిల్టర్లు:"
+  },
+  clearAll: {
+    en: "Clear All",
+    te: "అన్నీ క్లియర్ చేయండి"
+  },
+  showingDoctorsFrom: {
+    en: "Showing doctors from:",
+    te: "వైద్యులను చూపిస్తోంది:"
+  },
+  doctorFound: {
+    en: "doctor",
+    te: "వైద్యుడు"
+  },
+  doctorsFound: {
+    en: "doctors",
+    te: "వైద్యులు"
+  },
+  foundInTelangana: {
+    en: "found in Telangana",
+    te: "తెలంగాణలో కనుగొనబడింది"
+  },
+  for: {
+    en: "for",
+    te: "కోసం"
+  },
+  years: {
+    en: "Years",
+    te: "సంవత్సరాలు"
+  },
+  languages: {
+    en: "Languages:",
+    te: "భాషలు:"
+  },
+  nextAvailable: {
+    en: "Next Available",
+    te: "తదుపరి అందుబాటు"
+  },
+  consultationFee: {
+    en: "Consultation Fee:",
+    te: "సంప్రదింపు రుసుము:"
+  },
+  viewDoctorProfile: {
+    en: "View Doctor Profile",
+    te: "వైద్య ప్రొఫైల్ చూడండి"
+  },
+  noDoctorsFound: {
+    en: "No Doctors Found",
+    te: "వైద్యులు కనుగొనబడలేదు"
+  },
+  noSpecialistsFound: {
+    en: "specialists found matching your criteria.",
+    te: "స్పెషలిస్టులు మీ ప్రమాణాలకు సరిపోలలేదు."
+  },
+  noDoctorsFoundMatchingCriteria: {
+    en: "No doctors found matching your search criteria.",
+    te: "మీ వెతుకులాట ప్రమాణాలకు సరిపోలే వైద్యులు కనుగొనబడలేదు."
+  },
+  tryAdjustingFilters: {
+    en: "Try adjusting your filters:",
+    te: "మీ ఫిల్టర్లను సర్దుబాటు చేయడానికి ప్రయత్నించండి:"
+  },
+  checkSpelling: {
+    en: "Check the spelling of your search terms",
+    te: "మీ వెతుకులాట పదాల స్పెల్లింగ్ తనిఖీ చేయండి"
+  },
+  tryBroaderSearch: {
+    en: "Try a broader search or different specialty",
+    te: "విస్తృత వెతుకులాట లేదా వేరే ప్రత్యేకతను ప్రయత్నించండి"
+  },
+  clearFiltersToSeeAll: {
+    en: "Clear filters to see all available doctors",
+    te: "అందుబాటులో ఉన్న అన్ని వైద్యులను చూడటానికి ఫిల్టర్లను క్లియర్ చేయండి"
+  },
+  clearAllFilters: {
+    en: "Clear All Filters",
+    te: "అన్ని ఫిల్టర్లను క్లియర్ చేయండి"
+  },
+  search: {
+    en: "Search:",
+    te: "వెతుకులాట:"
+  }
+};
+
+// Chatbot page translations
+export const chatbotTranslations = {
+  
+};
+
+// Medicine reminders page translations
+export const medicineRemindersTranslations = {
+  
+};
+
+// Medicines page translations
+export const medicinesTranslations = {
+  
+};
+
+// Scheme details page translations
+export const schemeDetailsTranslations = {
+  
 };

@@ -7,10 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { telanganaDoctors, telanganaSpecialties, telanganaDistricts } from '@/data/telanganaData';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { doctorsPageTranslations, commonTranslations } from '@/data/translations';
 
 const Doctors = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const preSelectedHospital = location.state?.hospital;
   const urlSearchQuery = new URLSearchParams(location.search).get('search') || '';
   const stateSearchQuery = location.state?.searchQuery || '';
@@ -64,9 +67,9 @@ const Doctors = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Telangana Doctors</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{t('telanganaDoctors', doctorsPageTranslations)}</h1>
               {selectedSpecialty && selectedSpecialty !== 'all-specialties' && (
-                <p className="text-blue-600 text-sm">Showing: {selectedSpecialty} specialists</p>
+                <p className="text-blue-600 text-sm">{t('showing', doctorsPageTranslations)}: {selectedSpecialty} {t('specialists', doctorsPageTranslations)}</p>
               )}
             </div>
           </div>
@@ -81,7 +84,7 @@ const Doctors = () => {
               <div>
                 <Input
                   type="text"
-                  placeholder="Search doctors, hospitals, or districts..."
+                  placeholder={t('searchDoctorsHospitals', doctorsPageTranslations)}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="h-12 border-2 border-blue-100 focus:border-blue-300"
@@ -90,10 +93,10 @@ const Doctors = () => {
               <div>
                 <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
                   <SelectTrigger className="h-12 border-2 border-blue-100 focus:border-blue-300">
-                    <SelectValue placeholder="Filter by specialty" />
+                    <SelectValue placeholder={t('filterBySpecialty', doctorsPageTranslations)} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all-specialties">All Specialties</SelectItem>
+                    <SelectItem value="all-specialties">{t('allSpecialties', doctorsPageTranslations)}</SelectItem>
                     {telanganaSpecialties.map(specialty => (
                       <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
                     ))}
@@ -103,10 +106,10 @@ const Doctors = () => {
               <div>
                 <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
                   <SelectTrigger className="h-12 border-2 border-blue-100 focus:border-blue-300">
-                    <SelectValue placeholder="Filter by district" />
+                    <SelectValue placeholder={t('filterByDistrict', doctorsPageTranslations)} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all-districts">All Districts</SelectItem>
+                    <SelectItem value="all-districts">{t('allDistricts', doctorsPageTranslations)}</SelectItem>
                     {telanganaDistricts.map(district => (
                       <SelectItem key={district} value={district}>{district}</SelectItem>
                     ))}
@@ -118,7 +121,7 @@ const Doctors = () => {
             {/* Active Filters Display */}
             {(selectedSpecialty && selectedSpecialty !== 'all-specialties' || selectedDistrict && selectedDistrict !== 'all-districts' || searchQuery) && (
               <div className="mt-4 flex items-center gap-2 flex-wrap">
-                <span className="text-sm text-gray-600">Active filters:</span>
+                <span className="text-sm text-gray-600">{t('activeFilters', doctorsPageTranslations)}</span>
                 {selectedSpecialty && selectedSpecialty !== 'all-specialties' && (
                   <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                     {selectedSpecialty}
@@ -131,7 +134,7 @@ const Doctors = () => {
                 )}
                 {searchQuery && (
                   <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                    Search: "{searchQuery}"
+                    {t('search', doctorsPageTranslations)} "{searchQuery}"
                   </span>
                 )}
                 <Button
@@ -140,7 +143,7 @@ const Doctors = () => {
                   size="sm"
                   className="ml-2"
                 >
-                  Clear All
+                  {t('clearAll', doctorsPageTranslations)}
                 </Button>
               </div>
             )}
@@ -148,7 +151,7 @@ const Doctors = () => {
             {preSelectedHospital && (
               <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                 <p className="text-blue-800 text-sm">
-                  <strong>Showing doctors from:</strong> {preSelectedHospital.name}
+                  <strong>{t('showingDoctorsFrom', doctorsPageTranslations)}</strong> {preSelectedHospital.name}
                 </p>
               </div>
             )}
@@ -158,8 +161,8 @@ const Doctors = () => {
         {/* Results Count */}
         <div className="mb-4">
           <p className="text-gray-600">
-            {filteredDoctors.length} doctor{filteredDoctors.length !== 1 ? 's' : ''} found in Telangana
-            {selectedSpecialty && selectedSpecialty !== 'all-specialties' && ` for ${selectedSpecialty}`}
+            {filteredDoctors.length} {filteredDoctors.length !== 1 ? t('doctorsFound', doctorsPageTranslations) : t('doctorFound', doctorsPageTranslations)} {t('foundInTelangana', doctorsPageTranslations)}
+            {selectedSpecialty && selectedSpecialty !== 'all-specialties' && ` ${t('for', doctorsPageTranslations)} ${selectedSpecialty}`}
           </p>
         </div>
 
@@ -183,7 +186,7 @@ const Doctors = () => {
                     </div>
                     
                     <div className="flex items-center space-x-2 mb-3">
-                      <span className="text-sm text-gray-600">District:</span>
+                      <span className="text-sm text-gray-600">{t('district', commonTranslations)}:</span>
                       <span className="text-sm font-medium text-blue-600">{doctor.district}</span>
                     </div>
                     
@@ -194,13 +197,13 @@ const Doctors = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Award className="w-4 h-4 text-green-500" />
-                        <span className="text-sm">{doctor.experience} Years</span>
+                        <span className="text-sm">{doctor.experience} {t('years', doctorsPageTranslations)}</span>
                       </div>
                     </div>
                     
                     <div className="mb-4">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm text-gray-600">Success Rate</span>
+                        <span className="text-sm text-gray-600">{t('successRate', commonTranslations)}</span>
                         <span className="text-sm font-medium">{doctor.successRate}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
@@ -212,7 +215,7 @@ const Doctors = () => {
                     </div>
 
                     <div className="mb-4">
-                      <p className="text-sm text-gray-600 mb-2">Languages:</p>
+                      <p className="text-sm text-gray-600 mb-2">{t('languages', doctorsPageTranslations)}</p>
                       <div className="flex flex-wrap gap-1">
                         {doctor.languages.map((lang, index) => (
                           <span key={index} className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">
@@ -225,13 +228,13 @@ const Doctors = () => {
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-2">
                         <Clock className="w-4 h-4 text-blue-500" />
-                        <span className="text-sm text-gray-600">Next Available</span>
+                        <span className="text-sm text-gray-600">{t('nextAvailable', doctorsPageTranslations)}</span>
                       </div>
                       <span className="text-sm font-medium text-green-600">{doctor.nextAvailable}</span>
                     </div>
 
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm text-gray-600">Consultation Fee:</span>
+                      <span className="text-sm text-gray-600">{t('consultationFee', doctorsPageTranslations)}</span>
                       <span className="text-lg font-bold text-green-600">₹{doctor.consultationFee}</span>
                     </div>
                     
@@ -239,7 +242,7 @@ const Doctors = () => {
                       onClick={() => handleDoctorCardClick(doctor.id)}
                       className="button-primary w-full"
                     >
-                      View Doctor Profile - ₹{doctor.consultationFee}
+                      {t('viewDoctorProfile', doctorsPageTranslations)} - ₹{doctor.consultationFee}
                     </Button>
                   </div>
                 </div>
@@ -255,26 +258,26 @@ const Doctors = () => {
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
                   <Filter className="w-8 h-8 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">No Doctors Found</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('noDoctorsFound', doctorsPageTranslations)}</h3>
                 <p className="text-gray-600 max-w-md">
                   {selectedSpecialty && selectedSpecialty !== 'all-specialties'
-                    ? `No ${selectedSpecialty} specialists found matching your criteria.`
-                    : 'No doctors found matching your search criteria.'
+                    ? `${t('no', commonTranslations)} ${selectedSpecialty} ${t('noSpecialistsFound', doctorsPageTranslations)}`
+                    : t('noDoctorsFoundMatchingCriteria', doctorsPageTranslations)
                   }
                 </p>
                 <div className="space-y-2 text-sm text-gray-500">
-                  <p>Try adjusting your filters:</p>
+                  <p>{t('tryAdjustingFilters', doctorsPageTranslations)}</p>
                   <ul className="list-disc list-inside space-y-1">
-                    <li>Check the spelling of your search terms</li>
-                    <li>Try a broader search or different specialty</li>
-                    <li>Clear filters to see all available doctors</li>
+                    <li>{t('checkSpelling', doctorsPageTranslations)}</li>
+                    <li>{t('tryBroaderSearch', doctorsPageTranslations)}</li>
+                    <li>{t('clearFiltersToSeeAll', doctorsPageTranslations)}</li>
                   </ul>
                 </div>
                 <Button 
                   onClick={handleClearFilters}
                   className="button-secondary mt-4"
                 >
-                  Clear All Filters
+                  {t('clearAllFilters', doctorsPageTranslations)}
                 </Button>
               </div>
             </CardContent>
